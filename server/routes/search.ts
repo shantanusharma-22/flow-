@@ -19,7 +19,8 @@ searchRouter.get(
   (req: Request, res: Response) => {
     const q = (req.query.q as string) || '';
     const category = (req.query.category as string) || 'all';
-    const limit = parseInt(req.query.limit as string, 10) || 20;
+    const parsedLimit = Number(req.query.limit);
+    const limit = Number.isInteger(parsedLimit) && parsedLimit > 0 ? parsedLimit : 20;
     const queryPattern = `%${q.toLowerCase()}%`;
 
     const results: {

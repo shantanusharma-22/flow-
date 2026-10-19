@@ -25,7 +25,7 @@ integrationsRouter.post(
 
     // Update play count in database
     FlowDatabase.run(
-      'UPDATE tracks SET play_count = play_count + 1, last_played_at = datetime("now") WHERE id = ?;',
+      "UPDATE tracks SET play_count = play_count + 1, last_played_at = datetime('now') WHERE id = ?;",
       [trackId]
     );
 

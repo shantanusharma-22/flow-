@@ -89,7 +89,7 @@ tracksRouter.post(
     }
 
     const nextLiked = track.is_liked === 1 ? 0 : 1;
-    FlowDatabase.run('UPDATE tracks SET is_liked = ?, updated_at = datetime("now") WHERE id = ?;', [nextLiked, id]);
+    FlowDatabase.run("UPDATE tracks SET is_liked = ?, updated_at = datetime('now') WHERE id = ?;", [nextLiked, id]);
 
     res.json({
       trackId: id,
@@ -106,7 +106,7 @@ tracksRouter.post(
   }),
   (req: Request, res: Response) => {
     const { id } = req.params;
-    FlowDatabase.run('UPDATE tracks SET is_downloaded = 1, is_cached = 1, updated_at = datetime("now") WHERE id = ?;', [id]);
+    FlowDatabase.run("UPDATE tracks SET is_downloaded = 1, is_cached = 1, updated_at = datetime('now') WHERE id = ?;", [id]);
 
     res.json({
       trackId: id,
