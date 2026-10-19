@@ -1,5 +1,7 @@
 import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
+import path from 'path';
+import fs from 'fs';
 import { authRouter } from './routes/auth';
 import { searchRouter } from './routes/search';
 import { tracksRouter } from './routes/tracks';
@@ -71,6 +73,22 @@ app.use('/api/settings', settingsRouter);
 app.use('/api/integrations', integrationsRouter);
 app.use('/api/library', libraryRouter);
 app.use('/api/explore', exploreRouter);
+
+// Serve static frontend bundle if dist/ exists
+const distDir = path.resolve(process.cwd(), 'dist');
+if (fs.existsSync(distDir)) {
+  app.use(express.static(distDir));
+  app.get('*', (req: Request, res: Response, next: NextFunction) => {
+    if (req.path.startsWith('/api')) {
+      return next();
+    }
+    const indexPath = path.join(distDir, 'index.html');
+    if (fs.existsSync(indexPath)) {
+      return res.sendFile(indexPath);
+    }
+    next();
+  });
+}
 
 // 404 Route Handler
 app.use((req: Request, res: Response) => {

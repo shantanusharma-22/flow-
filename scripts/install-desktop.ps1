@@ -13,6 +13,7 @@ $DesktopShortcutPath = Join-Path $DesktopFolder "Flow Music Player.lnk"
 $Shortcut = $WshShell.CreateShortcut($DesktopShortcutPath)
 $Shortcut.TargetPath = $ExePath
 $Shortcut.WorkingDirectory = $AppDir
+$Shortcut.IconLocation = "$ExePath,0"
 $Shortcut.Description = "Flow - Hi-Res Lossless Desktop Music Player"
 $Shortcut.Save()
 Write-Host "✅ Created Desktop Shortcut: $DesktopShortcutPath" -ForegroundColor Green
@@ -23,6 +24,7 @@ $StartShortcutPath = Join-Path $StartMenuFolder "Flow Music Player.lnk"
 $StartShortcut = $WshShell.CreateShortcut($StartShortcutPath)
 $StartShortcut.TargetPath = $ExePath
 $StartShortcut.WorkingDirectory = $AppDir
+$StartShortcut.IconLocation = "$ExePath,0"
 $StartShortcut.Description = "Flow - Hi-Res Lossless Desktop Music Player"
 $StartShortcut.Save()
 Write-Host "✅ Created Start Menu Shortcut: $StartShortcutPath" -ForegroundColor Green
