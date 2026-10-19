@@ -1,0 +1,22 @@
+{
+  "avoid": [
+    "BitChord",
+    "bitchord",
+    "Bit Chord",
+    "Kushagra Singh",
+    "kushagrasinghx"
+  ],
+  "app_store": {
+    "name": "Flow: Desktop Music Player",
+    "subtitle": "Stream Songs with Lyrics",
+    "promotional_text": "Experience fluid desktop audio with synchronized Romanized lyrics, local playlists, and granular cache controls.",
+    "description": "Flow is a fluid, modern music player crafted for seamless desktop listening.\n\nEnjoy synchronized lyrics with instant phonetic Romanization, build custom playlists locally without mandatory cloud accounts, and keep full control of your storage with per-track cache management.\n\nKey Highlights:\n- Real-Time Synced Lyrics: Sing along with syllable-accurate lyric timing and bilingual translations.\n- Phonetic Romanization: Toggle instant Romaji, Hangul, and Latin transliteration for international tracks.\n- Offline Lyrics Export: Save timestamped .lrc files directly to your device with a single click.\n- Zero-Login Local Playlists: Create, curate, and export custom playlists without an account.\n- Resilient Playback: Smooth stream buffering prevents mid-track pauses and stuttering.\n- Granular Storage Control: Inspect exact disk space per track and prune cached files individually.\n- Dedicated Repeat Controls: Easily toggle between repeat off, repeat all, and repeat one.\n- Playback Speed Slider: Adjust tempo smoothly from 0.5x to 2.0x while preserving pitch.\n\nClean design, fast performance, and complete respect for your listening privacy.",
+    "keywords": "audio,sound,playlist,tuner,karaoke,offline,album,track,tunes,artist,equalizer,listen",
+    "whats_new": "Initial release of Flow featuring synchronized bilingual lyrics, local playlist creation, granular cache management, and offline lyrics export."
+  },
+  "google_play": {
+    "title": "Flow: Music and Lyrics Player",
+    "short_description": "Fluid music player with synchronized lyrics and local playlist creation.",
+    "full_description": "Flow is a modern, responsive music player designed for music enthusiasts who value clarity, privacy, and lyric synchronization.\n\nKey Highlights:\n- Synchronized Lyrics: Follow along in real time with synchronized timing and translations.\n- Phonetic Transliteration: Sing along to international songs with one-click phonetic Romanization.\n- Local Playlists: Build and organize custom playlists on your local device without requiring an account login.\n- Offline Lyrics Export: Export timestamped .lrc files to take your favorite lyrics anywhere.\n- Granular Cache Management: View track sizes in megabytes and remove individual cached songs without wiping your whole library.\n- Flexible Playback: Enjoy dedicated repeat-one looping and adjustable playback speed from 0.5x to 2.0x.\n\nGet into the flow with a music player that puts your listening first."
+  }
+}

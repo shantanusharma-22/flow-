@@ -19,6 +19,7 @@ import { PlaylistScreen } from './screens/PlaylistScreen';
 import { ArtistScreen } from './screens/ArtistScreen';
 import { LibraryScreen } from './screens/LibraryScreen';
 import { SettingsScreen } from './screens/SettingsScreen';
+import { LandingPage } from './screens/LandingPage';
 
 export const App: React.FC = () => {
   // Navigation & Screens
@@ -444,6 +445,14 @@ export const App: React.FC = () => {
               onUpdateSettings={(part) => setSettings(StorageService.updateSettings(part))}
               cachedTracks={cachedTracks}
               onRemoveCachedTrack={handleRemoveCachedTrack}
+            />
+          )}
+
+          {/* Launch Showcase / Landing Page */}
+          {currentScreen === 'landing' && (
+            <LandingPage
+              onNavigate={(screen) => handleNavigate(screen)}
+              onLaunchPlayer={() => handleNavigate('home')}
             />
           )}
         </div>

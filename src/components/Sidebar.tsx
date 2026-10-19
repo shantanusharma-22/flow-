@@ -1,5 +1,5 @@
 import React from 'react';
-import { Home, Search, Library, Settings, Plus, Heart, Music, Disc } from 'lucide-react';
+import { Home, Search, Library, Settings, Plus, Heart, Music, Disc, Sparkles } from 'lucide-react';
 import { Playlist, ScreenId } from '../types';
 
 interface SidebarProps {
@@ -71,6 +71,15 @@ export const Sidebar: React.FC<SidebarProps> = ({
         >
           <Settings size={18} />
           <span>Settings</span>
+        </button>
+
+        <button
+          className={`nav-item ${currentScreen === 'landing' ? 'active' : ''}`}
+          onClick={() => onNavigate('landing')}
+          aria-label="Navigate to Launch Showcase"
+        >
+          <Sparkles size={18} style={{ color: 'var(--color-accent)' }} />
+          <span>Launch Showcase</span>
         </button>
       </nav>
 

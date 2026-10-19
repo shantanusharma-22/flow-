@@ -65,7 +65,7 @@ export interface Artist {
 
 export type RepeatMode = 'off' | 'all' | 'one';
 
-export type ScreenId = 'home' | 'search' | 'library' | 'playlist' | 'artist' | 'nowPlaying' | 'settings';
+export type ScreenId = 'home' | 'search' | 'library' | 'playlist' | 'artist' | 'nowPlaying' | 'settings' | 'landing';
 
 export interface NavigationState {
   currentScreen: ScreenId;
