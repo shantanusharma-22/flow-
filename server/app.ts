@@ -19,8 +19,14 @@ const allowedOrigins = (process.env.CORS_ORIGIN || 'http://localhost:5173,http:/
 
 app.use(cors({
   origin: (origin, callback) => {
-    // Allow requests with no origin (e.g. mobile apps, curl, or same-origin) or any localhost/127.0.0.1 port
-    if (!origin || allowedOrigins.includes(origin) || /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)) {
+    // Allow requests with no origin (e.g. mobile apps, curl, or same-origin) or any localhost/127.0.0.1 port or vercel deployments
+    if (
+      !origin ||
+      allowedOrigins.includes(origin) ||
+      /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin) ||
+      origin.endsWith('.vercel.app') ||
+      Boolean(process.env.VERCEL)
+    ) {
       callback(null, true);
     } else {
       callback(new Error('Blocked by Flow CORS Policy'));

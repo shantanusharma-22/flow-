@@ -2,7 +2,7 @@ import { Track, Playlist, LyricLine, UserSettings } from '../types';
 import { SEED_TRACKS, SEED_PLAYLISTS, SEED_ARTISTS } from '../data/seed';
 import { StorageService } from './storage';
 
-const API_BASE = (import.meta.env.VITE_API_URL as string) || 'http://127.0.0.1:8901/api';
+const API_BASE = (import.meta.env.VITE_API_URL as string) || '/api';
 
 class FlowApiClient {
   private backendAvailable: boolean = true;

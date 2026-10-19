@@ -1,16 +1,20 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { FlowDatabase } from './index';
+import { SCHEMA_SQL } from './schema';
 
 export function runMigrations(): void {
-  console.log('🔄 [Flow Migrations] Starting database migration from schema.sql...');
+  console.log('🔄 [Flow Migrations] Starting database migration...');
   const schemaPath = path.resolve(process.cwd(), 'replica', 'schema.sql');
+  let schemaSql = SCHEMA_SQL;
 
-  if (!fs.existsSync(schemaPath)) {
-    throw new Error(`Schema file not found at: ${schemaPath}`);
+  if (fs.existsSync(schemaPath)) {
+    try {
+      schemaSql = fs.readFileSync(schemaPath, 'utf-8');
+    } catch {
+      schemaSql = SCHEMA_SQL;
+    }
   }
-
-  const schemaSql = fs.readFileSync(schemaPath, 'utf-8');
   
   try {
     FlowDatabase.exec(schemaSql);

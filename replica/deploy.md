@@ -49,28 +49,27 @@ All 5 automated preflight verification commands have run and passed with zero er
 
 ## 2. Production Services & Hosting
 
-### Web & API Hosting Setup
-- **Frontend Web App (PWA & Web Client)**:
-  - Deployed to: **Cloudflare Pages** or **Vercel**
+### Web & API Hosting Setup: Vercel Full-Stack Serverless
+- **Unified Vercel Architecture**:
+  - Deployed to: **Vercel** (`vercel.json`)
+  - Framework: `vite`
   - Build Command: `npm run build`
   - Output Directory: `dist`
-  - Node Version: `20.x` or `24.x`
-- **Backend API Server**:
-  - Deployed to: **Render**, **Fly.io**, or **Railway**
-  - Start Command: `npm run server`
+  - Node Version: `>=22.0.0`
+  - Serverless API Function: `api/index.ts` handles all `/api/*` routes with zero-config routing.
+  - Serverless Storage: Ephemeral SQLite database dynamically managed in `/tmp/flow.db` with automated cold-start migrations and seeds.
   - Environment Variables matching `.env.example`:
     ```ini
-    PORT=8901
     NODE_ENV=production
     CORS_ORIGIN=https://flowplayer.app,https://www.flowplayer.app
-    DATABASE_PATH=/var/data/flow.db
+    DATABASE_PATH=/tmp/flow.db
     MAX_CACHE_SIZE_MB=2048
     ```
-- **Database Backups**:
-  - Nightly automated SQLite snapshot backup using cron:
-    ```bash
-    sqlite3 /var/data/flow.db ".backup '/var/backups/flow-$(date +%Y%m%d).db'"
-    ```
+- **Deployment Channels**:
+  1. **Direct GitHub Continuous Integration** (Recommended):
+     - Connect `https://github.com/shantanusharma-22/flow-` on [vercel.com/new](https://vercel.com/new). Every push to `main` deploys automatically with preview URLs for pull requests.
+  2. **Vercel CLI OAuth Device Flow**:
+     - Authorize the device at `https://vercel.com/oauth/device?user_code=LWVN-LLFH`.
 
 ### Desktop & Mobile Production Artifacts
 - **Microsoft Windows**: Standalone compiled `Flow.exe` + `Flow-Setup.bat` installer (Zero runtime dependencies).

@@ -3,6 +3,9 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
+  "engines": {
+    "node": ">=22.0.0"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
@@ -26,6 +29,7 @@
     "@types/express": "^5.0.6",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
+    "@vercel/node": "^24.0.3",
     "@vitejs/plugin-react": "^4.3.4",
     "tsx": "^4.23.15",
     "typescript": "^5.7.2",

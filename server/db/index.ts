@@ -2,9 +2,12 @@ import { DatabaseSync } from 'node:sqlite';
 import path from 'node:path';
 import fs from 'node:fs';
 
-const DB_DIR = path.resolve(process.cwd(), 'data');
+const isVercel = Boolean(process.env.VERCEL);
+const DB_DIR = isVercel ? '/tmp' : path.resolve(process.cwd(), 'data');
 if (!fs.existsSync(DB_DIR)) {
-  fs.mkdirSync(DB_DIR, { recursive: true });
+  try {
+    fs.mkdirSync(DB_DIR, { recursive: true });
+  } catch { /* ignore if already exists */ }
 }
 
 const DB_PATH = process.env.DATABASE_PATH || path.join(DB_DIR, 'flow.db');
