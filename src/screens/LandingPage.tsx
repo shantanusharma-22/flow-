@@ -9,7 +9,7 @@ interface LandingPageProps {
 export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, onLaunchPlayer }) => {
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
 
-  const handleCta = () => {
+  const handleLaunchWebPlayer = () => {
     if (onLaunchPlayer) {
       onLaunchPlayer();
     } else {
@@ -23,28 +23,28 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, onLaunchPl
 
   const faqs = [
     {
-      q: 'Is Flow really 100% free on the Microsoft Store and Mac App Store?',
-      a: 'Yes! Flow is completely free ($0.00) to download and use on both the Microsoft Store and Mac App Store. There are no subscriptions, no in-app purchases, and no advertisements.'
+      q: 'Can I use Flow directly in my web browser without installing anything?',
+      a: 'Yes! Flow is a full Progressive Web App (PWA). You can launch the Web Player immediately on Chrome, Safari, Edge, or Firefox. All features—including synchronized lyrics, Romaji transliteration, and local playlists—work directly in your browser without requiring an install or sign-in.'
     },
     {
-      q: 'Can I import my existing Spotify or YouTube Music playlists?',
-      a: 'Yes. Flow includes a built-in 1-click importer that accepts public playlist links or standard .m3u8 playlist files, instantly populating your local collection without requiring cloud credentials.'
+      q: 'Is Flow really 100% free on the Website, Microsoft Store, and Mac App Store?',
+      a: 'Yes! Flow is 100% free ($0.00) across all platforms: the official website, the Microsoft Store, and the Mac App Store. There are no subscriptions, no in-app purchases, and no advertisements.'
     },
     {
-      q: 'Do I need to create an account or sign in?',
-      a: 'No! You can launch Flow, search millions of tracks, build local playlists, and export lyrics without ever typing an email address or password. Your library stays private on your machine.'
+      q: 'Does the web version support media keys and keyboard shortcuts?',
+      a: 'Yes. Flow integrates natively with the browser Media Session API. You can play, pause, seek, and skip using your physical keyboard media keys, headphone controls, and OS notification popups.'
     },
     {
-      q: 'Does Flow support offline playback?',
-      a: 'Yes. Any cached track or downloaded audio file can be played offline without an active internet connection. You can also inspect and prune cached songs track-by-track.'
+      q: 'Can I import my existing Spotify or YouTube Music playlists on the web?',
+      a: 'Yes. The web app includes our 1-click importer that accepts public playlist links or standard .m3u8 files, saving them into your browser’s secure local storage without needing your account credentials.'
     },
     {
-      q: 'How does the Romanized lyrics toggle work?',
-      a: 'When playing tracks in Japanese, Korean, or Mandarin, Flow automatically computes phonetic Latin transcriptions (Romaji, Hangul, Pinyin) so you can sing along in real time even if you cannot read the native script.'
+      q: 'Does the web version support offline listening?',
+      a: 'Yes! When installed as a PWA, Flow leverages client-side storage to cache downloaded audio files and timestamped lyrics so you can keep listening even during network drops.'
     },
     {
-      q: 'What are the system requirements for Windows and Mac?',
-      a: 'Flow runs smoothly on Windows 10/11 (x64 and ARM64) and macOS 12+ (Apple Silicon M-series and Intel), as well as modern Linux distributions.'
+      q: 'How does the Romanized lyrics transliteration work?',
+      a: 'When playing tracks in Japanese, Korean, or Mandarin, Flow automatically computes phonetic Latin transcriptions (Romaji, Hangul, Pinyin) so you can sing along in real time even if you cannot read the native characters.'
     }
   ];
 
@@ -91,29 +91,23 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, onLaunchPl
               fontWeight: 700,
               border: '1px solid rgba(52, 211, 153, 0.3)'
             }}>
-              100% Free
+              Free Web & Desktop
             </span>
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+            <span style={{
+              fontSize: 13,
+              color: 'var(--color-text-muted, #94a3b8)',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 6
+            }}>
+              <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#34d399', display: 'inline-block' }} />
+              Web Engine Online
+            </span>
             <button
-              onClick={() => onNavigate('home')}
-              style={{
-                background: 'transparent',
-                border: 'none',
-                color: 'var(--color-text-muted, #94a3b8)',
-                cursor: 'pointer',
-                fontSize: 14,
-                fontWeight: 500,
-                transition: 'color 0.15s'
-              }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--color-text, #f8fafc)')}
-              onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--color-text-muted, #94a3b8)')}
-            >
-              Open Web Player
-            </button>
-            <button
-              onClick={handleCta}
+              onClick={handleLaunchWebPlayer}
               style={{
                 background: 'linear-gradient(135deg, var(--color-accent, #00e5ff) 0%, var(--color-glow, #38bdf8) 100%)',
                 color: '#080b12',
@@ -135,7 +129,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, onLaunchPl
                 e.currentTarget.style.boxShadow = '0 0 20px rgba(0, 229, 255, 0.25)';
               }}
             >
-              Launch Player
+              Launch Web Player
             </button>
           </div>
         </header>
@@ -157,7 +151,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, onLaunchPl
             textTransform: 'uppercase',
             marginBottom: 20
           }}>
-            <span>✓</span> 100% FREE ON MAC APP STORE & MICROSOFT STORE
+            <span>🌐</span> 100% FREE ON WEB • MICROSOFT STORE • MAC APP STORE
           </div>
 
           <h1 style={{
@@ -181,14 +175,46 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, onLaunchPl
             maxWidth: 680,
             margin: '0 auto 36px auto'
           }}>
-            The fluid desktop player with zero-login local playlists, real-time Romanized lyrics,
-            and granular offline control that respects your local disk. 100% free forever.
+            The fluid desktop and web music player with zero-login local playlists, real-time Romanized lyrics,
+            and granular offline control that respects your local disk. 100% free everywhere.
           </p>
 
-          {/* Store Buttons */}
-          <div style={{ display: 'flex', justifyContent: 'center', gap: 16, flexWrap: 'wrap' }}>
+          {/* Action CTAs: Web + Native Stores */}
+          <div style={{ display: 'flex', justifyContent: 'center', gap: 14, flexWrap: 'wrap' }}>
+            {/* Primary Web Player CTA */}
             <button
-              onClick={handleCta}
+              onClick={handleLaunchWebPlayer}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 10,
+                background: 'linear-gradient(135deg, var(--color-accent, #00e5ff) 0%, var(--color-glow, #38bdf8) 100%)',
+                color: '#080b12',
+                border: 'none',
+                borderRadius: 10,
+                padding: '14px 26px',
+                fontSize: 15,
+                fontWeight: 700,
+                cursor: 'pointer',
+                boxShadow: '0 0 30px rgba(0, 229, 255, 0.35)',
+                transition: 'transform 0.15s, box-shadow 0.15s'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.boxShadow = '0 0 35px rgba(0, 229, 255, 0.5)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = '0 0 30px rgba(0, 229, 255, 0.35)';
+              }}
+            >
+              <span style={{ fontSize: 18 }}>▶</span>
+              <span>Launch Web Player (Instant)</span>
+            </button>
+
+            {/* Microsoft Store Button */}
+            <button
+              onClick={handleLaunchWebPlayer}
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
@@ -197,7 +223,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, onLaunchPl
                 color: 'var(--color-text, #f8fafc)',
                 border: '1px solid var(--color-border-input, #64748b)',
                 borderRadius: 10,
-                padding: '12px 22px',
+                padding: '12px 20px',
                 fontSize: 14,
                 fontWeight: 600,
                 cursor: 'pointer',
@@ -216,12 +242,13 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, onLaunchPl
               <span style={{ fontSize: 20 }}>🪟</span>
               <div style={{ textAlign: 'left' }}>
                 <div style={{ fontSize: 10, textTransform: 'uppercase', color: 'var(--color-text-muted, #94a3b8)' }}>Get it on</div>
-                <div style={{ fontWeight: 700, fontSize: 14 }}>Microsoft Store</div>
+                <div style={{ fontWeight: 700, fontSize: 13 }}>Microsoft Store</div>
               </div>
             </button>
 
+            {/* Mac App Store Button */}
             <button
-              onClick={handleCta}
+              onClick={handleLaunchWebPlayer}
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
@@ -230,7 +257,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, onLaunchPl
                 color: 'var(--color-text, #f8fafc)',
                 border: '1px solid var(--color-border-input, #64748b)',
                 borderRadius: 10,
-                padding: '12px 22px',
+                padding: '12px 20px',
                 fontSize: 14,
                 fontWeight: 600,
                 cursor: 'pointer',
@@ -249,30 +276,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, onLaunchPl
               <span style={{ fontSize: 20 }}>🍎</span>
               <div style={{ textAlign: 'left' }}>
                 <div style={{ fontSize: 10, textTransform: 'uppercase', color: 'var(--color-text-muted, #94a3b8)' }}>Download on the</div>
-                <div style={{ fontWeight: 700, fontSize: 14 }}>Mac App Store</div>
+                <div style={{ fontWeight: 700, fontSize: 13 }}>Mac App Store</div>
               </div>
-            </button>
-
-            <button
-              onClick={handleCta}
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: 8,
-                background: 'linear-gradient(135deg, var(--color-accent, #00e5ff) 0%, var(--color-glow, #38bdf8) 100%)',
-                color: '#080b12',
-                border: 'none',
-                borderRadius: 10,
-                padding: '14px 24px',
-                fontSize: 15,
-                fontWeight: 700,
-                cursor: 'pointer',
-                boxShadow: '0 0 25px rgba(0, 229, 255, 0.3)',
-                transition: 'transform 0.15s, box-shadow 0.15s'
-              }}
-            >
-              <span>Direct Free Download</span>
-              <span style={{ fontSize: 16 }}>↓</span>
             </button>
           </div>
 
@@ -281,7 +286,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, onLaunchPl
             color: 'var(--color-text-muted, #94a3b8)',
             marginTop: 18
           }}>
-            Zero ads • Zero subscriptions • Zero in-app purchases • Zero telemetry
+            Zero install required • Zero audio ads • Zero subscriptions • Zero telemetry
           </p>
 
           {/* Product Showcase Window Mockup */}
@@ -307,7 +312,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, onLaunchPl
               <span style={{ width: 12, height: 12, borderRadius: '50%', background: '#fbbf24', display: 'inline-block' }} />
               <span style={{ width: 12, height: 12, borderRadius: '50%', background: '#34d399', display: 'inline-block' }} />
               <span style={{ marginLeft: 12, fontSize: 13, color: 'var(--color-text-muted, #94a3b8)', fontWeight: 500 }}>
-                Flow — Free Desktop Player • Windows & Mac App Store Edition
+                Flow Web & Desktop — M83 • Midnight City (Synced Bilingual Lyrics)
               </span>
             </div>
 
@@ -328,7 +333,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, onLaunchPl
                   letterSpacing: '0.8px',
                   marginBottom: 8
                 }}>
-                  Now Playing
+                  Now Playing in Browser
                 </div>
                 <h3 style={{ fontSize: 24, fontWeight: 700, margin: '0 0 6px 0' }}>Midnight City</h3>
                 <p style={{ fontSize: 15, color: 'var(--color-text-muted, #94a3b8)', margin: '0 0 24px 0' }}>M83 • Hurry Up, We're Dreaming</p>
@@ -374,7 +379,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, onLaunchPl
                     color: '#00e5ff',
                     fontWeight: 600
                   }}>
-                    100% Free / Unlocked
+                    PWA Ready
                   </span>
                 </div>
               </div>
@@ -419,30 +424,29 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, onLaunchPl
           </div>
         </section>
 
-        {/* SECTION 2: THE PROBLEM */}
+        {/* SECTION 2: WEB & DESKTOP HIGHLIGHTS */}
         <section style={{ paddingTop: 40, paddingBottom: 64 }}>
           <div style={{ textAlign: 'center', marginBottom: 40 }}>
-            <h2 style={{ fontSize: 32, fontWeight: 800, margin: '0 0 12px 0' }}>The Problem with Desktop Streaming</h2>
+            <h2 style={{ fontSize: 32, fontWeight: 800, margin: '0 0 12px 0' }}>Listen on Any Device, Anywhere</h2>
             <p style={{ color: 'var(--color-text-muted, #94a3b8)', fontSize: 16, margin: 0 }}>
-              Why listening to music on a computer has become frustrating and fragile.
+              Zero-install web streaming or native desktop integration with one shared local-first philosophy.
             </p>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: 24 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 24 }}>
             <div style={{
               background: 'var(--color-surface, #111827)',
               borderRadius: 14,
               padding: '28px',
               border: '1px solid var(--color-border, #1f293d)'
             }}>
-              <div style={{ fontSize: 28, marginBottom: 16 }}>⚠️</div>
-              <h3 style={{ fontSize: 18, fontWeight: 700, margin: '0 0 10px 0', color: '#fb7185' }}>
-                Sluggish Mobile Ports & Mid-Track Freezes
+              <div style={{ fontSize: 28, marginBottom: 16 }}>⚡</div>
+              <h3 style={{ fontSize: 18, fontWeight: 700, margin: '0 0 10px 0', color: 'var(--color-accent, #00e5ff)' }}>
+                Instant Browser Playback (Zero Install)
               </h3>
               <p style={{ fontSize: 14, lineHeight: 1.6, color: 'var(--color-text-muted, #94a3b8)', margin: 0 }}>
-                Most modern desktop music players are clumsy mobile web wrappers. They consume gigabytes of memory,
-                freeze when switching bitrates, and crash when internal webview logins fail. On high-DPI displays,
-                windows overflow screen boundaries and buttons disappear.
+                Jump straight into your music. Open Flow on Chrome, Edge, Safari, or Firefox without downloading any executable.
+                Streams gaplessly and caches lyrics locally with zero account walls.
               </p>
             </div>
 
@@ -452,52 +456,13 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, onLaunchPl
               padding: '28px',
               border: '1px solid var(--color-border, #1f293d)'
             }}>
-              <div style={{ fontSize: 28, marginBottom: 16 }}>🔒</div>
-              <h3 style={{ fontSize: 18, fontWeight: 700, margin: '0 0 10px 0', color: '#fb7185' }}>
-                Locked-In Clouds & All-or-Nothing Cache Wipes
+              <div style={{ fontSize: 28, marginBottom: 16 }}>📱</div>
+              <h3 style={{ fontSize: 18, fontWeight: 700, margin: '0 0 10px 0', color: 'var(--color-accent, #00e5ff)' }}>
+                Installable Progressive Web App (PWA)
               </h3>
               <p style={{ fontSize: 14, lineHeight: 1.6, color: 'var(--color-text-muted, #94a3b8)', margin: 0 }}>
-                Want to make a playlist without surrendering personal cloud account credentials? Impossible.
-                Want to save timestamped lyrics for your car stereo or offline DAP? Blocked behind paywalls.
-                And when your drive runs low on storage, you're forced to nuke your entire cache rather than
-                removing the tracks you no longer want.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        {/* SECTION 3: HOW IT WORKS */}
-        <section style={{ paddingTop: 40, paddingBottom: 64 }}>
-          <div style={{ textAlign: 'center', marginBottom: 40 }}>
-            <h2 style={{ fontSize: 32, fontWeight: 800, margin: '0 0 12px 0' }}>How Flow Works</h2>
-            <p style={{ color: 'var(--color-text-muted, #94a3b8)', fontSize: 16, margin: 0 }}>
-              Three effortless steps from search to sound.
-            </p>
-          </div>
-
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 24 }}>
-            <div style={{
-              background: 'var(--color-surface, #111827)',
-              borderRadius: 14,
-              padding: '28px',
-              border: '1px solid var(--color-border, #1f293d)',
-              position: 'relative'
-            }}>
-              <div style={{
-                position: 'absolute',
-                top: 20,
-                right: 20,
-                fontSize: 14,
-                fontWeight: 800,
-                color: 'var(--color-accent, #00e5ff)',
-                opacity: 0.5
-              }}>
-                01
-              </div>
-              <div style={{ fontSize: 28, marginBottom: 16 }}>🔍</div>
-              <h3 style={{ fontSize: 18, fontWeight: 700, margin: '0 0 8px 0' }}>Discover Freely</h3>
-              <p style={{ fontSize: 14, lineHeight: 1.6, color: 'var(--color-text-muted, #94a3b8)', margin: 0 }}>
-                Search any song, artist, or album instantly. Zero registration walls, no login prompts, and zero tracking cookies.
+                Install Flow directly to your desktop, taskbar, or home screen in one click. Enjoy a standalone window experience
+                with native keyboard media controls via the Web Media Session API.
               </p>
             </div>
 
@@ -505,60 +470,26 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, onLaunchPl
               background: 'var(--color-surface, #111827)',
               borderRadius: 14,
               padding: '28px',
-              border: '1px solid var(--color-border, #1f293d)',
-              position: 'relative'
+              border: '1px solid var(--color-border, #1f293d)'
             }}>
-              <div style={{
-                position: 'absolute',
-                top: 20,
-                right: 20,
-                fontSize: 14,
-                fontWeight: 800,
-                color: 'var(--color-accent, #00e5ff)',
-                opacity: 0.5
-              }}>
-                02
-              </div>
-              <div style={{ fontSize: 28, marginBottom: 16 }}>🌊</div>
-              <h3 style={{ fontSize: 18, fontWeight: 700, margin: '0 0 8px 0' }}>Listen in Flow</h3>
-              <p style={{ fontSize: 14, lineHeight: 1.6, color: 'var(--color-text-muted, #94a3b8)', margin: 0 }}>
-                Enjoy ultra-low latency dual-buffer streaming, dynamic album art bloom, and syllable-accurate lyrics with instant phonetic Romanization.
-              </p>
-            </div>
-
-            <div style={{
-              background: 'var(--color-surface, #111827)',
-              borderRadius: 14,
-              padding: '28px',
-              border: '1px solid var(--color-border, #1f293d)',
-              position: 'relative'
-            }}>
-              <div style={{
-                position: 'absolute',
-                top: 20,
-                right: 20,
-                fontSize: 14,
-                fontWeight: 800,
-                color: 'var(--color-accent, #00e5ff)',
-                opacity: 0.5
-              }}>
-                03
-              </div>
               <div style={{ fontSize: 28, marginBottom: 16 }}>💾</div>
-              <h3 style={{ fontSize: 18, fontWeight: 700, margin: '0 0 8px 0' }}>Control & Keep Local</h3>
+              <h3 style={{ fontSize: 18, fontWeight: 700, margin: '0 0 10px 0', color: 'var(--color-accent, #00e5ff)' }}>
+                Offline Storage & 1-Click Exports
+              </h3>
               <p style={{ fontSize: 14, lineHeight: 1.6, color: 'var(--color-text-muted, #94a3b8)', margin: 0 }}>
-                Build custom playlists on your local disk, export .lrc and .m3u8 files with one click, and selectively prune cached songs by megabyte.
+                Save playlists directly into your browser's persistent IndexedDB or export standard .m3u8 and timestamped .lrc files
+                straight to your hard drive with zero server storage.
               </p>
             </div>
           </div>
         </section>
 
-        {/* SECTION 4: FEATURES / FIXES */}
+        {/* SECTION 3: FEATURES / FIXES */}
         <section style={{ paddingTop: 40, paddingBottom: 64 }}>
           <div style={{ textAlign: 'center', marginBottom: 40 }}>
-            <h2 style={{ fontSize: 32, fontWeight: 800, margin: '0 0 12px 0' }}>Features Built from Real Listening Demands</h2>
+            <h2 style={{ fontSize: 32, fontWeight: 800, margin: '0 0 12px 0' }}>Core Features & Power Controls</h2>
             <p style={{ color: 'var(--color-text-muted, #94a3b8)', fontSize: 16, margin: 0 }}>
-              We solved the missing capabilities power listeners asked for.
+              Built specifically for listeners who want clarity, control, and zero friction.
             </p>
           </div>
 
@@ -634,7 +565,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, onLaunchPl
                 Granular Selective Cache Pruning
               </h4>
               <p style={{ fontSize: 14, lineHeight: 1.6, color: 'var(--color-text-muted, #94a3b8)', margin: 0 }}>
-                Inspect exact track sizes in megabytes and remove individual cached files. Never wipe your entire music library just to free a few gigabytes.
+                Inspect exact track sizes in megabytes and remove individual cached files. Never wipe your entire music library just to free space.
               </p>
             </div>
 
@@ -655,12 +586,12 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, onLaunchPl
           </div>
         </section>
 
-        {/* SECTION 5: 100% FREE SHOWCASE */}
+        {/* SECTION 4: 100% FREE SHOWCASE ACROSS PLATFORMS */}
         <section style={{ paddingTop: 40, paddingBottom: 64 }}>
           <div style={{ textAlign: 'center', marginBottom: 32 }}>
             <h2 style={{ fontSize: 32, fontWeight: 800, margin: '0 0 12px 0' }}>100% Free Everywhere. Zero Compromises.</h2>
             <p style={{ color: 'var(--color-text-muted, #94a3b8)', fontSize: 16, margin: '0 auto 24px auto', maxWidth: 640 }}>
-              No subscriptions, no paid upgrades, and no locked features. Get Flow directly from the Microsoft Store or Mac App Store.
+              No subscriptions, no paid upgrades, and no locked features. Stream directly on the Web or get Flow from the Microsoft Store or Mac App Store.
             </p>
           </div>
 
@@ -682,17 +613,20 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, onLaunchPl
                   color: 'var(--color-success, #34d399)',
                   letterSpacing: '0.8px'
                 }}>
-                  Full Desktop Edition
+                  Universal Free Edition
                 </span>
                 <h3 style={{ fontSize: 36, fontWeight: 800, margin: '4px 0 0 0' }}>
                   $0.00 <span style={{ fontSize: 16, fontWeight: 500, color: 'var(--color-text-muted, #94a3b8)' }}>forever</span>
                 </h3>
               </div>
-              <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-                <span style={{ fontSize: 13, padding: '6px 14px', borderRadius: 20, background: 'rgba(255, 255, 255, 0.06)', border: '1px solid var(--color-border, #1f293d)' }}>
+              <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+                <span style={{ fontSize: 12, padding: '5px 12px', borderRadius: 20, background: 'rgba(255, 255, 255, 0.06)', border: '1px solid var(--color-border, #1f293d)' }}>
+                  🌐 Web App (PWA)
+                </span>
+                <span style={{ fontSize: 12, padding: '5px 12px', borderRadius: 20, background: 'rgba(255, 255, 255, 0.06)', border: '1px solid var(--color-border, #1f293d)' }}>
                   🪟 Microsoft Store
                 </span>
-                <span style={{ fontSize: 13, padding: '6px 14px', borderRadius: 20, background: 'rgba(255, 255, 255, 0.06)', border: '1px solid var(--color-border, #1f293d)' }}>
+                <span style={{ fontSize: 12, padding: '5px 12px', borderRadius: 20, background: 'rgba(255, 255, 255, 0.06)', border: '1px solid var(--color-border, #1f293d)' }}>
                   🍎 Mac App Store
                 </span>
               </div>
@@ -701,7 +635,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, onLaunchPl
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 16, marginBottom: 32 }}>
               <div style={{ display: 'flex', gap: 10, fontSize: 14 }}>
                 <span style={{ color: 'var(--color-success, #34d399)' }}>✓</span>
-                <span>Unlimited desktop music streaming</span>
+                <span>Unlimited streaming on Web and Desktop</span>
               </div>
               <div style={{ display: 'flex', gap: 10, fontSize: 14 }}>
                 <span style={{ color: 'var(--color-success, #34d399)' }}>✓</span>
@@ -729,23 +663,23 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, onLaunchPl
               </div>
               <div style={{ display: 'flex', gap: 10, fontSize: 14 }}>
                 <span style={{ color: 'var(--color-success, #34d399)' }}>✓</span>
-                <span>Automatic sandbox store updates</span>
+                <span>Browser Media Session API integration</span>
               </div>
             </div>
 
             <div style={{
               display: 'flex',
               justifyContent: 'center',
-              gap: 16,
+              gap: 14,
               flexWrap: 'wrap',
               paddingTop: 16,
               borderTop: '1px solid rgba(255, 255, 255, 0.08)'
             }}>
               <button
-                onClick={handleCta}
+                onClick={handleLaunchWebPlayer}
                 style={{
                   flex: 1,
-                  minWidth: 220,
+                  minWidth: 200,
                   padding: '14px 20px',
                   borderRadius: 10,
                   background: 'linear-gradient(135deg, var(--color-accent, #00e5ff) 0%, var(--color-glow, #38bdf8) 100%)',
@@ -757,13 +691,13 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, onLaunchPl
                   boxShadow: '0 0 20px rgba(0, 229, 255, 0.3)'
                 }}
               >
-                Install Free on Windows
+                Launch Web Player
               </button>
               <button
-                onClick={handleCta}
+                onClick={handleLaunchWebPlayer}
                 style={{
                   flex: 1,
-                  minWidth: 220,
+                  minWidth: 200,
                   padding: '14px 20px',
                   borderRadius: 10,
                   background: 'rgba(255, 255, 255, 0.08)',
@@ -774,7 +708,24 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, onLaunchPl
                   cursor: 'pointer'
                 }}
               >
-                Install Free on Mac
+                Microsoft Store
+              </button>
+              <button
+                onClick={handleLaunchWebPlayer}
+                style={{
+                  flex: 1,
+                  minWidth: 200,
+                  padding: '14px 20px',
+                  borderRadius: 10,
+                  background: 'rgba(255, 255, 255, 0.08)',
+                  color: '#f8fafc',
+                  border: '1px solid var(--color-border, #1f293d)',
+                  fontWeight: 700,
+                  fontSize: 15,
+                  cursor: 'pointer'
+                }}
+              >
+                Mac App Store
               </button>
             </div>
           </div>
@@ -795,12 +746,12 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, onLaunchPl
           </div>
         </section>
 
-        {/* SECTION 6: FAQ */}
+        {/* SECTION 5: FAQ */}
         <section style={{ paddingTop: 40, paddingBottom: 64 }}>
           <div style={{ textAlign: 'center', marginBottom: 40 }}>
             <h2 style={{ fontSize: 32, fontWeight: 800, margin: '0 0 12px 0' }}>Frequently Asked Questions</h2>
             <p style={{ color: 'var(--color-text-muted, #94a3b8)', fontSize: 16, margin: 0 }}>
-              Honest answers to common questions about Flow.
+              Honest answers to common questions about Flow on Web and Desktop.
             </p>
           </div>
 
@@ -862,7 +813,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, onLaunchPl
           </div>
         </section>
 
-        {/* SECTION 7: FINAL CTA */}
+        {/* SECTION 6: FINAL CTA */}
         <section style={{
           textAlign: 'center',
           padding: '64px 32px',
@@ -880,11 +831,11 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, onLaunchPl
             maxWidth: 540,
             margin: '0 auto 32px auto'
           }}>
-            Install free in seconds from the Microsoft Store or Mac App Store. No credit card, no ads, no sign-up wall.
+            Launch in your browser right now or install from the Microsoft Store or Mac App Store. No credit card, no ads, no sign-up wall.
           </p>
 
           <button
-            onClick={handleCta}
+            onClick={handleLaunchWebPlayer}
             style={{
               background: 'linear-gradient(135deg, var(--color-accent, #00e5ff) 0%, var(--color-glow, #38bdf8) 100%)',
               color: '#080b12',
@@ -898,7 +849,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, onLaunchPl
               transition: 'transform 0.15s, box-shadow 0.15s'
             }}
           >
-            Launch Flow Player Now
+            Launch Flow Web Player Now
           </button>
         </section>
 
@@ -916,14 +867,14 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, onLaunchPl
           color: 'var(--color-text-muted, #94a3b8)'
         }}>
           <div>
-            © 2026 Flow Audio. Free & open desktop streaming player.
+            © 2026 Flow Audio. 100% Free & Open Web & Desktop Music Player.
           </div>
           <div style={{ display: 'flex', gap: 20 }}>
             <span>Privacy Promise</span>
             <span>Documentation</span>
             <span>Release Notes</span>
             <span style={{ cursor: 'pointer', color: 'var(--color-accent, #00e5ff)' }} onClick={() => onNavigate('home')}>
-              Web Player
+              Open Web Player
             </span>
           </div>
         </footer>
