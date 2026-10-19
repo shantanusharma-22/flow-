@@ -1,0 +1,22 @@
+{
+  "name": "Flow",
+  "tagline": "The fluid, desktop-first music streaming player",
+  "avoid": [
+    "BitChord",
+    "bitchord",
+    "Bit Chord",
+    "Kushagra Singh",
+    "kushagrasinghx"
+  ],
+  "domains": [
+    "bitchord.kushagrasingh.in",
+    "bitchord.com",
+    "api.bitchord.kushagrasingh.in"
+  ],
+  "colors": [
+    "#fa243c",
+    "#fd3f65",
+    "#fc3c63",
+    "#ff2d55"
+  ]
+}

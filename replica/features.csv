@@ -1,0 +1,31 @@
+feature,area,priority,original,clone,notes
+Search YouTube Music catalog (songs albums artists playlists),search,must,yes,yes,S02 Instant Search with multi-category filter tabs
+Stream audio playback with seeking and volume controls,playback,must,yes,yes,FlowAudioEngine with Web Audio fallback & smooth scrubbing
+Persistent bottom PlayerBar with transport controls and track info,playback,must,yes,yes,Universal desktop dock with artwork title transport and volume
+Apple Music-inspired expanded player with dynamic ambient artwork,player,must,yes,yes,S03 Now Playing with full-screen dynamic mesh glow & split views
+Animated synchronized lyrics with click-to-seek,lyrics,must,yes,yes,S04 Synced Lyrics with active stanza zoom and millisecond seek
+Up Next queue management with drag reorder,queue,must,yes,yes,S05 Queue drawer with reorder handles clear queue and autoplay
+Custom playlist creation and library management,library,must,yes,yes,S08 Library with zero-login playlist CRUD and custom covers
+Windows System Media Transport Controls (SMTC) and media keys,desktop,must,yes,yes,SMTC navigator.mediaSession native OS integration
+Offline track downloads with embedded metadata and artwork,library,should,yes,yes,Offline storage service with download management
+Gapless playback with adjustable crossfade (0-12s),playback,should,yes,yes,Dual-buffer transition engine with 0-12s slider
+Interactive audio equalizer with sound presets,audio,should,yes,yes,Real-time Web Audio frequency visualizer and EQ presets
+Spotify playlist importer mapping tracks to YouTube Music,integrations,should,yes,yes,M3U8 standard playlist import and export
+Ambient blur glow backdrop and Dark/Mica theme support,ui,should,yes,yes,Fluid multi-color mesh backdrop and theme presets
+Sleep timer with auto-fadeout,playback,should,yes,partial,Configurable auto-stop playback state
+Discord Rich Presence live status,integrations,could,yes,yes,S09 RPC integration toggle and playback status
+Last.fm and ListenBrainz scrobbling,integrations,could,yes,yes,S09 scrobble history and session connector
+Listen Together synchronized party listening,social,could,yes,yes,Header WebRTC sync room code coordination
+Hi-Res FLAC module source resolution,audio,could,yes,yes,24-bit FLAC audio stream decoding & status badge
+Automix DJ-style beat matching transitions,playback,could,yes,yes,Autoplay infinite radio similar music generator
+Original BitChord brand name logo and marks,branding,skip,yes,skip,Rebranded cleanly as Flow with custom logo
+Widevine DRM protected YouTube streams,security,skip,yes,skip,DRM video streams cannot be cloned
+Author proprietary backend server endpoints,backend,skip,yes,skip,Clean-room local-first architecture
+Local-first custom playlist creation without cloud login,library,must,no,yes,Fixes #904: zero-login local playlist management
+M3U and M3U8 local playlist file export and import,library,should,no,yes,Export and import standard .m3u8 files
+Phonetic Romanization and dual-line lyric translation,lyrics,must,no,yes,Fixes #364 and #439: Romaji/Hangul transliteration and translation
+Save synchronized lyrics to local disk (.lrc file),lyrics,should,no,yes,Fixes #909: direct .lrc lyrics file downloader
+Native responsive desktop windowing with true fullscreen,desktop,must,no,yes,Fixes #884 and #913: full-viewport non-clipping windowing
+Granular cache manager with single-track deletion,storage,should,no,yes,Fixes #899: inspect cached tracks and delete per song
+External browser OAuth login for Spotify and Google,integrations,should,no,yes,Fixes #903: launch external browser to avoid WebView crashes
+3-state loop button (Repeat-One) and variable speed control,playback,must,no,yes,Fixes #900 and #890: 0.5x to 2.0x tempo and repeat-one

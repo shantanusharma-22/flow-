@@ -1,0 +1,69 @@
+{
+  "_about": "Music streaming client feedback themes for reviews.py ranking.",
+  "request_patterns": [
+    "\\bi wish\\b",
+    "\\bplease add\\b",
+    "\\bwould be (nice|great|good|helpful)\\b",
+    "\\bwould love\\b",
+    "\\bneeds? (a|an|the|to|more)\\b",
+    "\\bno way to\\b",
+    "\\bthere'?s no (way|option)\\b",
+    "\\b(can'?t|cannot|unable to) (even )?(add|change|edit|set|choose|export|import|customi[sz]e|connect|undo|delete|turn off|loop|repeat|resize)\\b",
+    "\\b(missing|lacks|lacking)\\b",
+    "\\bdoesn'?t (have|support|let|allow)\\b",
+    "\\bif only\\b",
+    "\\bfeature request\\b",
+    "\\bwhy (can'?t|isn'?t|doesn'?t)\\b",
+    "\\boption to\\b"
+  ],
+  "themes": [
+    {
+      "id": "desktop_windowing",
+      "label": "Desktop window scaling, fullscreen and display bugs",
+      "kind": "complaint",
+      "patterns": ["\\bfullscreen\\b", "\\bwindow\\b", "\\bmacbook\\b", "\\bdisplay\\b", "\\bresiz(e|ing)\\b", "\\bshrink(s)?\\b", "\\bcut off\\b", "\\boverflow\\b", "\\bhidpi\\b"]
+    },
+    {
+      "id": "playback_stutter",
+      "label": "Playback stutter, pauses and audio focus interruptions",
+      "kind": "complaint",
+      "patterns": ["\\bstutter\\b", "\\bpaus(e|es|ing)\\b", "\\binterrupt\\b", "\\baudio focus\\b", "\\bfreeze\\b", "\\bhitch\\b", "\\bplayback\\b", "\\bdropout\\b"]
+    },
+    {
+      "id": "lyrics_handling",
+      "label": "Lyrics sync, language translations and .lrc export",
+      "kind": "request",
+      "patterns": ["\\blyrics?\\b", "\\blrc\\b", "\\bromaniz", "\\btranslat", "\\bkugou\\b", "\\bsynced\\b"]
+    },
+    {
+      "id": "playlists_queue",
+      "label": "Local playlist creation, repeat loop and queue handling",
+      "kind": "request",
+      "patterns": ["\\bplaylist", "\\bqueue\\b", "\\bloop\\b", "\\brepeat\\b", "\\bduplicate\\b", "\\bradio\\b", "\\bautoplay\\b"]
+    },
+    {
+      "id": "offline_cache",
+      "label": "Offline playback, selective cache deletion and download format",
+      "kind": "complaint",
+      "patterns": ["\\boffline\\b", "\\bcache\\b", "\\bdownload", "\\bwebm\\b", "\\bwipe\\b", "\\bclear all\\b"]
+    },
+    {
+      "id": "audio_controls",
+      "label": "Playback speed, pitch/tempo adjustment and automix controls",
+      "kind": "request",
+      "patterns": ["\\bspeed\\b", "\\btempo\\b", "\\bpitch\\b", "\\bautomix\\b", "\\bmute\\b", "\\bcensor\\b", "\\b0\\.5x\\b", "\\b2\\.0x\\b", "\\bequalizer\\b"]
+    },
+    {
+      "id": "integrations_auth",
+      "label": "Spotify login, WebView crashes and auth token handling",
+      "kind": "complaint",
+      "patterns": ["\\bspotify\\b", "\\bwebview\\b", "\\boauth\\b", "\\btoken\\b", "\\bdiscord\\b", "\\blogin\\b", "\\bsign ?in\\b"]
+    },
+    {
+      "id": "ux_clutter",
+      "label": "Cluttered player controls, navigation tabs and layout jumps",
+      "kind": "complaint",
+      "patterns": ["\\bclutter", "\\bpill\\b", "\\bswipe\\b", "\\btab\\b", "\\bnav(igation)?\\b", "\\blayout\\b", "\\btransition\\b", "\\bminiplayer\\b"]
+    }
+  ]
+}
