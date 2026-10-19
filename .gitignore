@@ -11,3 +11,15 @@ data/
 *.sqlite
 *.sqlite3
 .vercel
+
+# Android build outputs and SDK configuration
+.gradle/
+**/build/
+**/bin/
+*.apk
+*.aab
+local.properties
+.cxx/
+captures/
+.idea/
+*.iml

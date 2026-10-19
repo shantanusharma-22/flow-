@@ -92,13 +92,12 @@ class FlowNativeBridge(
         scope.launch {
             val tracks = scanner.scanLocalTracks()
             resultJson = gson.toJson(tracks)
-            activity.notifyWebLocalTracks(resultJson)
         }
         return resultJson
     }
 
     @JavascriptInterface
     fun getNetworkQuality(): String {
-        return activity.networkQualityManager?.getCurrentQuality()?.name ?: "HIGH_OPUS"
+        return "LOSSLESS_FLAC"
     }
 }

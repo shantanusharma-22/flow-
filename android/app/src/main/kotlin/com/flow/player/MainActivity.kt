@@ -9,35 +9,35 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
-import android.view.View
-import android.webkit.WebChromeClient
-import android.webkit.WebSettings
-import android.webkit.WebView
-import android.webkit.WebViewClient
+import androidx.activity.ComponentActivity
 import androidx.activity.OnBackPressedCallback
-import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.view.WindowCompat
-import com.flow.player.bridge.FlowNativeBridge
+import androidx.lifecycle.lifecycleScope
+import com.flow.player.audio.FlowAudioEngine
+import com.flow.player.library.LocalTrack
 import com.flow.player.library.MediaStoreScanner
-import com.flow.player.network.NetworkQualityManager
 import com.flow.player.service.FlowMediaSessionService
+import com.flow.player.ui.FlowMusicApp
+import kotlinx.coroutines.launch
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : ComponentActivity() {
 
-    private lateinit var webView: WebView
+    private lateinit var audioEngine: FlowAudioEngine
+    private lateinit var mediaStoreScanner: MediaStoreScanner
+    private var localTracks by mutableStateOf<List<LocalTrack>>(emptyList())
+
     var mediaService: FlowMediaSessionService? = null
         private set
 
-    var networkQualityManager: NetworkQualityManager? = null
-        private set
-
-    private lateinit var mediaStoreScanner: MediaStoreScanner
-
     private val serviceConnection = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
-            // Service connected
+            // Service connected for background foreground execution
         }
 
         override fun onServiceDisconnected(name: ComponentName?) {
@@ -48,95 +48,42 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // 1. Edge-to-edge transparent system bars
-        WindowCompat.setDecorFitsSystemWindows(window, false)
-        window.statusBarColor = getColor(R.color.flow_background)
-        window.navigationBarColor = getColor(R.color.flow_background)
+        // 1. Apple Music-style Edge-to-edge transparent system bars
+        enableEdgeToEdge()
 
-        // 2. Start and bind to FlowMediaSessionService
+        // 2. Start and bind FlowMediaSessionService for robust background audio
         val serviceIntent = Intent(this, FlowMediaSessionService::class.java)
         startForegroundService(serviceIntent)
         bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE)
 
-        // 3. Initialize Helpers
-        mediaStoreScanner = MediaStoreScanner(this)
-        networkQualityManager = NetworkQualityManager(this) { quality ->
-            runOnUiThread {
-                webView.evaluateJavascript(
-                    "window.dispatchEvent(new CustomEvent('flow:quality-changed', { detail: { codec: '${quality.codec}', maxBitrate: ${quality.maxBitrateKbps} } }));",
-                    null
-                )
-            }
-        }
-        networkQualityManager?.startMonitoring()
+        // 3. Initialize Audiophile Audio Engine with Float32 DAC and FlowNeuro
+        audioEngine = FlowAudioEngine(applicationContext)
 
-        // 4. Check Audio Permissions
+        // 4. Initialize Local MediaStore Scanner
+        mediaStoreScanner = MediaStoreScanner(this)
         checkAudioPermissions()
 
-        // 5. Setup WebView
-        setupWebView()
-
-        // 6. Modern Back Navigation
+        // 5. Modern Back Navigation handling
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                if (webView.canGoBack()) {
-                    webView.goBack()
-                } else {
-                    moveTaskToBack(true) // Keep playing in background
-                }
+                moveTaskToBack(true) // Keep audiophile music playing in background
             }
         })
+
+        // 6. Set Jetpack Compose Apple Music UI
+        setContent {
+            FlowMusicApp(
+                audioEngine = audioEngine,
+                localTracks = localTracks
+            )
+        }
     }
 
-    private fun setupWebView() {
-        webView = WebView(this).apply {
-            layoutParams = android.view.ViewGroup.LayoutParams(
-                android.view.ViewGroup.LayoutParams.MATCH_PARENT,
-                android.view.ViewGroup.LayoutParams.MATCH_PARENT
-            )
-            setBackgroundColor(getColor(R.color.flow_background))
-        }
-        setContentView(webView)
-
-        webView.settings.apply {
-            javaScriptEnabled = true
-            domStorageEnabled = true
-            databaseEnabled = true
-            cacheMode = WebSettings.LOAD_DEFAULT
-            mediaPlaybackRequiresUserGesture = false
-            allowFileAccess = true
-            mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
-        }
-
-        // Attach Kotlin Native Bridge
-        webView.addJavascriptInterface(
-            FlowNativeBridge(this, mediaStoreScanner),
-            "FlowAndroidBridge"
-        )
-
-        webView.webViewClient = object : WebViewClient() {
-            override fun onPageFinished(view: WebView?, url: String?) {
-                super.onPageFinished(view, url)
-                // Inform React frontend that native Android Kotlin bridge is active
-                webView.evaluateJavascript(
-                    "window.__FLOW_ANDROID_NATIVE__ = true; window.dispatchEvent(new Event('flow:native-ready'));",
-                    null
-                )
-            }
-        }
-
-        webView.webChromeClient = WebChromeClient()
-
-        // Load Flow web UI (loads live production Vercel app or local loopback)
-        webView.loadUrl("https://bitchord-replica.vercel.app")
-    }
-
-    fun notifyWebLocalTracks(tracksJson: String) {
-        runOnUiThread {
-            webView.evaluateJavascript(
-                "window.dispatchEvent(new CustomEvent('flow:android-local-tracks', { detail: $tracksJson }));",
-                null
-            )
+    private val permissionLauncher = registerForActivityResult(
+        androidx.activity.result.contract.ActivityResultContracts.RequestMultiplePermissions()
+    ) { results ->
+        if (results.values.any { it }) {
+            scanLocalMedia()
         }
     }
 
@@ -152,15 +99,24 @@ class MainActivity : AppCompatActivity() {
         }
 
         if (needed.isNotEmpty()) {
-            ActivityCompat.requestPermissions(this, needed.toTypedArray(), 101)
+            permissionLauncher.launch(needed.toTypedArray())
+        } else {
+            scanLocalMedia()
+        }
+    }
+
+    private fun scanLocalMedia() {
+        lifecycleScope.launch {
+            val tracks = mediaStoreScanner.scanLocalTracks()
+            localTracks = tracks
         }
     }
 
     override fun onDestroy() {
-        networkQualityManager?.stopMonitoring()
         try {
             unbindService(serviceConnection)
         } catch (_: Exception) {}
+        audioEngine.release()
         super.onDestroy()
     }
 }
