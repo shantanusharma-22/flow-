@@ -2,342 +2,369 @@ import { Track, Playlist, Artist } from '../types';
 
 export const SEED_TRACKS: Track[] = [
   {
-    id: 'track-01',
-    title: 'Neon Odyssey',
-    artist: 'Luna Synth',
-    artistId: 'artist-01',
-    album: 'Synthetic Horizons',
-    albumId: 'album-01',
-    durationSec: 214,
-    thumbnailUrl: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=500&auto=format&fit=crop&q=80',
+    id: 'track-barood',
+    title: 'Barood',
+    artist: 'OG TEHRAN & Aditya Pushkarna',
+    artistId: 'artist-og-tehran',
+    album: 'Hustle 5 - Episode 1',
+    albumId: 'album-hustle-5',
+    durationSec: 150,
+    thumbnailUrl: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=600&auto=format&fit=crop&q=80',
     streamUrl: 'https://cdn.freesound.org/previews/612/612610_5674468-lq.mp3',
-    audioFormat: 'opus',
-    bitrateKbps: 320,
-    accentColor: '#00e5ff',
+    audioFormat: 'flac',
+    bitrateKbps: 1411,
+    accentColor: '#9333ea',
     isLiked: true,
     isDownloaded: true,
     isCached: true,
-    playCount: 142850,
+    playCount: 542000,
     lyrics: {
       isSynced: true,
-      provider: 'LRCLIB (Verified)',
+      provider: 'YouTube Music',
       lines: [
-        { startTimeMs: 0, endTimeMs: 8500, text: '♪ (Atmospheric synth intro plays softly) ♪', romanized: '♪ [Instrumental opening] ♪', translation: '♪ [Instrumental opening] ♪' },
-        { startTimeMs: 8500, endTimeMs: 14200, text: '夜の街に揺れるネオンの光', romanized: 'Yoru no machi ni yureru neon no hikari', translation: 'Neon lights swaying across the nocturnal metropolis' },
-        { startTimeMs: 14200, endTimeMs: 20400, text: '遠くへと消えていく影を追う', romanized: 'Tooku e to kiete iku kage o ou', translation: 'Chasing shadows that dissolve into the distance' },
-        { startTimeMs: 20400, endTimeMs: 27100, text: '誰も知らない秘密の鼓動が', romanized: 'Dare mo shiranai himitsu no kodou ga', translation: 'A secret pulse that nobody else recognizes' },
-        { startTimeMs: 27100, endTimeMs: 34800, text: 'デジタルの海に響き渡る', romanized: 'Dejitaru no umi ni hibiki wataru', translation: 'Echoes continuously through the digital ocean' },
-        { startTimeMs: 34800, endTimeMs: 42000, text: '流れる星のように輝いて', romanized: 'Nagareru hoshi no you ni kagayaite', translation: 'Shining like falling shooting stars' },
-        { startTimeMs: 42000, endTimeMs: 50200, text: '私たちは自由を探し求めている', romanized: 'Watashitachi wa jiyuu o sagashimotomete iru', translation: 'We are reaching out, yearning for true freedom' },
-        { startTimeMs: 50200, endTimeMs: 58900, text: '終わりなきシンセの波に乗って', romanized: 'Owarinaki shinse no nami ni notte', translation: 'Riding upon the endless synthesizer waves' },
-        { startTimeMs: 58900, endTimeMs: 68000, text: '明日へと向かって加速していく', romanized: 'Ashita e to mukatte kasoku shite iku', translation: 'Accelerating relentlessly into tomorrow' },
-        { startTimeMs: 68000, endTimeMs: 80000, text: '♪ (Resonant synth solo soaring) ♪', romanized: '♪ [Synth breakdown] ♪', translation: '♪ [Synth breakdown] ♪' },
-        { startTimeMs: 80000, endTimeMs: 95000, text: '永遠に続くこのフローの中へ', romanized: 'Eien ni tsuzuku kono furoo no naka e', translation: 'Deep into this eternal Flow that never ends' }
+        { startTimeMs: 2000, endTimeMs: 8000, text: 'Yo yeah' },
+        { startTimeMs: 8500, endTimeMs: 14000, text: 'बीटों पे बम बम बारूद' },
+        { startTimeMs: 14200, endTimeMs: 19500, text: 'चीखूँ मैं गर्दन फाड़ूं' },
+        { startTimeMs: 19800, endTimeMs: 25200, text: 'मुझे मेरा संकल्प मालूम' },
+        { startTimeMs: 25500, endTimeMs: 30800, text: 'गानो से भूकंप लादूं' },
+        { startTimeMs: 31000, endTimeMs: 36200, text: 'दिल्ली में अंधा कानून' },
+        { startTimeMs: 36500, endTimeMs: 42000, text: 'ये दिखेंगे चिरकुट चालू' },
+        { startTimeMs: 42200, endTimeMs: 47800, text: 'ये rappers सब बंदर cartoon' },
+        { startTimeMs: 48000, endTimeMs: 53800, text: 'करे मेरा सर दर्द खातून' },
+        { startTimeMs: 54000, endTimeMs: 59800, text: 'बीटों पे बम बम बारूद' },
+        { startTimeMs: 60000, endTimeMs: 68000, text: 'चीखूँ मैं गर्दन फाड़ूं' }
       ],
-      rawLrc: `[00:08.50]夜の街に揺れるネオンの光
-[00:14.20]遠くへと消えていく影を追う
-[00:20.40]誰も知らない秘密の鼓動が
-[00:27.10]デジタルの海に響き渡る
-[00:34.80]流れる星のように輝いて
-[00:42.00]私たちは自由を探し求めている
-[00:50.20]終わりなきシンセの波に乗って
-[00:58.90]明日へと向かって加速していく
-[01:20.00]永遠に続くこのフローの中へ`
+      rawLrc: `[00:02.00]Yo yeah
+[00:08.50]बीटों पे बम बम बारूद
+[00:14.20]चीखूँ मैं गर्दन फाड़ूं
+[00:19.80]मुझे मेरा संकल्प मालूम
+[00:25.50]गानो से भूकंप लादूं
+[00:31.00]दिल्ली में अंधा कानून
+[00:36.50]ये दिखेंगे चिरकुट चालू
+[00:42.20]ये rappers सब बंदर cartoon
+[00:48.00]करे मेरा सर दर्द खातून
+[00:54.00]बीटों पे बम बम बारूद
+[01:00.00]चीखूँ मैं गर्दन फाड़ूं`
     }
   },
   {
-    id: 'track-02',
-    title: 'Raindrop Sanctuary',
-    artist: 'Kaito Void',
-    artistId: 'artist-02',
-    album: 'Midnight Tokyo Memories',
-    albumId: 'album-02',
-    durationSec: 186,
-    thumbnailUrl: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=500&auto=format&fit=crop&q=80',
+    id: 'track-naksha',
+    title: 'Naksha',
+    artist: 'Seedhe Maut',
+    artistId: 'artist-seedhe-maut',
+    album: 'Nayaab',
+    albumId: 'album-nayaab',
+    durationSec: 194,
+    thumbnailUrl: 'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=500&auto=format&fit=crop&q=80',
     streamUrl: 'https://cdn.freesound.org/previews/659/659687_11861866-lq.mp3',
     audioFormat: 'flac',
-    bitrateKbps: 920,
-    accentColor: '#a855f7',
-    isLiked: true,
-    isDownloaded: true,
-    isCached: true,
-    playCount: 98400,
-    lyrics: {
-      isSynced: true,
-      provider: 'Musixmatch (Synced)',
-      lines: [
-        { startTimeMs: 0, endTimeMs: 6000, text: '♪ (Gentle rain tapping on glass with mellow piano) ♪' },
-        { startTimeMs: 6000, endTimeMs: 13500, text: 'Raindrops fall on the obsidian street', translation: 'Obsidian glass reflects the rainfall' },
-        { startTimeMs: 13500, endTimeMs: 21000, text: 'Every solitary step has a rhythm and beat', translation: 'Finding calm in the footsteps' },
-        { startTimeMs: 21000, endTimeMs: 29000, text: 'Looking at the reflection through the misty steam', translation: 'Watching the quiet coffee steam rise' },
-        { startTimeMs: 29000, endTimeMs: 38000, text: 'Just lost in a midnight lo-fi daydream', translation: 'Drifting peaceful in the lo-fi haze' },
-        { startTimeMs: 38000, endTimeMs: 52000, text: 'Close your eyes, let the static soothe your mind', translation: 'Let gentle vinyl hiss ease away tension' },
-        { startTimeMs: 52000, endTimeMs: 68000, text: 'In this sanctuary, peace is what you will find', translation: 'A sanctuary in the midnight hour' }
-      ],
-      rawLrc: `[00:06.00]Raindrops fall on the obsidian street
-[00:13.50]Every solitary step has a rhythm and beat
-[00:21.00]Looking at the reflection through the misty steam
-[00:29.00]Just lost in a midnight lo-fi daydream
-[00:38.00]Close your eyes, let the static soothe your mind
-[00:52.00]In this sanctuary, peace is what you will find`
-    }
-  },
-  {
-    id: 'track-03',
-    title: 'Astral Resonance',
-    artist: 'Celeste Bloom',
-    artistId: 'artist-03',
-    album: 'Celestial Drift',
-    albumId: 'album-03',
-    durationSec: 248,
-    thumbnailUrl: 'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=500&auto=format&fit=crop&q=80',
-    streamUrl: 'https://cdn.freesound.org/previews/462/462808_838627-lq.mp3',
-    audioFormat: 'opus',
-    bitrateKbps: 320,
-    accentColor: '#38bdf8',
-    isLiked: false,
-    isDownloaded: false,
-    isCached: true,
-    playCount: 65120,
-    lyrics: {
-      isSynced: true,
-      provider: 'LRCLIB (Verified)',
-      lines: [
-        { startTimeMs: 0, endTimeMs: 10000, text: '♪ (Starlight chime arpeggio opening) ♪' },
-        { startTimeMs: 10000, endTimeMs: 18500, text: 'We spun across constellations in deep space' },
-        { startTimeMs: 18500, endTimeMs: 26000, text: 'Gravitational whispers in a warm embrace' },
-        { startTimeMs: 26000, endTimeMs: 35000, text: 'Hold the frequency until the stars ignite' },
-        { startTimeMs: 35000, endTimeMs: 44000, text: 'We are pure frequency wandering in the night' },
-        { startTimeMs: 44000, endTimeMs: 56000, text: 'Resonance... astral resonance taking flight' }
-      ]
-    }
-  },
-  {
-    id: 'track-04',
-    title: 'Cyberpunk Skyline',
-    artist: 'Aethelgard',
-    artistId: 'artist-04',
-    album: 'Neo Matrix Overdrive',
-    albumId: 'album-04',
-    durationSec: 198,
-    thumbnailUrl: 'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=500&auto=format&fit=crop&q=80',
-    streamUrl: 'https://cdn.freesound.org/previews/558/558694_11861866-lq.mp3',
-    audioFormat: 'aac',
-    bitrateKbps: 256,
-    accentColor: '#ec4899',
-    isLiked: true,
-    isDownloaded: false,
-    isCached: false,
-    playCount: 112300,
-    lyrics: {
-      isSynced: true,
-      provider: 'Flow Neural Engine',
-      lines: [
-        { startTimeMs: 0, endTimeMs: 12000, text: '♪ (Distorted bassline and industrial 808 kick) ♪' },
-        { startTimeMs: 12000, endTimeMs: 20000, text: 'Chrome towers piercing the polluted sky' },
-        { startTimeMs: 20000, endTimeMs: 28000, text: 'Holographic memories that never die' },
-        { startTimeMs: 28000, endTimeMs: 36000, text: 'Jack in the fiber wire, override the grid' },
-        { startTimeMs: 36000, endTimeMs: 46000, text: 'Remember all the wild things that we did' },
-        { startTimeMs: 46000, endTimeMs: 58000, text: 'Overdrive pulse, overclocked reality!' }
-      ]
-    }
-  },
-  {
-    id: 'track-05',
-    title: 'Glow in the Mist',
-    artist: 'Luna Synth',
-    artistId: 'artist-01',
-    album: 'Synthetic Horizons',
-    albumId: 'album-01',
-    durationSec: 230,
-    thumbnailUrl: 'https://images.unsplash.com/photo-1534447677768-be436bb09401?w=500&auto=format&fit=crop&q=80',
-    streamUrl: 'https://cdn.freesound.org/previews/573/573539_11861866-lq.mp3',
-    audioFormat: 'flac',
-    bitrateKbps: 1024,
-    accentColor: '#10b981',
-    isLiked: false,
-    isDownloaded: false,
-    isCached: true,
-    playCount: 77900
-  },
-  {
-    id: 'track-06',
-    title: 'Coffee Beans & Cassette Tapes',
-    artist: 'Kaito Void',
-    artistId: 'artist-02',
-    album: 'Midnight Tokyo Memories',
-    albumId: 'album-02',
-    durationSec: 165,
-    thumbnailUrl: 'https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=500&auto=format&fit=crop&q=80',
-    streamUrl: 'https://cdn.freesound.org/previews/415/415998_5121236-lq.mp3',
-    audioFormat: 'mp3',
-    bitrateKbps: 320,
+    bitrateKbps: 1411,
     accentColor: '#f59e0b',
     isLiked: true,
     isDownloaded: true,
     isCached: true,
-    playCount: 204500
+    playCount: 890000
   },
   {
-    id: 'track-07',
-    title: 'Solar Flare Symphony',
-    artist: 'Celeste Bloom',
-    artistId: 'artist-03',
-    album: 'Celestial Drift',
-    albumId: 'album-03',
-    durationSec: 275,
-    thumbnailUrl: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=500&auto=format&fit=crop&q=80',
+    id: 'track-raat-ki-rani',
+    title: 'Raat Ki Rani',
+    artist: 'Seedhe Maut',
+    artistId: 'artist-seedhe-maut',
+    album: 'Lunch Break',
+    albumId: 'album-lunch-break',
+    durationSec: 218,
+    thumbnailUrl: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=500&auto=format&fit=crop&q=80',
     streamUrl: 'https://cdn.freesound.org/previews/462/462808_838627-lq.mp3',
     audioFormat: 'opus',
     bitrateKbps: 320,
-    accentColor: '#f43f5e',
-    isLiked: false,
-    isDownloaded: false,
-    isCached: false,
-    playCount: 42100
-  },
-  {
-    id: 'track-08',
-    title: 'Midnight Highway Cruise',
-    artist: 'Aethelgard',
-    artistId: 'artist-04',
-    album: 'Neo Matrix Overdrive',
-    albumId: 'album-04',
-    durationSec: 210,
-    thumbnailUrl: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=500&auto=format&fit=crop&q=80',
-    streamUrl: 'https://cdn.freesound.org/previews/612/612610_5674468-lq.mp3',
-    audioFormat: 'opus',
-    bitrateKbps: 320,
-    accentColor: '#6366f1',
+    accentColor: '#ec4899',
     isLiked: true,
     isDownloaded: false,
     isCached: true,
-    playCount: 89400
+    playCount: 1120000
+  },
+  {
+    id: 'track-masti',
+    title: 'Masti',
+    artist: 'Encore ABJ, Dhanji',
+    artistId: 'artist-seedhe-maut',
+    album: 'Masti EP',
+    albumId: 'album-masti',
+    durationSec: 184,
+    thumbnailUrl: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=500&auto=format&fit=crop&q=80',
+    streamUrl: 'https://cdn.freesound.org/previews/573/573539_11861866-lq.mp3',
+    audioFormat: 'opus',
+    bitrateKbps: 320,
+    accentColor: '#eab308',
+    isLiked: false,
+    isDownloaded: false,
+    isCached: true,
+    playCount: 420000
+  },
+  {
+    id: 'track-pocket-full',
+    title: 'Pocket Full Of Flows',
+    artist: 'Siyaahi, Aditya Pushkarna',
+    artistId: 'artist-siyaahi',
+    album: 'Pocket Full Of Flows',
+    albumId: 'album-flows',
+    durationSec: 172,
+    thumbnailUrl: 'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=500&auto=format&fit=crop&q=80',
+    streamUrl: 'https://cdn.freesound.org/previews/540/540846_11861866-lq.mp3',
+    audioFormat: 'flac',
+    bitrateKbps: 1411,
+    accentColor: '#10b981',
+    isLiked: true,
+    isDownloaded: true,
+    isCached: true,
+    playCount: 310000
+  },
+  {
+    id: 'track-sharara',
+    title: 'Sharara',
+    artist: 'Siyaahi, ACHARYA',
+    artistId: 'artist-siyaahi',
+    album: 'Sharara Single',
+    albumId: 'album-sharara',
+    durationSec: 165,
+    thumbnailUrl: 'https://images.unsplash.com/photo-1534447677768-be436bb09401?w=500&auto=format&fit=crop&q=80',
+    streamUrl: 'https://cdn.freesound.org/previews/415/415998_5121236-lq.mp3',
+    audioFormat: 'opus',
+    bitrateKbps: 320,
+    accentColor: '#06b6d4',
+    isLiked: false,
+    isDownloaded: false,
+    isCached: false,
+    playCount: 275000
+  },
+  {
+    id: 'track-ltb',
+    title: 'LTB',
+    artist: 'sammad, Dhanji',
+    artistId: 'artist-dhanji',
+    album: 'Ruab',
+    albumId: 'album-ruab',
+    durationSec: 202,
+    thumbnailUrl: 'https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=500&auto=format&fit=crop&q=80',
+    streamUrl: 'https://cdn.freesound.org/previews/612/612610_5674468-lq.mp3',
+    audioFormat: 'opus',
+    bitrateKbps: 320,
+    accentColor: '#f97316',
+    isLiked: false,
+    isDownloaded: false,
+    isCached: true,
+    playCount: 195000
+  },
+  {
+    id: 'track-underdog',
+    title: 'UNDERDOG SHIT (Red Bull 64 Bars)',
+    artist: 'vichaar, Karan Kanchan',
+    artistId: 'artist-vichaar',
+    album: 'Red Bull 64 Bars',
+    albumId: 'album-redbull',
+    durationSec: 156,
+    thumbnailUrl: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=500&auto=format&fit=crop&q=80',
+    streamUrl: 'https://cdn.freesound.org/previews/659/659687_11861866-lq.mp3',
+    audioFormat: 'flac',
+    bitrateKbps: 1411,
+    accentColor: '#ef4444',
+    isLiked: true,
+    isDownloaded: false,
+    isCached: true,
+    playCount: 680000
+  },
+  {
+    id: 'track-bawe',
+    title: 'BAWE MAIN CHECK',
+    artist: 'King, RAGA',
+    artistId: 'artist-king',
+    album: 'Monopoly Moves',
+    albumId: 'album-monopoly',
+    durationSec: 188,
+    thumbnailUrl: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=500&auto=format&fit=crop&q=80',
+    streamUrl: 'https://cdn.freesound.org/previews/462/462808_838627-lq.mp3',
+    audioFormat: 'flac',
+    bitrateKbps: 1411,
+    accentColor: '#f43f5e',
+    isLiked: true,
+    isDownloaded: true,
+    isCached: true,
+    playCount: 1450000
+  },
+  {
+    id: 'track-cut-that',
+    title: 'CUT THAT BI...',
+    artist: 'Naam Sujal, Arpit Bala',
+    artistId: 'artist-naam-sujal',
+    album: 'Gande Gaane',
+    albumId: 'album-gande-gaane',
+    durationSec: 168,
+    thumbnailUrl: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=500&auto=format&fit=crop&q=80',
+    streamUrl: 'https://cdn.freesound.org/previews/573/573539_11861866-lq.mp3',
+    audioFormat: 'opus',
+    bitrateKbps: 320,
+    accentColor: '#8b5cf6',
+    isLiked: false,
+    isDownloaded: false,
+    isCached: false,
+    playCount: 520000
+  },
+  {
+    id: 'track-17',
+    title: '17',
+    artist: 'Naam Sujal',
+    artistId: 'artist-naam-sujal',
+    album: '17 Single',
+    albumId: 'album-17',
+    durationSec: 174,
+    thumbnailUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&auto=format&fit=crop&q=80',
+    streamUrl: 'https://cdn.freesound.org/previews/415/415998_5121236-lq.mp3',
+    audioFormat: 'opus',
+    bitrateKbps: 320,
+    accentColor: '#dc2626',
+    isLiked: true,
+    isDownloaded: false,
+    isCached: true,
+    playCount: 780000
+  },
+  {
+    id: 'track-payback',
+    title: 'Payback',
+    artist: 'whysoKai, Aditya Pushkarna',
+    artistId: 'artist-whysokai',
+    album: 'Payback',
+    albumId: 'album-payback',
+    durationSec: 192,
+    thumbnailUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=500&auto=format&fit=crop&q=80',
+    streamUrl: 'https://cdn.freesound.org/previews/612/612610_5674468-lq.mp3',
+    audioFormat: 'flac',
+    bitrateKbps: 1411,
+    accentColor: '#3b82f6',
+    isLiked: false,
+    isDownloaded: false,
+    isCached: true,
+    playCount: 340000
+  },
+  {
+    id: 'track-deewar',
+    title: 'Deewar',
+    artist: 'Siyaahi, Aditya Pushkarna',
+    artistId: 'artist-siyaahi',
+    album: 'Deewar Single',
+    albumId: 'album-deewar',
+    durationSec: 206,
+    thumbnailUrl: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=500&auto=format&fit=crop&q=80',
+    streamUrl: 'https://cdn.freesound.org/previews/659/659687_11861866-lq.mp3',
+    audioFormat: 'opus',
+    bitrateKbps: 320,
+    accentColor: '#10b981',
+    isLiked: true,
+    isDownloaded: true,
+    isCached: true,
+    playCount: 460000
+  }
+];
+
+export const SEED_ALBUMS = [
+  {
+    id: 'album-mad-dawg',
+    title: 'MAD DAWG 101',
+    artist: 'KARMA',
+    type: 'Album',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=500&auto=format&fit=crop&q=80'
+  },
+  {
+    id: 'album-distortion',
+    title: ':distortion::',
+    artist: 'Hurricane & D...',
+    type: 'Album',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=500&auto=format&fit=crop&q=80'
+  },
+  {
+    id: 'album-hustle-20',
+    title: 'Hustle 5 - Episode 20',
+    artist: 'Aditya Pushkarna',
+    type: 'EP',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=500&auto=format&fit=crop&q=80'
+  },
+  {
+    id: 'album-aigiri',
+    title: 'Aigiri Nandini - Mahi...',
+    artist: 'Madhubanti Ba...',
+    type: 'Single',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=500&auto=format&fit=crop&q=80'
+  },
+  {
+    id: 'album-troublesome',
+    title: "TROUBLESOME '96",
+    artist: 'Talha Anjum',
+    type: 'Album',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=500&auto=format&fit=crop&q=80'
+  },
+  {
+    id: 'album-known-unknowns',
+    title: 'Known Unknowns',
+    artist: 'Gur Sidhu & K...',
+    type: 'Album',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1534447677768-be436bb09401?w=500&auto=format&fit=crop&q=80'
   }
 ];
 
 export const SEED_PLAYLISTS: Playlist[] = [
   {
-    id: 'playlist-01',
-    title: 'Flow Discover Weekly',
-    description: 'Curated deep-groove electronic, neo-synthwave, and atmospheric lo-fi updated daily for deep focus.',
-    thumbnailUrl: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=500&auto=format&fit=crop&q=80',
-    accentColor: '#00e5ff',
-    isCustom: false,
-    createdAt: '2026-10-15',
-    source: 'youtube',
-    tracks: [SEED_TRACKS[0], SEED_TRACKS[1], SEED_TRACKS[2], SEED_TRACKS[3], SEED_TRACKS[4]]
-  },
-  {
-    id: 'playlist-02',
-    title: 'Tokyo Midnight Cyberpunk',
-    description: 'Dark club energy, heavy synth basslines, and rain-soaked dystopian neon melodies.',
-    thumbnailUrl: 'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=500&auto=format&fit=crop&q=80',
+    id: 'playlist-liked',
+    title: 'Liked Music',
+    description: 'Auto playlist of all your favorite tracks',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=500&auto=format&fit=crop&q=80',
     accentColor: '#ec4899',
     isCustom: false,
-    createdAt: '2026-10-12',
-    source: 'youtube',
-    tracks: [SEED_TRACKS[3], SEED_TRACKS[0], SEED_TRACKS[7]]
+    createdAt: '2026-10-19',
+    source: 'local',
+    tracks: [SEED_TRACKS[0], SEED_TRACKS[1], SEED_TRACKS[2], SEED_TRACKS[4], SEED_TRACKS[7], SEED_TRACKS[8]]
   },
   {
-    id: 'playlist-03',
-    title: 'Midnight Lo-Fi Coding Sanctuary',
-    description: 'Warm vinyl crackle, gentle Rhodes chords, and mellow beats designed for continuous engineering flow state.',
-    thumbnailUrl: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=500&auto=format&fit=crop&q=80',
+    id: 'playlist-choti',
+    title: 'choti',
+    description: 'Personal curated mix',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=500&auto=format&fit=crop&q=80',
     accentColor: '#a855f7',
     isCustom: true,
     createdAt: '2026-10-18',
     source: 'local',
-    tracks: [SEED_TRACKS[1], SEED_TRACKS[5], SEED_TRACKS[2]]
+    tracks: [SEED_TRACKS[0], SEED_TRACKS[3], SEED_TRACKS[5]]
   },
   {
-    id: 'playlist-04',
-    title: 'Cosmic Ambient Soundscapes',
-    description: 'Ethereal modular synths, celestial pad swells, and wide sonic spaces for late night stargazing.',
-    thumbnailUrl: 'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=500&auto=format&fit=crop&q=80',
+    id: 'playlist-episodes-later',
+    title: 'Episodes for Later',
+    description: 'Saved episodes and long form music',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=500&auto=format&fit=crop&q=80',
     accentColor: '#38bdf8',
-    isCustom: false,
-    createdAt: '2026-10-10',
-    source: 'spotify',
-    tracks: [SEED_TRACKS[2], SEED_TRACKS[6], SEED_TRACKS[4]]
+    isCustom: true,
+    createdAt: '2026-10-17',
+    source: 'local',
+    tracks: [SEED_TRACKS[6], SEED_TRACKS[9]]
   }
 ];
 
 export const SEED_ARTISTS: Artist[] = [
   {
-    id: 'artist-01',
-    name: 'Luna Synth',
-    thumbnailUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&auto=format&fit=crop&q=80',
-    bannerUrl: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=1200&auto=format&fit=crop&q=80',
-    description: 'Tokyo and Berlin-based electronic producer sculpting melancholic analog synths with futuristic pop sensibilities.',
-    subscribersCount: '482K',
-    monthlyListeners: '1.8M',
-    topTracks: [SEED_TRACKS[0], SEED_TRACKS[4]],
-    albums: [
-      {
-        id: 'album-01',
-        title: 'Synthetic Horizons',
-        year: 2026,
-        thumbnailUrl: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=500&auto=format&fit=crop&q=80',
-        trackCount: 10
-      }
-    ]
-  },
-  {
-    id: 'artist-02',
-    name: 'Kaito Void',
+    id: 'artist-og-tehran',
+    name: 'OG TEHRAN',
     thumbnailUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&auto=format&fit=crop&q=80',
-    bannerUrl: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=1200&auto=format&fit=crop&q=80',
-    description: 'Pioneer of rain-drenched midnight chillhop, blending jazz piano chords with organic field recordings.',
-    subscribersCount: '620K',
-    monthlyListeners: '2.4M',
-    topTracks: [SEED_TRACKS[1], SEED_TRACKS[5]],
-    albums: [
-      {
-        id: 'album-02',
-        title: 'Midnight Tokyo Memories',
-        year: 2025,
-        thumbnailUrl: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=500&auto=format&fit=crop&q=80',
-        trackCount: 8
-      }
-    ]
+    description: 'Indian Hip Hop artist & performer on Hustle 5.',
+    subscribersCount: '580K',
+    monthlyListeners: '2.1M',
+    topTracks: [SEED_TRACKS[0]],
+    albums: []
   },
   {
-    id: 'artist-03',
-    name: 'Celeste Bloom',
-    thumbnailUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=500&auto=format&fit=crop&q=80',
-    bannerUrl: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=1200&auto=format&fit=crop&q=80',
-    description: 'Ethereal ambient composer weaving celestial harmonics and modular synthesizers into dreamlike acoustic soundscapes.',
-    subscribersCount: '315K',
-    monthlyListeners: '980K',
-    topTracks: [SEED_TRACKS[2], SEED_TRACKS[6]],
-    albums: [
-      {
-        id: 'album-03',
-        title: 'Celestial Drift',
-        year: 2026,
-        thumbnailUrl: 'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=500&auto=format&fit=crop&q=80',
-        trackCount: 9
-      }
-    ]
-  },
-  {
-    id: 'artist-04',
-    name: 'Aethelgard',
-    thumbnailUrl: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=500&auto=format&fit=crop&q=80',
-    bannerUrl: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200&auto=format&fit=crop&q=80',
-    description: 'Cyberpunk darkwave architect forging driving industrial beats, aggressive synth leads, and raw dystopian energy.',
-    subscribersCount: '540K',
-    monthlyListeners: '1.6M',
-    topTracks: [SEED_TRACKS[3], SEED_TRACKS[7]],
-    albums: [
-      {
-        id: 'album-04',
-        title: 'Neo Matrix Overdrive',
-        year: 2025,
-        thumbnailUrl: 'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=500&auto=format&fit=crop&q=80',
-        trackCount: 12
-      }
-    ]
+    id: 'artist-seedhe-maut',
+    name: 'Seedhe Maut',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=500&auto=format&fit=crop&q=80',
+    description: 'Delhi rap duo Calm & Encore ABJ redefining Desi Hip Hop.',
+    subscribersCount: '1.2M',
+    monthlyListeners: '3.6M',
+    topTracks: [SEED_TRACKS[1], SEED_TRACKS[2]],
+    albums: []
   }
 ];

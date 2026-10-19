@@ -462,20 +462,34 @@ export const App: React.FC = () => {
         playlists={playlists}
         onCreatePlaylistClick={() => setIsCreatePlaylistOpen(true)}
         activePlaylistId={activePlaylistId}
+        searchQuery={searchQuery}
+        onSearchChange={(q) => {
+          setSearchQuery(q);
+          if (q.trim()) StorageService.addRecentSearch(q);
+        }}
       />
 
       {/* Main Content Stage */}
       <main className="main-stage">
         <Header
-          searchQuery={searchQuery}
-          onSearchChange={(q) => {
-            setSearchQuery(q);
-            if (q.trim()) StorageService.addRecentSearch(q);
-          }}
-          onNavigate={handleNavigate}
-          currentScreen={currentScreen}
-          isFullscreen={isFullscreen}
-          onToggleFullscreen={handleToggleFullscreen}
+          currentTrack={currentTrack}
+          isPlaying={isPlaying}
+          currentTimeSec={currentTimeSec}
+          durationSec={durationSec}
+          volume={volume}
+          isShuffle={isShuffle}
+          repeatMode={repeatMode}
+          onPlayPause={handlePlayPause}
+          onPrev={handlePrevTrack}
+          onNext={handleNextTrack}
+          onSeek={handleSeek}
+          onVolumeChange={handleVolumeChange}
+          onToggleShuffle={handleToggleShuffle}
+          onCycleRepeat={handleCycleRepeat}
+          onOpenNowPlaying={() => setCurrentScreen('nowPlaying')}
+          onToggleQueue={() => setIsQueueOpen(!isQueueOpen)}
+          onOpenSettings={() => setCurrentScreen('settings')}
+          onNavigateBack={() => handleNavigate('home')}
         />
 
         <div className="screen-viewport">
@@ -665,38 +679,40 @@ export const App: React.FC = () => {
         />
       )}
 
-      {/* Persistent Bottom PlayerBar */}
-      <PlayerBar
-        currentTrack={currentTrack}
-        isPlaying={isPlaying}
-        currentTimeSec={currentTimeSec}
-        durationSec={durationSec}
-        volume={volume}
-        repeatMode={repeatMode}
-        isShuffle={isShuffle}
-        playbackSpeed={playbackSpeed}
-        isLyricsOpen={isLyricsOpen}
-        isQueueOpen={isQueueOpen}
-        isLiked={currentTrack ? likedTrackIds.has(currentTrack.id) : false}
-        isDownloaded={currentTrack ? downloadedTrackIds.has(currentTrack.id) : false}
-        onPlayPause={handlePlayPause}
-        onPrev={handlePrevTrack}
-        onNext={handleNextTrack}
-        onSeek={handleSeek}
-        onVolumeChange={handleVolumeChange}
-        onToggleMute={handleToggleMute}
-        onCycleRepeat={handleCycleRepeat}
-        onToggleShuffle={handleToggleShuffle}
-        onChangeSpeed={handleChangeSpeed}
-        onToggleLyrics={() => setIsLyricsOpen(!isLyricsOpen)}
-        onToggleQueue={() => setIsQueueOpen(!isQueueOpen)}
-        onToggleLike={() => currentTrack && handleToggleLike(currentTrack.id)}
-        onToggleDownload={() => currentTrack && handleToggleDownload(currentTrack.id)}
-        onOpenNowPlaying={() => setCurrentScreen('nowPlaying')}
-        onOpenEqualizer={() => setIsEqualizerOpen(true)}
-        onOpenSleepTimer={() => setIsSleepTimerOpen(true)}
-        onOpenStats={() => setIsStatsOpen(true)}
-      />
+      {/* Bottom PlayerBar hidden in favor of Top-Bar Player as shown in BitChord screenshots */}
+      <div style={{ display: 'none' }}>
+        <PlayerBar
+          currentTrack={currentTrack}
+          isPlaying={isPlaying}
+          currentTimeSec={currentTimeSec}
+          durationSec={durationSec}
+          volume={volume}
+          repeatMode={repeatMode}
+          isShuffle={isShuffle}
+          playbackSpeed={playbackSpeed}
+          isLyricsOpen={isLyricsOpen}
+          isQueueOpen={isQueueOpen}
+          isLiked={currentTrack ? likedTrackIds.has(currentTrack.id) : false}
+          isDownloaded={currentTrack ? downloadedTrackIds.has(currentTrack.id) : false}
+          onPlayPause={handlePlayPause}
+          onPrev={handlePrevTrack}
+          onNext={handleNextTrack}
+          onSeek={handleSeek}
+          onVolumeChange={handleVolumeChange}
+          onToggleMute={handleToggleMute}
+          onCycleRepeat={handleCycleRepeat}
+          onToggleShuffle={handleToggleShuffle}
+          onChangeSpeed={handleChangeSpeed}
+          onToggleLyrics={() => setIsLyricsOpen(!isLyricsOpen)}
+          onToggleQueue={() => setIsQueueOpen(!isQueueOpen)}
+          onToggleLike={() => currentTrack && handleToggleLike(currentTrack.id)}
+          onToggleDownload={() => currentTrack && handleToggleDownload(currentTrack.id)}
+          onOpenNowPlaying={() => setCurrentScreen('nowPlaying')}
+          onOpenEqualizer={() => setIsEqualizerOpen(true)}
+          onOpenSleepTimer={() => setIsSleepTimerOpen(true)}
+          onOpenStats={() => setIsStatsOpen(true)}
+        />
+      </div>
 
       {/* Context Menu Popover */}
       {contextMenu && (

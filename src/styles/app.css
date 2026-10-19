@@ -88,14 +88,12 @@ body {
   100% { transform: translate(-30px, 30px) scale(0.94); }
 }
 
-/* --- Sidebar Shell (Apple Music Frosted Glass) --- */
+/* --- Sidebar Shell (Apple Music / BitChord Frosted Glass) --- */
 .sidebar {
   width: var(--sidebar-width);
-  height: calc(100vh - var(--player-dock-height));
-  background: rgba(9, 13, 22, 0.76);
-  backdrop-filter: blur(32px) saturate(190%);
-  -webkit-backdrop-filter: blur(32px) saturate(190%);
-  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  height: 100vh;
+  background: #101217;
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
   display: flex;
   flex-direction: column;
   z-index: 20;
@@ -206,12 +204,13 @@ body {
 /* --- Main Content Stage --- */
 .main-stage {
   flex: 1;
-  height: calc(100vh - var(--player-dock-height));
+  height: 100vh;
   display: flex;
   flex-direction: column;
   overflow: hidden;
   position: relative;
   z-index: 10;
+  background-color: #12141a;
 }
 
 .top-header {
