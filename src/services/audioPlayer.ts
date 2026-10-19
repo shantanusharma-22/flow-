@@ -220,6 +220,19 @@ class FlowAudioEngine {
 
       await this.audio.play();
       this.events.onStateChange?.(true, false);
+
+      // Android Native Kotlin Bridge Hook
+      if (typeof (window as any).FlowAndroidBridge !== 'undefined') {
+        try {
+          (window as any).FlowAndroidBridge.playTrack(
+            track.streamUrl,
+            track.title,
+            track.artist,
+            track.album || '',
+            track.thumbnailUrl || null
+          );
+        } catch { /* fallback to Web Audio */ }
+      }
     } catch (err) {
       console.warn('Direct stream play failed, engaging internal Web Audio generator', err);
       this.startSynthFallback();
@@ -227,6 +240,9 @@ class FlowAudioEngine {
   }
 
   public pause() {
+    if (typeof (window as any).FlowAndroidBridge !== 'undefined') {
+      try { (window as any).FlowAndroidBridge.pause(); } catch { }
+    }
     if (this.isSynthPlaying) {
       this.isSynthPlaying = false;
       this.events.onStateChange?.(false, false);
@@ -236,6 +252,9 @@ class FlowAudioEngine {
   }
 
   public resume() {
+    if (typeof (window as any).FlowAndroidBridge !== 'undefined') {
+      try { (window as any).FlowAndroidBridge.resume(); } catch { }
+    }
     if (this.isSynthPlaying) {
       this.isSynthPlaying = true;
       this.events.onStateChange?.(true, false);
@@ -279,6 +298,9 @@ class FlowAudioEngine {
     this.playbackSpeed = speed;
     this.audio.playbackRate = speed;
     this.audio.defaultPlaybackRate = speed;
+    if (typeof (window as any).FlowAndroidBridge !== 'undefined') {
+      try { (window as any).FlowAndroidBridge.setPlaybackSpeed(speed); } catch {}
+    }
   }
 
   public setRepeatMode(mode: RepeatMode) {
@@ -306,6 +328,9 @@ class FlowAudioEngine {
       this.currentEqBands = { ...preset };
       this.currentPresetName = presetName;
       this.applyEqBands();
+      if (typeof (window as any).FlowAndroidBridge !== 'undefined') {
+        try { (window as any).FlowAndroidBridge.setEqualizerPreset(presetName); } catch {}
+      }
     }
   }
 
@@ -320,6 +345,9 @@ class FlowAudioEngine {
   public toggleEqualizer(enabled?: boolean): boolean {
     this.eqEnabled = enabled !== undefined ? enabled : !this.eqEnabled;
     this.applyEqBands();
+    if (typeof (window as any).FlowAndroidBridge !== 'undefined') {
+      try { (window as any).FlowAndroidBridge.toggleEqualizer(this.eqEnabled); } catch {}
+    }
     return this.eqEnabled;
   }
 
@@ -363,6 +391,10 @@ class FlowAudioEngine {
     this.isFadingOut = false;
     this.events.onSleepTimerUpdate?.(this.sleepTimerRemainingSec, false);
 
+    if (typeof (window as any).FlowAndroidBridge !== 'undefined' && typeof minutesOrOption === 'number') {
+      try { (window as any).FlowAndroidBridge.startSleepTimer(minutesOrOption); } catch {}
+    }
+
     this.sleepTimerInterval = window.setInterval(() => {
       if (this.sleepTimerRemainingSec === null) return;
       this.sleepTimerRemainingSec -= 1;
@@ -386,6 +418,9 @@ class FlowAudioEngine {
   }
 
   public cancelSleepTimer() {
+    if (typeof (window as any).FlowAndroidBridge !== 'undefined') {
+      try { (window as any).FlowAndroidBridge.cancelSleepTimer(); } catch {}
+    }
     if (this.sleepTimerInterval) {
       clearInterval(this.sleepTimerInterval);
       this.sleepTimerInterval = null;

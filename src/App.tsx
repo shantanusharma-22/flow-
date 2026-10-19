@@ -37,6 +37,7 @@ export const App: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [recentSearches, setRecentSearches] = useState<string[]>(StorageService.getRecentSearches());
   const [playlists, setPlaylists] = useState<Playlist[]>(StorageService.getPlaylists());
+  const [tracks, setTracks] = useState<Track[]>(SEED_TRACKS);
   const [likedTrackIds, setLikedTrackIds] = useState<Set<string>>(StorageService.getLikedTrackIds());
   const [downloadedTrackIds, setDownloadedTrackIds] = useState<Set<string>>(StorageService.getDownloadedTrackIds());
   const [cachedTracks, setCachedTracks] = useState(StorageService.getCachedTracks());
@@ -151,8 +152,37 @@ export const App: React.FC = () => {
       }
     })();
 
+    // Listen for native Android Kotlin local tracks
+    const handleNativeAndroidTracks = (e: any) => {
+      const androidTracks = e.detail;
+      if (Array.isArray(androidTracks) && androidTracks.length > 0) {
+        setTracks(prev => {
+          const map = new Map(prev.map(t => [t.id, t]));
+          androidTracks.forEach((at: any) => {
+            if (!map.has(at.id)) {
+              map.set(at.id, {
+                id: at.id,
+                title: at.title,
+                artist: at.artist,
+                album: at.album,
+                durationSec: at.durationSec,
+                thumbnailUrl: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=500&auto=format&fit=crop&q=80',
+                streamUrl: at.contentUri,
+                audioFormat: at.mimeType?.includes('flac') ? 'flac' : 'mp3',
+                bitrateKbps: at.mimeType?.includes('flac') ? 1411 : 320
+              });
+            }
+          });
+          return Array.from(map.values());
+        });
+      }
+    };
+
+    window.addEventListener('flow:android-local-tracks', handleNativeAndroidTracks);
+
     return () => {
       isMounted = false;
+      window.removeEventListener('flow:android-local-tracks', handleNativeAndroidTracks);
     };
   }, []);
 

@@ -171,6 +171,18 @@ cargo tauri build
 ```
 *Produces a standalone MSI and NSIS installer in `src-tauri/target/release/bundle/`.*
 
+### Option C: Native Android Application (Kotlin)
+Flow includes a complete native Android application in `android/` written in Kotlin:
+- **AndroidX Media3 / ExoPlayer**: High-performance foreground `MediaSessionService` ensuring audio survives screen locks, with lock-screen notification controls and headset button handling.
+- **System Equalizer Integration**: Native hardware DSP audio equalizer via `android.media.audiofx.Equalizer`.
+- **MediaStore Audio Scanner**: Kotlin coroutines engine indexing audio files from device storage (`MediaStore.Audio.Media`).
+- **Dynamic Network Quality**: Automatic streaming bitrate switching (Lossless FLAC on Wi-Fi, High-Density Opus on Cellular).
+- **Two-Way Javascript Bridge**: Seamless `@JavascriptInterface` bridge between the React frontend and native Android Kotlin services.
+```bash
+cd android
+./gradlew assembleDebug
+```
+
 ---
 
 ## 🧪 Automated Testing
