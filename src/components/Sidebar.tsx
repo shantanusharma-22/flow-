@@ -30,8 +30,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
             <span className="brand-title">FLOW</span>
             <span className="brand-badge">PRO</span>
           </div>
-          <span style={{ fontSize: '10px', color: 'var(--color-text-faint)', letterSpacing: '0.04em' }}>
-            DESKTOP STREAMING
+          <span style={{ fontSize: '9px', color: 'var(--color-accent)', letterSpacing: '0.04em', fontWeight: 600 }}>
+            YOUTUBE MUSIC • APPLE AESTHETICS
           </span>
         </div>
       </div>

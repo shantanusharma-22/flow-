@@ -58,6 +58,22 @@ export const Header: React.FC<HeaderProps> = ({
             fontFamily: 'var(--font-mono)',
             padding: '3px 8px',
             borderRadius: 'var(--radius-pill)',
+            background: 'rgba(239, 68, 68, 0.12)',
+            color: '#f87171',
+            border: '1px solid rgba(239, 68, 68, 0.28)',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '4px'
+          }}>
+            <Radio size={11} />
+            <span>YOUTUBE MUSIC</span>
+          </span>
+
+          <span style={{
+            fontSize: '11px',
+            fontFamily: 'var(--font-mono)',
+            padding: '3px 8px',
+            borderRadius: 'var(--radius-pill)',
             background: 'rgba(52, 211, 153, 0.12)',
             color: 'var(--color-success)',
             border: '1px solid rgba(52, 211, 153, 0.3)',

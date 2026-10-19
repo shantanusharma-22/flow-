@@ -1,8 +1,8 @@
 <div align="center">
 
-# 🎵 Flow — Hi-Res Lossless Desktop Music Player
+# 🎵 Flow — A Modern YouTube Music Client with Clean Aesthetics Inspired by Apple Music
 
-**Next-generation, local-first music streaming player with studio-master lossless audio, Apple-style synchronized lyrics, 8-band parametric EQ, and background local directory auto-indexing.**
+**The infinite catalog and streaming power of YouTube Music, wrapped in the clean, fluid, frosted-glass aesthetics and syllable-accurate lyrics of Apple Music.**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![React 19](https://img.shields.io/badge/React-19.0-61dafb.svg?logo=react)](https://react.dev/)
