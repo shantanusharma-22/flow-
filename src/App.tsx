@@ -3,6 +3,7 @@ import { ScreenId, Track, Playlist, Artist, RepeatMode, UserSettings } from './t
 import { SEED_TRACKS, SEED_PLAYLISTS, SEED_ARTISTS } from './data/seed';
 import { audioPlayer } from './services/audioPlayer';
 import { StorageService } from './services/storage';
+import { api } from './services/api';
 
 import { Sidebar } from './components/Sidebar';
 import { Header } from './components/Header';
@@ -115,12 +116,58 @@ export const App: React.FC = () => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [currentTimeSec, durationSec, volume, isPlaying, currentScreen]);
 
+  // Initial Sync with Backend Engine
+  useEffect(() => {
+    let isMounted = true;
+    (async () => {
+      const isOnline = await api.checkHealth();
+      if (!isMounted || !isOnline) return;
+
+      // 1. Sync playlists from backend SQLite
+      const serverPlaylists = await api.getPlaylists();
+      if (serverPlaylists && serverPlaylists.length > 0 && isMounted) {
+        setPlaylists(prev => {
+          const map = new Map<string, Playlist>();
+          serverPlaylists.forEach(p => map.set(p.id, p));
+          prev.forEach(p => {
+            if (!map.has(p.id)) map.set(p.id, p);
+          });
+          return Array.from(map.values());
+        });
+      }
+
+      // 2. Sync user settings
+      const serverSettings = await api.getSettings();
+      if (serverSettings && isMounted) {
+        setSettings(prev => ({ ...prev, ...serverSettings }));
+      }
+    })();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
   // Player Control Handlers
   const handlePlayTrack = useCallback(async (track: Track) => {
-    setCurrentTrack(track);
-    setDurationSec(track.durationSec);
+    let resolvedTrack = track;
+    // Attempt to enrich track with fresh synced lyrics from backend if not already loaded
+    if (!track.lyrics || track.lyrics.lines.length === 0) {
+      try {
+        const lyrics = await api.getLyrics(track.id);
+        if (lyrics && lyrics.lines && lyrics.lines.length > 0) {
+          resolvedTrack = { ...track, lyrics };
+        }
+      } catch {}
+    }
+
+    setCurrentTrack(resolvedTrack);
+    setDurationSec(resolvedTrack.durationSec);
     setCurrentTimeSec(0);
-    await audioPlayer.playTrack(track);
+    await audioPlayer.playTrack(resolvedTrack);
+
+    // Scrobble play count to backend
+    api.scrobbleTrack(track.id).catch(() => {});
   }, []);
 
   const handlePlayPause = useCallback(() => {
@@ -199,14 +246,14 @@ export const App: React.FC = () => {
   };
 
   // Likes & Downloads Handlers
-  const handleToggleLike = (trackId: string) => {
-    StorageService.toggleLikedTrack(trackId);
-    setLikedTrackIds(StorageService.getLikedTrackIds());
+  const handleToggleLike = async (trackId: string) => {
+    await api.toggleLike(trackId);
+    setLikedTrackIds(new Set(StorageService.getLikedTrackIds()));
   };
 
-  const handleToggleDownload = (trackId: string) => {
-    StorageService.toggleDownloadedTrack(trackId);
-    setDownloadedTrackIds(StorageService.getDownloadedTrackIds());
+  const handleToggleDownload = async (trackId: string) => {
+    await api.markDownloaded(trackId);
+    setDownloadedTrackIds(new Set(StorageService.getDownloadedTrackIds()));
   };
 
   // Queue Operations
@@ -254,26 +301,36 @@ export const App: React.FC = () => {
     }
   };
 
-  const handleCreatePlaylist = (title: string, description: string) => {
-    const created = StorageService.createPlaylist(title, description);
-    setPlaylists(StorageService.getPlaylists());
+  const handleCreatePlaylist = async (title: string, description: string) => {
+    const created = await api.createPlaylist(title, description);
+    const updated = await api.getPlaylists();
+    setPlaylists(updated);
     handleNavigate('playlist', created.id);
   };
 
-  const handleDeletePlaylist = (playlistId: string) => {
-    StorageService.deletePlaylist(playlistId);
-    setPlaylists(StorageService.getPlaylists());
+  const handleDeletePlaylist = async (playlistId: string) => {
+    await api.deletePlaylist(playlistId);
+    const updated = await api.getPlaylists();
+    setPlaylists(updated);
     handleNavigate('library');
   };
 
-  const handleAddTrackToPlaylist = (playlistId: string, track: Track) => {
-    StorageService.addTrackToPlaylist(playlistId, track);
-    setPlaylists(StorageService.getPlaylists());
+  const handleAddTrackToPlaylist = async (playlistId: string, track: Track) => {
+    await api.addTrackToPlaylist(playlistId, track);
+    const updated = await api.getPlaylists();
+    setPlaylists(updated);
   };
 
   // Cached Track Eviction (Fix #899)
-  const handleRemoveCachedTrack = (trackId: string) => {
+  const handleRemoveCachedTrack = async (trackId: string) => {
+    await api.removeCachedTrack(trackId);
     setCachedTracks(prev => prev.filter(c => c.track.id !== trackId));
+  };
+
+  const handleSaveSettings = async (part: Partial<UserSettings>) => {
+    const next = StorageService.updateSettings(part);
+    setSettings(next);
+    await api.saveSettings(part);
   };
 
   // Context Menu
@@ -442,7 +499,7 @@ export const App: React.FC = () => {
           {currentScreen === 'settings' && (
             <SettingsScreen
               settings={settings}
-              onUpdateSettings={(part) => setSettings(StorageService.updateSettings(part))}
+              onUpdateSettings={handleSaveSettings}
               cachedTracks={cachedTracks}
               onRemoveCachedTrack={handleRemoveCachedTrack}
             />

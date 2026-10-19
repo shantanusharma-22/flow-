@@ -1,8 +1,9 @@
-import React, { useState, useMemo } from 'react';
-import { Search, Clock, Trash2, Music, Disc, User, ListMusic } from 'lucide-react';
+import React, { useState, useMemo, useEffect } from 'react';
+import { Search, Clock, Trash2, Music, Disc, User, ListMusic, Loader2 } from 'lucide-react';
 import { Track, Playlist, Artist } from '../types';
 import { TrackRow } from '../components/TrackRow';
 import { MediaCard } from '../components/MediaCard';
+import { api } from '../services/api';
 
 interface SearchScreenProps {
   searchQuery: string;
@@ -42,8 +43,40 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({
   onArtistClick
 }) => {
   const [activeTab, setActiveTab] = useState<FilterCategory>('all');
+  const [searchResults, setSearchResults] = useState<{ songs: Track[]; artists: any[]; albums: any[]; playlists: any[] } | null>(null);
+  const [isSearching, setIsSearching] = useState(false);
+
+  useEffect(() => {
+    if (!searchQuery.trim()) {
+      setSearchResults(null);
+      setIsSearching(false);
+      return;
+    }
+
+    let isMounted = true;
+    setIsSearching(true);
+
+    const timer = setTimeout(async () => {
+      try {
+        const cat = activeTab === 'all' ? 'all' : (activeTab as any);
+        const res = await api.search(searchQuery, cat, 30);
+        if (isMounted) {
+          setSearchResults(res);
+          setIsSearching(false);
+        }
+      } catch {
+        if (isMounted) setIsSearching(false);
+      }
+    }, 180);
+
+    return () => {
+      isMounted = false;
+      clearTimeout(timer);
+    };
+  }, [searchQuery, activeTab]);
 
   const filteredTracks = useMemo(() => {
+    if (searchResults && searchResults.songs.length > 0) return searchResults.songs;
     if (!searchQuery.trim()) return [];
     const q = searchQuery.toLowerCase();
     return tracks.filter(t =>
@@ -52,25 +85,27 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({
       (t.album && t.album.toLowerCase().includes(q)) ||
       t.lyrics?.lines.some(l => l.text.toLowerCase().includes(q) || (l.romanized && l.romanized.toLowerCase().includes(q)))
     );
-  }, [searchQuery, tracks]);
+  }, [searchQuery, tracks, searchResults]);
 
   const filteredArtists = useMemo(() => {
+    if (searchResults && searchResults.artists.length > 0) return searchResults.artists;
     if (!searchQuery.trim()) return [];
     const q = searchQuery.toLowerCase();
     return artists.filter(a =>
       a.name.toLowerCase().includes(q) ||
       (a.description && a.description.toLowerCase().includes(q))
     );
-  }, [searchQuery, artists]);
+  }, [searchQuery, artists, searchResults]);
 
   const filteredPlaylists = useMemo(() => {
+    if (searchResults && searchResults.playlists.length > 0) return searchResults.playlists;
     if (!searchQuery.trim()) return [];
     const q = searchQuery.toLowerCase();
     return playlists.filter(p =>
       p.title.toLowerCase().includes(q) ||
       (p.description && p.description.toLowerCase().includes(q))
     );
-  }, [searchQuery, playlists]);
+  }, [searchQuery, playlists, searchResults]);
 
   const hasResults = filteredTracks.length > 0 || filteredArtists.length > 0 || filteredPlaylists.length > 0;
 

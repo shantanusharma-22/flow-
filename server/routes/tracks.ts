@@ -115,3 +115,65 @@ tracksRouter.post(
     });
   }
 );
+
+// POST scrobble track (increments play_count)
+tracksRouter.post(
+  '/:id/scrobble',
+  validate({
+    params: z.object({ id: z.string().min(1) })
+  }),
+  (req: Request, res: Response) => {
+    const { id } = req.params;
+    FlowDatabase.run("UPDATE tracks SET play_count = coalesce(play_count, 0) + 1, updated_at = datetime('now') WHERE id = ?;", [id]);
+    const track = FlowDatabase.get<{ play_count: number }>('SELECT play_count FROM tracks WHERE id = ?;', [id]);
+
+    res.json({
+      trackId: id,
+      playCount: track?.play_count || 1,
+      scrobbledAt: new Date().toISOString()
+    });
+  }
+);
+
+// GET synchronized lyrics alias
+tracksRouter.get(
+  '/:id/lyrics',
+  validate({
+    params: z.object({ id: z.string().min(1) })
+  }),
+  (req: Request, res: Response) => {
+    const { id } = req.params;
+    const lyricsRecord = FlowDatabase.get<{
+      track_id: string;
+      is_synced: number;
+      synced_json: string;
+      raw_lrc: string | null;
+      provider: string;
+    }>('SELECT * FROM lyrics WHERE track_id = ?;', [id]);
+
+    if (!lyricsRecord) {
+      res.json({
+        trackId: id,
+        isSynced: false,
+        lines: [],
+        rawLrc: null,
+        provider: 'none'
+      });
+      return;
+    }
+
+    try {
+      const lines = JSON.parse(lyricsRecord.synced_json || '[]');
+      res.json({
+        trackId: id,
+        isSynced: lyricsRecord.is_synced === 1,
+        lines,
+        rawLrc: lyricsRecord.raw_lrc,
+        provider: lyricsRecord.provider
+      });
+    } catch {
+      res.status(500).json({ error: 'Failed to decode lyrics payload' });
+    }
+  }
+);
+
