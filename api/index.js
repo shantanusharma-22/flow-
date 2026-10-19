@@ -20796,11 +20796,11 @@ var require_router = __commonJS({
     var slice = Array.prototype.slice;
     var flatten = Array.prototype.flat;
     var methods = METHODS.map((method) => method.toLowerCase());
-    module.exports = Router12;
+    module.exports = Router13;
     module.exports.Route = Route;
-    function Router12(options) {
-      if (!(this instanceof Router12)) {
-        return new Router12(options);
+    function Router13(options) {
+      if (!(this instanceof Router13)) {
+        return new Router13(options);
       }
       const opts = options || {};
       function router(req, res, next) {
@@ -20814,9 +20814,9 @@ var require_router = __commonJS({
       router.stack = [];
       return router;
     }
-    Router12.prototype = function() {
+    Router13.prototype = function() {
     };
-    Router12.prototype.param = function param(name, fn) {
+    Router13.prototype.param = function param(name, fn) {
       if (!name) {
         throw new TypeError("argument name is required");
       }
@@ -20836,7 +20836,7 @@ var require_router = __commonJS({
       params.push(fn);
       return this;
     };
-    Router12.prototype.handle = function handle(req, res, callback) {
+    Router13.prototype.handle = function handle(req, res, callback) {
       if (!callback) {
         throw new TypeError("argument callback is required");
       }
@@ -20963,7 +20963,7 @@ var require_router = __commonJS({
         }
       }
     };
-    Router12.prototype.use = function use(handler2) {
+    Router13.prototype.use = function use(handler2) {
       let offset = 0;
       let path5 = "/";
       if (typeof handler2 !== "function") {
@@ -20996,7 +20996,7 @@ var require_router = __commonJS({
       }
       return this;
     };
-    Router12.prototype.route = function route(path5) {
+    Router13.prototype.route = function route(path5) {
       const route2 = new Route(path5);
       const layer = new Layer(path5, {
         sensitive: this.caseSensitive,
@@ -21011,7 +21011,7 @@ var require_router = __commonJS({
       return route2;
     };
     methods.concat("all").forEach(function(method) {
-      Router12.prototype[method] = function(path5) {
+      Router13.prototype[method] = function(path5) {
         const route = this.route(path5);
         route[method].apply(route, slice.call(arguments, 1));
         return this;
@@ -21194,7 +21194,7 @@ var require_application = __commonJS({
     var compileTrust = require_utils3().compileTrust;
     var resolve = __require("node:path").resolve;
     var once = require_once();
-    var Router12 = require_router();
+    var Router13 = require_router();
     var slice = Array.prototype.slice;
     var flatten = Array.prototype.flat;
     var app2 = exports = module.exports = {};
@@ -21210,7 +21210,7 @@ var require_application = __commonJS({
         enumerable: true,
         get: function getrouter() {
           if (router === null) {
-            router = new Router12({
+            router = new Router13({
               caseSensitive: this.enabled("case sensitive routing"),
               strict: this.enabled("strict routing")
             });
@@ -23883,7 +23883,7 @@ var require_express = __commonJS({
     var EventEmitter = __require("node:events").EventEmitter;
     var mixin = require_merge_descriptors();
     var proto = require_application();
-    var Router12 = require_router();
+    var Router13 = require_router();
     var req = require_request();
     var res = require_response();
     exports = module.exports = createApplication;
@@ -23905,8 +23905,8 @@ var require_express = __commonJS({
     exports.application = proto;
     exports.request = req;
     exports.response = res;
-    exports.Route = Router12.Route;
-    exports.Router = Router12;
+    exports.Route = Router13.Route;
+    exports.Router = Router13;
     exports.json = bodyParser.json;
     exports.raw = bodyParser.raw;
     exports.static = require_serve_static();
@@ -24202,7 +24202,7 @@ var require_lib3 = __commonJS({
 });
 
 // server/app.ts
-var import_express12 = __toESM(require_express2(), 1);
+var import_express13 = __toESM(require_express2(), 1);
 var import_cors = __toESM(require_lib3(), 1);
 import path3 from "path";
 import fs3 from "fs";
@@ -45443,6 +45443,229 @@ exploreRouter.get("/", async (_req, res) => {
   }
 });
 
+// server/routes/jam.ts
+var import_express12 = __toESM(require_express2(), 1);
+var jamRouter = (0, import_express12.Router)();
+var ALPHABET = "0123456789ABCDEFGHJKMNPQRSTUVWXYZ";
+var CODE_LENGTH = 6;
+function generateJamCode() {
+  let result = "";
+  for (let i = 0; i < CODE_LENGTH; i++) {
+    const randomIndex = Math.floor(Math.random() * ALPHABET.length);
+    result += ALPHABET[randomIndex];
+  }
+  return result;
+}
+function normalizeJamCode(code) {
+  return code.toUpperCase().trim().replace(/[\s-]/g, "").replace(/[IL]/g, "1").replace(/O/g, "0");
+}
+var rooms = /* @__PURE__ */ new Map();
+var demoCode = "FLOW26";
+rooms.set(demoCode, {
+  code: demoCode,
+  name: "Flow Lounge",
+  hostId: "host-harrmane",
+  hostName: "Harrmane",
+  members: [
+    { id: "host-harrmane", name: "Harrmane", isHost: true, joinedAt: Date.now() - 12e4 },
+    { id: "member-alex", name: "Alex", isHost: false, joinedAt: Date.now() - 6e4 }
+  ],
+  currentTrack: {
+    id: "yt-synth-01",
+    title: "Midnight City Glow",
+    artist: "Neon Mirage",
+    album: "Retrowave Dreams",
+    durationSec: 215,
+    streamUrl: "https://cdn.flowplayer.local/audio/synth-01.flac",
+    coverArt: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&h=600&fit=crop",
+    isLossless: true,
+    lyricsSynced: true,
+    audioQuality: "FLAC (24-bit/1411kbps)"
+  },
+  isPlaying: true,
+  currentTimeSec: 42,
+  lastStateUpdateMs: Date.now(),
+  hostOnlyControl: false,
+  maxMembers: 16,
+  createdAt: Date.now() - 12e4
+});
+jamRouter.get("/rooms", (_req, res) => {
+  const activeRooms = Array.from(rooms.values()).map((r) => ({
+    code: r.code,
+    name: r.name,
+    hostName: r.hostName,
+    memberCount: r.members.length,
+    maxMembers: r.maxMembers,
+    currentTrackTitle: r.currentTrack?.title || "Idle",
+    currentTrackArtist: r.currentTrack?.artist || "None",
+    isPlaying: r.isPlaying
+  }));
+  res.json({ rooms: activeRooms });
+});
+jamRouter.post(
+  "/create",
+  validate2({
+    body: external_exports.object({
+      roomName: external_exports.string().min(1).max(50).default("My Flow Jam"),
+      userName: external_exports.string().min(1).max(30).default("Host"),
+      hostOnlyControl: external_exports.boolean().default(false),
+      currentTrack: external_exports.any().optional()
+    })
+  }),
+  (req, res) => {
+    let code = generateJamCode();
+    while (rooms.has(code)) {
+      code = generateJamCode();
+    }
+    const hostMember = {
+      id: `usr-${Date.now().toString(36)}`,
+      name: req.body.userName,
+      isHost: true,
+      joinedAt: Date.now()
+    };
+    const newRoom = {
+      code,
+      name: req.body.roomName,
+      hostId: hostMember.id,
+      hostName: hostMember.name,
+      members: [hostMember],
+      currentTrack: req.body.currentTrack || null,
+      isPlaying: false,
+      currentTimeSec: 0,
+      lastStateUpdateMs: Date.now(),
+      hostOnlyControl: req.body.hostOnlyControl,
+      maxMembers: 16,
+      createdAt: Date.now()
+    };
+    rooms.set(code, newRoom);
+    res.status(201).json({
+      room: newRoom,
+      member: hostMember,
+      inviteUrl: `http://localhost:5173/?jam=${code}`
+    });
+  }
+);
+jamRouter.post(
+  "/join",
+  validate2({
+    body: external_exports.object({
+      code: external_exports.string().min(4),
+      userName: external_exports.string().min(1).max(30).default("Listener")
+    })
+  }),
+  (req, res) => {
+    const normalized = normalizeJamCode(req.body.code);
+    const room = rooms.get(normalized);
+    if (!room) {
+      res.status(404).json({ error: `Jam room '${normalized}' not found.` });
+      return;
+    }
+    if (room.members.length >= room.maxMembers) {
+      res.status(403).json({ error: "Room is at maximum member capacity." });
+      return;
+    }
+    const member = {
+      id: `usr-${Date.now().toString(36)}`,
+      name: req.body.userName,
+      isHost: false,
+      joinedAt: Date.now()
+    };
+    room.members.push(member);
+    res.json({
+      room,
+      member
+    });
+  }
+);
+jamRouter.get("/room/:code", (req, res) => {
+  const normalized = normalizeJamCode(req.params.code);
+  const room = rooms.get(normalized);
+  if (!room) {
+    res.status(404).json({ error: "Room not found" });
+    return;
+  }
+  let estimatedTimeSec = room.currentTimeSec;
+  if (room.isPlaying && room.lastStateUpdateMs > 0) {
+    const elapsedSec = (Date.now() - room.lastStateUpdateMs) / 1e3;
+    estimatedTimeSec += elapsedSec;
+    if (room.currentTrack && estimatedTimeSec > room.currentTrack.durationSec) {
+      estimatedTimeSec = room.currentTrack.durationSec;
+    }
+  }
+  res.json({
+    ...room,
+    estimatedTimeSec: Math.floor(estimatedTimeSec)
+  });
+});
+jamRouter.post(
+  "/room/:code/sync",
+  validate2({
+    body: external_exports.object({
+      memberId: external_exports.string(),
+      action: external_exports.enum(["play", "pause", "seek", "setTrack", "next", "previous"]),
+      track: external_exports.any().optional(),
+      currentTimeSec: external_exports.number().optional(),
+      isPlaying: external_exports.boolean().optional()
+    })
+  }),
+  (req, res) => {
+    const normalized = normalizeJamCode(req.params.code);
+    const room = rooms.get(normalized);
+    if (!room) {
+      res.status(404).json({ error: "Room not found" });
+      return;
+    }
+    const member = room.members.find((m) => m.id === req.body.memberId);
+    if (!member) {
+      res.status(403).json({ error: "Not a member of this room" });
+      return;
+    }
+    if (room.hostOnlyControl && !member.isHost) {
+      res.status(403).json({ error: "Only the host may control playback in this room" });
+      return;
+    }
+    if (req.body.track !== void 0) {
+      room.currentTrack = req.body.track;
+    }
+    if (req.body.currentTimeSec !== void 0) {
+      room.currentTimeSec = req.body.currentTimeSec;
+    }
+    if (req.body.isPlaying !== void 0) {
+      room.isPlaying = req.body.isPlaying;
+    }
+    room.lastStateUpdateMs = Date.now();
+    res.json({
+      success: true,
+      room
+    });
+  }
+);
+jamRouter.post(
+  "/room/:code/leave",
+  validate2({
+    body: external_exports.object({
+      memberId: external_exports.string()
+    })
+  }),
+  (req, res) => {
+    const normalized = normalizeJamCode(req.params.code);
+    const room = rooms.get(normalized);
+    if (!room) {
+      res.status(404).json({ error: "Room not found" });
+      return;
+    }
+    room.members = room.members.filter((m) => m.id !== req.body.memberId);
+    if (room.members.length === 0) {
+      rooms.delete(normalized);
+    } else if (room.hostId === req.body.memberId) {
+      room.members[0].isHost = true;
+      room.hostId = room.members[0].id;
+      room.hostName = room.members[0].name;
+    }
+    res.json({ success: true });
+  }
+);
+
 // server/middleware/auth.ts
 function authMiddleware(req, res, next) {
   const authHeader = req.headers.authorization;
@@ -45473,7 +45696,7 @@ function authMiddleware(req, res, next) {
 }
 
 // server/app.ts
-var app = (0, import_express12.default)();
+var app = (0, import_express13.default)();
 var allowedOrigins = (process.env.CORS_ORIGIN || "http://localhost:5173,http://localhost:4173,http://localhost:3000").split(",");
 app.use((0, import_cors.default)({
   origin: (origin, callback) => {
@@ -45491,8 +45714,8 @@ app.use((req, res, next) => {
   res.setHeader("X-XSS-Protection", "1; mode=block");
   next();
 });
-app.use(import_express12.default.json({ limit: "5mb" }));
-app.use(import_express12.default.urlencoded({ extended: true }));
+app.use(import_express13.default.json({ limit: "5mb" }));
+app.use(import_express13.default.urlencoded({ extended: true }));
 app.use(authMiddleware);
 app.get("/api/health", (req, res) => {
   res.json({
@@ -45513,11 +45736,12 @@ app.use("/api/settings", settingsRouter);
 app.use("/api/integrations", integrationsRouter);
 app.use("/api/library", libraryRouter);
 app.use("/api/explore", exploreRouter);
+app.use("/api/jam", jamRouter);
 var distDir = path3.resolve(process.cwd(), "dist");
 if (fs3.existsSync(distDir)) {
-  app.use(import_express12.default.static(distDir));
-  app.get("*", (req, res, next) => {
-    if (req.path.startsWith("/api")) {
+  app.use(import_express13.default.static(distDir));
+  app.use((req, res, next) => {
+    if (req.method !== "GET" || req.path.startsWith("/api")) {
       return next();
     }
     const indexPath = path3.join(distDir, "index.html");

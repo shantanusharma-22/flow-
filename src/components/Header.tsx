@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import { Track, RepeatMode } from '../types';
 import { AccountPopover } from './AccountPopover';
+import { ListenTogetherModal } from './ListenTogetherModal';
 
 interface HeaderProps {
   currentTrack: Track | null;
@@ -57,6 +58,7 @@ export const Header: React.FC<HeaderProps> = ({
   onNavigateBack
 }) => {
   const [isAccountOpen, setIsAccountOpen] = useState(false);
+  const [isListenTogetherOpen, setIsListenTogetherOpen] = useState(false);
 
   const progressPercent = durationSec > 0 ? Math.min(100, Math.max(0, (currentTimeSec / durationSec) * 100)) : 0;
 
@@ -325,10 +327,10 @@ export const Header: React.FC<HeaderProps> = ({
           />
         </div>
 
-        {/* Headphones (Listen Together / Audio Device) */}
+        {/* Headphones (Listen Together / Jam Session) */}
         <button
-          onClick={() => alert("Listen Together: Active session on Harrmane's Phone")}
-          title="Listen Together / Audio Output"
+          onClick={() => setIsListenTogetherOpen(true)}
+          title="Listen Together / Jam Session"
           style={{
             background: 'none',
             border: 'none',
@@ -407,6 +409,15 @@ export const Header: React.FC<HeaderProps> = ({
           isOpen={isAccountOpen}
           onClose={() => setIsAccountOpen(false)}
           onOpenSettings={onOpenSettings}
+        />
+
+        {/* Listen Together Modal */}
+        <ListenTogetherModal
+          isOpen={isListenTogetherOpen}
+          onClose={() => setIsListenTogetherOpen(false)}
+          currentTrack={currentTrack}
+          isPlaying={isPlaying}
+          onTogglePlayPause={onPlayPause}
         />
       </div>
     </header>

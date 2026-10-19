@@ -474,6 +474,68 @@ class FlowApiClient {
   } | null> {
     return await this.request('/library/watcher');
   }
+
+  // --- Listen Together / Jam Sessions ---
+  public async listJamRooms(): Promise<Array<{
+    code: string;
+    name: string;
+    hostName: string;
+    memberCount: number;
+    maxMembers: number;
+    currentTrackTitle: string;
+    currentTrackArtist: string;
+    isPlaying: boolean;
+  }>> {
+    const res = await this.request<{ rooms: any[] }>('/jam/rooms');
+    return res?.rooms || [];
+  }
+
+  public async createJamRoom(params: {
+    roomName?: string;
+    userName?: string;
+    hostOnlyControl?: boolean;
+    currentTrack?: Track | null;
+  }): Promise<{ room: any; member: any; inviteUrl: string } | null> {
+    return await this.request('/jam/create', {
+      method: 'POST',
+      body: JSON.stringify(params)
+    });
+  }
+
+  public async joinJamRoom(code: string, userName?: string): Promise<{ room: any; member: any } | null> {
+    return await this.request('/jam/join', {
+      method: 'POST',
+      body: JSON.stringify({ code, userName })
+    });
+  }
+
+  public async getJamRoomState(code: string): Promise<any | null> {
+    return await this.request(`/jam/room/${encodeURIComponent(code)}`);
+  }
+
+  public async syncJamRoom(
+    code: string,
+    memberId: string,
+    action: 'play' | 'pause' | 'seek' | 'setTrack' | 'next' | 'previous',
+    data?: { track?: Track; currentTimeSec?: number; isPlaying?: boolean }
+  ): Promise<{ success: boolean; room: any } | null> {
+    return await this.request(`/jam/room/${encodeURIComponent(code)}/sync`, {
+      method: 'POST',
+      body: JSON.stringify({
+        memberId,
+        action,
+        ...data
+      })
+    });
+  }
+
+  public async leaveJamRoom(code: string, memberId: string): Promise<boolean> {
+    const res = await this.request<{ success: boolean }>(`/jam/room/${encodeURIComponent(code)}/leave`, {
+      method: 'POST',
+      body: JSON.stringify({ memberId })
+    });
+    return res ? res.success : false;
+  }
 }
 
 export const api = new FlowApiClient();
