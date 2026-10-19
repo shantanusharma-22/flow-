@@ -12,7 +12,7 @@ Gapless playback with adjustable crossfade (0-12s),playback,should,yes,yes,Dual-
 Interactive audio equalizer with sound presets,audio,should,yes,yes,Real-time Web Audio frequency visualizer and EQ presets
 Spotify playlist importer mapping tracks to YouTube Music,integrations,should,yes,yes,M3U8 standard playlist import and export
 Ambient blur glow backdrop and Dark/Mica theme support,ui,should,yes,yes,Fluid multi-color mesh backdrop and theme presets
-Sleep timer with auto-fadeout,playback,should,yes,partial,Configurable auto-stop playback state
+Sleep timer with auto-fadeout,playback,should,yes,yes,Sleep timer dock popup with 15/30/45/60m presets and 30s linear acoustic volume fadeout
 Discord Rich Presence live status,integrations,could,yes,yes,S09 RPC integration toggle and playback status
 Last.fm and ListenBrainz scrobbling,integrations,could,yes,yes,S09 scrobble history and session connector
 Listen Together synchronized party listening,social,could,yes,yes,Header WebRTC sync room code coordination

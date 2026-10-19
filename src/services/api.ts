@@ -350,6 +350,75 @@ class FlowApiClient {
     });
     return res ? res.success : false;
   }
+
+  // --- Local Library & Spotify Resolver ---
+  public async scanLocalLibrary(directoryPath?: string): Promise<{
+    success: boolean;
+    directory: string;
+    scannedFilesFound: number;
+    newlyIndexedTracks: number;
+    totalLocalTracks: number;
+    message: string;
+  } | null> {
+    return await this.request('/library/scan', {
+      method: 'POST',
+      body: JSON.stringify({ directoryPath })
+    });
+  }
+
+  public async getLocalFiles(): Promise<Track[]> {
+    const res = await this.request<{ tracks: any[] }>('/library/local-files');
+    return (res?.tracks || []).map((s: any) => ({
+      id: s.id,
+      title: s.title,
+      artist: s.artist,
+      album: s.album,
+      durationSec: s.durationSec,
+      thumbnailUrl: s.thumbnailUrl,
+      streamUrl: s.streamUrl,
+      audioFormat: s.audioFormat || 'flac',
+      bitrateKbps: s.bitrateKbps || 1411,
+      isLiked: Boolean(s.isLiked)
+    }));
+  }
+
+  public async resolveSpotifyUri(uri: string): Promise<{ resolvedTitle: string; tracks: Track[] } | null> {
+    const res = await this.request<{
+      success: boolean;
+      resolvedTitle: string;
+      tracks: any[];
+    }>(`/library/spotify-resolve?uri=${encodeURIComponent(uri)}`);
+
+    if (res && res.tracks) {
+      return {
+        resolvedTitle: res.resolvedTitle,
+        tracks: res.tracks.map((s: any) => ({
+          id: s.id,
+          title: s.title,
+          artist: s.artist,
+          album: s.album,
+          durationSec: s.durationSec || 180,
+          thumbnailUrl: s.thumbnailUrl,
+          streamUrl: s.streamUrl,
+          audioFormat: s.audioFormat || 'opus',
+          bitrateKbps: s.bitrateKbps || 320,
+          isLiked: Boolean(s.isLiked)
+        }))
+      };
+    }
+    return null;
+  }
+
+  public async getWatcherStatus(): Promise<{
+    active: boolean;
+    watchedDirectory: string;
+    lastIndexedFile: string | null;
+    lastEventTime: string | null;
+    totalEventsDetected: number;
+    totalLocalTracks: number;
+  } | null> {
+    return await this.request('/library/watcher');
+  }
 }
 
 export const api = new FlowApiClient();

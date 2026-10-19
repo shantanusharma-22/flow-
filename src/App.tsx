@@ -12,6 +12,10 @@ import { SyncedLyrics } from './components/SyncedLyrics';
 import { QueueDrawer } from './components/QueueDrawer';
 import { ContextMenu } from './components/ContextMenu';
 import { CreatePlaylistModal } from './components/CreatePlaylistModal';
+import { EqualizerModal } from './components/EqualizerModal';
+import { SleepTimerModal } from './components/SleepTimerModal';
+import { StatsForNerdsModal } from './components/StatsForNerdsModal';
+import { CreditsModal } from './components/CreditsModal';
 
 import { HomeScreen } from './screens/HomeScreen';
 import { SearchScreen } from './screens/SearchScreen';
@@ -54,6 +58,10 @@ export const App: React.FC = () => {
   const [isLyricsOpen, setIsLyricsOpen] = useState(false);
   const [isQueueOpen, setIsQueueOpen] = useState(false);
   const [isCreatePlaylistOpen, setIsCreatePlaylistOpen] = useState(false);
+  const [isEqualizerOpen, setIsEqualizerOpen] = useState(false);
+  const [isSleepTimerOpen, setIsSleepTimerOpen] = useState(false);
+  const [isStatsOpen, setIsStatsOpen] = useState(false);
+  const [isCreditsOpen, setIsCreditsOpen] = useState(false);
   const [contextMenu, setContextMenu] = useState<{ x: number; y: number; track: Track } | null>(null);
 
   // Wire Audio Engine Callbacks
@@ -502,6 +510,10 @@ export const App: React.FC = () => {
               onUpdateSettings={handleSaveSettings}
               cachedTracks={cachedTracks}
               onRemoveCachedTrack={handleRemoveCachedTrack}
+              onOpenEqualizer={() => setIsEqualizerOpen(true)}
+              onOpenSleepTimer={() => setIsSleepTimerOpen(true)}
+              onOpenStats={() => setIsStatsOpen(true)}
+              onOpenCredits={() => setIsCreditsOpen(true)}
             />
           )}
 
@@ -613,6 +625,9 @@ export const App: React.FC = () => {
         onToggleLike={() => currentTrack && handleToggleLike(currentTrack.id)}
         onToggleDownload={() => currentTrack && handleToggleDownload(currentTrack.id)}
         onOpenNowPlaying={() => setCurrentScreen('nowPlaying')}
+        onOpenEqualizer={() => setIsEqualizerOpen(true)}
+        onOpenSleepTimer={() => setIsSleepTimerOpen(true)}
+        onOpenStats={() => setIsStatsOpen(true)}
       />
 
       {/* Context Menu Popover */}
@@ -641,6 +656,30 @@ export const App: React.FC = () => {
         isOpen={isCreatePlaylistOpen}
         onClose={() => setIsCreatePlaylistOpen(false)}
         onCreate={handleCreatePlaylist}
+      />
+
+      {/* 8-Band Parametric Equalizer Modal */}
+      <EqualizerModal
+        isOpen={isEqualizerOpen}
+        onClose={() => setIsEqualizerOpen(false)}
+      />
+
+      {/* Sleep Timer & Fadeout Modal */}
+      <SleepTimerModal
+        isOpen={isSleepTimerOpen}
+        onClose={() => setIsSleepTimerOpen(false)}
+      />
+
+      {/* Stats for Nerds Telemetry Modal */}
+      <StatsForNerdsModal
+        isOpen={isStatsOpen}
+        onClose={() => setIsStatsOpen(false)}
+      />
+
+      {/* Credits & Open-Source Acknowledgments Modal */}
+      <CreditsModal
+        isOpen={isCreditsOpen}
+        onClose={() => setIsCreditsOpen(false)}
       />
     </div>
   );

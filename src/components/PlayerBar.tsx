@@ -14,7 +14,10 @@ import {
   Heart,
   Maximize2,
   Download,
-  Gauge
+  Gauge,
+  Sliders,
+  Moon,
+  Activity
 } from 'lucide-react';
 import { Track, RepeatMode } from '../types';
 import { ScrubBar } from './ScrubBar';
@@ -46,6 +49,9 @@ interface PlayerBarProps {
   onToggleLike: () => void;
   onToggleDownload: () => void;
   onOpenNowPlaying: () => void;
+  onOpenEqualizer?: () => void;
+  onOpenSleepTimer?: () => void;
+  onOpenStats?: () => void;
 }
 
 export const PlayerBar: React.FC<PlayerBarProps> = ({
@@ -74,7 +80,10 @@ export const PlayerBar: React.FC<PlayerBarProps> = ({
   onToggleQueue,
   onToggleLike,
   onToggleDownload,
-  onOpenNowPlaying
+  onOpenNowPlaying,
+  onOpenEqualizer,
+  onOpenSleepTimer,
+  onOpenStats
 }) => {
   const [showSpeedMenu, setShowSpeedMenu] = useState(false);
   const speeds = [0.5, 0.75, 1.0, 1.25, 1.5, 2.0];
@@ -279,6 +288,42 @@ export const PlayerBar: React.FC<PlayerBarProps> = ({
         >
           <ListMusic size={19} />
         </button>
+
+        {/* Equalizer Modal Trigger */}
+        {onOpenEqualizer && (
+          <button
+            className="btn-icon"
+            onClick={onOpenEqualizer}
+            title="8-Band Equalizer"
+            aria-label="Open Equalizer"
+          >
+            <Sliders size={18} />
+          </button>
+        )}
+
+        {/* Sleep Timer Trigger */}
+        {onOpenSleepTimer && (
+          <button
+            className="btn-icon"
+            onClick={onOpenSleepTimer}
+            title="Sleep Timer with 30s Fadeout"
+            aria-label="Open Sleep Timer"
+          >
+            <Moon size={18} />
+          </button>
+        )}
+
+        {/* Stats for Nerds Trigger */}
+        {onOpenStats && (
+          <button
+            className="btn-icon"
+            onClick={onOpenStats}
+            title="Stats for Nerds (Audio Telemetry)"
+            aria-label="Audio Telemetry"
+          >
+            <Activity size={18} />
+          </button>
+        )}
 
         {/* Volume Slider */}
         <div className="volume-slider-wrapper">

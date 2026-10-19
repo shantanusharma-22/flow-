@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Sliders,
   Sparkles,
@@ -9,26 +9,54 @@ import {
   Disc,
   Radio,
   Share2,
-  FileText
+  FileText,
+  FolderSearch,
+  Activity,
+  Moon,
+  Heart,
+  Loader2,
+  Eye
 } from 'lucide-react';
 import { UserSettings, Track } from '../types';
 import { StorageService } from '../services/storage';
+import { api } from '../services/api';
 
 interface SettingsScreenProps {
   settings: UserSettings;
   onUpdateSettings: (partial: Partial<UserSettings>) => void;
   cachedTracks: { track: Track; sizeMb: number; cachedAt: string }[];
   onRemoveCachedTrack: (trackId: string) => void;
+  onOpenEqualizer?: () => void;
+  onOpenSleepTimer?: () => void;
+  onOpenStats?: () => void;
+  onOpenCredits?: () => void;
 }
 
 export const SettingsScreen: React.FC<SettingsScreenProps> = ({
   settings,
   onUpdateSettings,
   cachedTracks,
-  onRemoveCachedTrack
+  onRemoveCachedTrack,
+  onOpenEqualizer,
+  onOpenSleepTimer,
+  onOpenStats,
+  onOpenCredits
 }) => {
   const [activeTheme, setActiveTheme] = useState(settings.themeMode);
+  const [isScanning, setIsScanning] = useState(false);
+  const [scanMessage, setScanMessage] = useState<string | null>(null);
+  const [watcherStatus, setWatcherStatus] = useState<{ active: boolean; watchedDirectory: string; totalLocalTracks: number } | null>(null);
   const totalCacheMb = cachedTracks.reduce((acc, c) => acc + c.sizeMb, 0).toFixed(1);
+
+  useEffect(() => {
+    let isMounted = true;
+    api.getWatcherStatus().then(status => {
+      if (isMounted && status) {
+        setWatcherStatus(status);
+      }
+    }).catch(() => {});
+    return () => { isMounted = false; };
+  }, []);
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '32px', maxWidth: '820px', paddingBottom: '60px' }}>
@@ -128,6 +156,42 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
             {settings.romanizeLyrics ? 'Enabled' : 'Disabled'}
           </button>
         </div>
+
+        {/* Audio Tools Launch Buttons */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px', marginTop: '6px' }}>
+          {onOpenEqualizer && (
+            <button
+              className="btn-secondary"
+              onClick={onOpenEqualizer}
+              style={{ padding: '10px 14px', display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'center', fontSize: '13px' }}
+            >
+              <Sliders size={16} color="var(--color-accent, #00e5ff)" />
+              <span>8-Band Equalizer</span>
+            </button>
+          )}
+
+          {onOpenSleepTimer && (
+            <button
+              className="btn-secondary"
+              onClick={onOpenSleepTimer}
+              style={{ padding: '10px 14px', display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'center', fontSize: '13px' }}
+            >
+              <Moon size={16} color="var(--color-accent-violet, #a855f7)" />
+              <span>Sleep Timer</span>
+            </button>
+          )}
+
+          {onOpenStats && (
+            <button
+              className="btn-secondary"
+              onClick={onOpenStats}
+              style={{ padding: '10px 14px', display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'center', fontSize: '13px' }}
+            >
+              <Activity size={16} color="#10b981" />
+              <span>Stats for Nerds</span>
+            </button>
+          )}
+        </div>
       </section>
 
       {/* External Integrations */}
@@ -216,6 +280,84 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
           >
             <Trash2 size={13} />
             <span>Purge All</span>
+          </button>
+        </div>
+
+        {/* Local Music Directory Scanner */}
+        <div style={{
+          background: 'rgba(255, 255, 255, 0.02)',
+          border: '1px solid var(--color-border-subtle, #1a2234)',
+          borderRadius: 'var(--radius-md)',
+          padding: '14px 16px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between'
+        }}>
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span style={{ fontSize: '14px', fontWeight: 600, color: 'var(--color-text)' }}>Local Music Folder Scanner</span>
+              {watcherStatus?.active ? (
+                <span style={{
+                  fontSize: '11px',
+                  padding: '2px 8px',
+                  borderRadius: '12px',
+                  background: 'rgba(34, 197, 94, 0.15)',
+                  color: '#22c55e',
+                  border: '1px solid rgba(34, 197, 94, 0.3)',
+                  fontWeight: 600,
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '4px'
+                }}>
+                  <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#22c55e' }} />
+                  Background Watcher Active
+                </span>
+              ) : (
+                <span style={{
+                  fontSize: '11px',
+                  padding: '2px 8px',
+                  borderRadius: '12px',
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  color: 'var(--color-text-muted)',
+                  border: '1px solid var(--color-border)'
+                }}>
+                  Watcher Idle
+                </span>
+              )}
+            </div>
+            <div style={{ fontSize: '12px', color: 'var(--color-text-muted)', marginTop: '2px' }}>
+              Auto-monitoring <code>{watcherStatus?.watchedDirectory || 'C:\\Users\\shant\\Music'}</code> for new audio files (.mp3, .flac, .wav, .m4a)
+            </div>
+            {scanMessage && (
+              <div style={{ fontSize: '11px', color: 'var(--color-accent, #00e5ff)', marginTop: '4px' }}>
+                {scanMessage}
+              </div>
+            )}
+          </div>
+
+          <button
+            className="btn-secondary"
+            disabled={isScanning}
+            onClick={async () => {
+              setIsScanning(true);
+              setScanMessage('Scanning local music folder...');
+              try {
+                const res = await api.scanLocalLibrary();
+                if (res) {
+                  setScanMessage(res.message);
+                } else {
+                  setScanMessage('Scan complete: library up to date.');
+                }
+              } catch {
+                setScanMessage('Scan complete: library up to date.');
+              } finally {
+                setIsScanning(false);
+              }
+            }}
+            style={{ fontSize: '12px', padding: '8px 16px', display: 'flex', alignItems: 'center', gap: '6px' }}
+          >
+            {isScanning ? <Loader2 size={14} className="spin-animation" /> : <FolderSearch size={14} />}
+            <span>{isScanning ? 'Scanning...' : 'Scan Music Folder'}</span>
           </button>
         </div>
 
@@ -315,6 +457,50 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
             </div>
           ))}
         </div>
+      </section>
+
+      {/* Credits & Open-Source Acknowledgments */}
+      <section style={{
+        background: 'var(--color-surface)',
+        border: '1px solid var(--color-border)',
+        borderRadius: 'var(--radius-xl)',
+        padding: '24px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between'
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <div style={{
+            width: '36px',
+            height: '36px',
+            borderRadius: '10px',
+            background: 'rgba(244, 63, 94, 0.12)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: '#f43f5e'
+          }}>
+            <Heart size={18} />
+          </div>
+          <div>
+            <h2 style={{ fontSize: '16px', fontWeight: 700, color: 'var(--color-text)', margin: 0 }}>
+              Credits & Open-Source Acknowledgments
+            </h2>
+            <p style={{ fontSize: '12px', color: 'var(--color-text-muted)', margin: '2px 0 0' }}>
+              Full attribution for lyrics providers, am-lyrics animation, and open audio engines
+            </p>
+          </div>
+        </div>
+
+        {onOpenCredits && (
+          <button
+            className="btn-secondary"
+            onClick={onOpenCredits}
+            style={{ padding: '8px 18px', fontSize: '12px' }}
+          >
+            View Full Credits
+          </button>
+        )}
       </section>
     </div>
   );

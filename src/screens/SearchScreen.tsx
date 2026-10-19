@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { Search, Clock, Trash2, Music, Disc, User, ListMusic, Loader2 } from 'lucide-react';
+import { Search, Clock, Trash2, Music, Disc, User, ListMusic, Loader2, Radio } from 'lucide-react';
 import { Track, Playlist, Artist } from '../types';
 import { TrackRow } from '../components/TrackRow';
 import { MediaCard } from '../components/MediaCard';
@@ -56,8 +56,24 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({
     let isMounted = true;
     setIsSearching(true);
 
+    const isSpotify = searchQuery.includes('spotify.com') || searchQuery.startsWith('spotify:');
+
     const timer = setTimeout(async () => {
       try {
+        if (isSpotify) {
+          const spotifyRes = await api.resolveSpotifyUri(searchQuery);
+          if (isMounted && spotifyRes) {
+            setSearchResults({
+              songs: spotifyRes.tracks,
+              artists: [],
+              albums: [],
+              playlists: []
+            });
+            setIsSearching(false);
+            return;
+          }
+        }
+
         const cat = activeTab === 'all' ? 'all' : (activeTab as any);
         const res = await api.search(searchQuery, cat, 30);
         if (isMounted) {
@@ -111,6 +127,28 @@ export const SearchScreen: React.FC<SearchScreenProps> = ({
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', paddingBottom: '40px' }}>
+      {/* Spotify URI Resolver Banner */}
+      {(searchQuery.includes('spotify.com') || searchQuery.startsWith('spotify:')) && (
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '12px',
+          background: 'rgba(30, 215, 96, 0.12)',
+          border: '1px solid rgba(30, 215, 96, 0.3)',
+          padding: '14px 18px',
+          borderRadius: '12px',
+          color: '#1ed760'
+        }}>
+          <Radio size={22} />
+          <div>
+            <div style={{ fontSize: '13px', fontWeight: 600 }}>Spotify URI Link Detected</div>
+            <div style={{ fontSize: '11px', color: 'var(--color-text-secondary, #94a3b8)', marginTop: '2px' }}>
+              Automatically resolving Spotify track metadata to high-resolution FLAC & Opus lossless audio streams.
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Category Filter Tabs */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '8px', borderBottom: '1px solid var(--color-border-subtle)', paddingBottom: '12px' }}>
         <button

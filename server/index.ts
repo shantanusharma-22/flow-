@@ -5,6 +5,7 @@ import { app } from './app';
 import { runMigrations } from './db/migrate';
 import { runSeeds } from './db/seed';
 import { FlowDatabase } from './db';
+import { startMusicDirectoryWatcher } from './routes/library';
 
 const PORT = parseInt(process.env.PORT || '8901', 10);
 
@@ -28,6 +29,9 @@ async function startServer() {
       console.log(`   Health Check: http://127.0.0.1:${PORT}/api/health`);
       console.log(`   Catalog API:  http://127.0.0.1:${PORT}/api/search?q=Synth`);
       console.log(`======================================================\n`);
+
+      // Initialize background music directory watcher for C:\Users\shant\Music
+      startMusicDirectoryWatcher();
     });
 
     const shutdown = () => {
