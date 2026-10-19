@@ -66,6 +66,12 @@ class FlowAudioEngine {
   private synthCurrentSec: number = 0;
   private isSynthPlaying: boolean = false;
 
+  // YouTube IFrame Player Bridge
+  private ytPlayer: any = null;
+  private isYtReady: boolean = false;
+  private isYtPlaying: boolean = false;
+  private ytPollInterval: number | null = null;
+
   // Sleep Timer & Fadeout Curve State
   private sleepTimerDurationMinutes: number | 'end_of_track' | null = null;
   private sleepTimerRemainingSec: number | null = null;
@@ -78,6 +84,73 @@ class FlowAudioEngine {
     this.audio.volume = 0.8;
     this.targetVolume = 0.8;
     this.setupListeners();
+    this.initYouTubeBridge();
+  }
+
+  private initYouTubeBridge() {
+    if (typeof window === 'undefined') return;
+    const tryInit = () => {
+      if ((window as any).YT && (window as any).YT.Player && document.getElementById('flow-yt-player')) {
+        try {
+          this.ytPlayer = new (window as any).YT.Player('flow-yt-player', {
+            height: '1',
+            width: '1',
+            playerVars: {
+              autoplay: 1,
+              controls: 0,
+              disablekb: 1,
+              fs: 0,
+              playsinline: 1
+            },
+            events: {
+              onReady: () => {
+                this.isYtReady = true;
+              },
+              onStateChange: (event: any) => {
+                if (event.data === 1) { // PLAYING
+                  this.isYtPlaying = true;
+                  this.events.onStateChange?.(true, false);
+                } else if (event.data === 2) { // PAUSED
+                  this.isYtPlaying = false;
+                  this.events.onStateChange?.(false, false);
+                } else if (event.data === 0) { // ENDED
+                  this.isYtPlaying = false;
+                  this.events.onEnded?.();
+                } else if (event.data === 3) { // BUFFERING
+                  this.events.onStateChange?.(true, true);
+                }
+              },
+              onError: (err: any) => {
+                console.warn('[YouTube Audio Player Notice]', err);
+              }
+            }
+          });
+        } catch { /* ignore if already initialized */ }
+      } else {
+        setTimeout(tryInit, 300);
+      }
+    };
+    tryInit();
+  }
+
+  private startYtPoll() {
+    if (this.ytPollInterval) clearInterval(this.ytPollInterval);
+    this.ytPollInterval = window.setInterval(() => {
+      if (this.ytPlayer && this.isYtPlaying && this.ytPlayer.getCurrentTime) {
+        try {
+          const curr = this.ytPlayer.getCurrentTime() || 0;
+          const dur = this.ytPlayer.getDuration() || this.currentTrack?.durationSec || 180;
+          this.events.onTimeUpdate?.(curr, dur);
+        } catch { }
+      }
+    }, 250);
+  }
+
+  private stopYtPoll() {
+    if (this.ytPollInterval) {
+      clearInterval(this.ytPollInterval);
+      this.ytPollInterval = null;
+    }
   }
 
   private setupListeners() {
@@ -210,6 +283,39 @@ class FlowAudioEngine {
       });
     }
 
+    const isYouTube = track.streamUrl?.includes('youtube.com') ||
+                      track.streamUrl?.includes('youtu.be') ||
+                      (track.id && track.id.length === 11 && !track.id.includes('-') && !track.id.startsWith('track-'));
+
+    if (isYouTube) {
+      let videoId = track.id;
+      if (track.streamUrl?.includes('v=')) {
+        videoId = track.streamUrl.split('v=')[1]?.split('&')[0];
+      } else if (track.streamUrl?.includes('youtu.be/')) {
+        videoId = track.streamUrl.split('youtu.be/')[1]?.split('?')[0];
+      }
+
+      this.audio.pause();
+      if (this.ytPlayer && this.ytPlayer.loadVideoById) {
+        try {
+          this.ytPlayer.loadVideoById(videoId);
+          this.ytPlayer.setVolume(Math.round(this.targetVolume * 100));
+          this.isYtPlaying = true;
+          this.startYtPoll();
+          this.events.onStateChange?.(true, false);
+          return;
+        } catch (e) {
+          console.warn('[YouTube Audio Engine error]', e);
+        }
+      }
+    }
+
+    this.stopYtPoll();
+    if (this.ytPlayer && this.isYtPlaying && this.ytPlayer.pauseVideo) {
+      try { this.ytPlayer.pauseVideo(); } catch { }
+      this.isYtPlaying = false;
+    }
+
     try {
       this.audio.src = track.streamUrl;
       this.audio.playbackRate = this.playbackSpeed;
@@ -243,6 +349,12 @@ class FlowAudioEngine {
     if (typeof (window as any).FlowAndroidBridge !== 'undefined') {
       try { (window as any).FlowAndroidBridge.pause(); } catch { }
     }
+    if (this.isYtPlaying && this.ytPlayer?.pauseVideo) {
+      try { this.ytPlayer.pauseVideo(); } catch { }
+      this.isYtPlaying = false;
+      this.events.onStateChange?.(false, false);
+      return;
+    }
     if (this.isSynthPlaying) {
       this.isSynthPlaying = false;
       this.events.onStateChange?.(false, false);
@@ -255,6 +367,13 @@ class FlowAudioEngine {
     if (typeof (window as any).FlowAndroidBridge !== 'undefined') {
       try { (window as any).FlowAndroidBridge.resume(); } catch { }
     }
+    if (this.currentTrack?.streamUrl?.includes('youtube') && this.ytPlayer?.playVideo) {
+      try { this.ytPlayer.playVideo(); } catch { }
+      this.isYtPlaying = true;
+      this.startYtPoll();
+      this.events.onStateChange?.(true, false);
+      return;
+    }
     if (this.isSynthPlaying) {
       this.isSynthPlaying = true;
       this.events.onStateChange?.(true, false);
@@ -264,6 +383,13 @@ class FlowAudioEngine {
   }
 
   public seek(positionSec: number) {
+    if (this.isYtPlaying && this.ytPlayer?.seekTo) {
+      try {
+        this.ytPlayer.seekTo(positionSec, true);
+        this.events.onTimeUpdate?.(positionSec, this.currentTrack?.durationSec || 180);
+      } catch { }
+      return;
+    }
     if (this.isSynthPlaying) {
       this.synthCurrentSec = positionSec;
       this.events.onTimeUpdate?.(this.synthCurrentSec, this.currentTrack?.durationSec || 180);
@@ -277,6 +403,9 @@ class FlowAudioEngine {
     this.audio.volume = clamped;
     this.targetVolume = clamped;
     this.isMuted = clamped === 0;
+    if (this.ytPlayer?.setVolume) {
+      try { this.ytPlayer.setVolume(Math.round(clamped * 100)); } catch { }
+    }
   }
 
   public getVolume(): number {

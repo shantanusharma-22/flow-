@@ -2,6 +2,7 @@ import { Router, Request, Response } from 'express';
 import { z } from 'zod';
 import { validate } from '../middleware/validate';
 import { FlowDatabase } from '../db';
+import { YouTubeMusicService } from '../services/youtube';
 
 export const tracksRouter = Router();
 
@@ -139,10 +140,17 @@ tracksRouter.post(
 tracksRouter.get(
   '/:id/lyrics',
   validate({
-    params: z.object({ id: z.string().min(1) })
+    params: z.object({ id: z.string().min(1) }),
+    query: z.object({
+      title: z.string().optional(),
+      artist: z.string().optional()
+    }).optional()
   }),
-  (req: Request, res: Response) => {
+  async (req: Request, res: Response) => {
     const { id } = req.params;
+    const qTitle = req.query?.title as string | undefined;
+    const qArtist = req.query?.artist as string | undefined;
+
     const lyricsRecord = FlowDatabase.get<{
       track_id: string;
       is_synced: number;
@@ -151,29 +159,58 @@ tracksRouter.get(
       provider: string;
     }>('SELECT * FROM lyrics WHERE track_id = ?;', [id]);
 
-    if (!lyricsRecord) {
-      res.json({
-        trackId: id,
-        isSynced: false,
-        lines: [],
-        rawLrc: null,
-        provider: 'none'
-      });
-      return;
+    if (lyricsRecord) {
+      try {
+        const lines = JSON.parse(lyricsRecord.synced_json || '[]');
+        res.json({
+          trackId: id,
+          isSynced: lyricsRecord.is_synced === 1,
+          lines,
+          rawLrc: lyricsRecord.raw_lrc,
+          provider: lyricsRecord.provider
+        });
+        return;
+      } catch { /* proceed to live lookup */ }
     }
 
-    try {
-      const lines = JSON.parse(lyricsRecord.synced_json || '[]');
-      res.json({
-        trackId: id,
-        isSynced: lyricsRecord.is_synced === 1,
-        lines,
-        rawLrc: lyricsRecord.raw_lrc,
-        provider: lyricsRecord.provider
-      });
-    } catch {
-      res.status(500).json({ error: 'Failed to decode lyrics payload' });
+    // Attempt live LRCLIB fetch using track metadata from SQLite or query params
+    const track = FlowDatabase.get<{ title: string; artist_name: string }>(
+      'SELECT title, artist_name FROM tracks WHERE id = ?;',
+      [id]
+    );
+
+    const titleToSearch = qTitle || track?.title;
+    const artistToSearch = qArtist || track?.artist_name || '';
+
+    if (titleToSearch) {
+      const live = await YouTubeMusicService.getSynchronizedLyrics(titleToSearch, artistToSearch);
+      if (live && live.lines.length > 0) {
+        try {
+          FlowDatabase.run(
+            `INSERT OR REPLACE INTO lyrics (track_id, is_synced, synced_json, raw_lrc, provider)
+             VALUES (?, ?, ?, ?, 'lrclib');`,
+            [id, live.isSynced ? 1 : 0, JSON.stringify(live.lines), live.rawLrc || '']
+          );
+        } catch { /* ignore cache write error */ }
+
+        res.json({
+          trackId: id,
+          isSynced: live.isSynced,
+          lines: live.lines,
+          rawLrc: live.rawLrc,
+          provider: 'lrclib'
+        });
+        return;
+      }
     }
+
+    res.json({
+      trackId: id,
+      isSynced: false,
+      lines: [],
+      rawLrc: null,
+      provider: 'none'
+    });
   }
 );
 

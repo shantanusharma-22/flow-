@@ -127,8 +127,8 @@ class MainActivity : AppCompatActivity() {
 
         webView.webChromeClient = WebChromeClient()
 
-        // Load Flow web UI (points to local loopback or packaged production assets)
-        webView.loadUrl("http://10.0.2.2:4173")
+        // Load Flow web UI (loads live production Vercel app or local loopback)
+        webView.loadUrl("https://bitchord-replica.vercel.app")
     }
 
     fun notifyWebLocalTracks(tracksJson: String) {

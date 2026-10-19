@@ -119,6 +119,56 @@ class FlowApiClient {
     };
   }
 
+  // --- Explore & Trending Feed ---
+  public async getExploreFeed(): Promise<{
+    trendingTracks: Track[];
+    featuredPlaylists: Playlist[];
+    popularArtists: any[];
+  } | null> {
+    const data = await this.request<{
+      trendingTracks: any[];
+      featuredPlaylists: any[];
+      popularArtists: any[];
+    }>('/explore');
+
+    if (data && data.trendingTracks) {
+      const trendingTracks: Track[] = data.trendingTracks.map((s: any) => ({
+        id: s.id,
+        title: s.title,
+        artist: s.artist,
+        album: s.album,
+        durationSec: s.durationSec || 210,
+        thumbnailUrl: s.thumbnailUrl,
+        streamUrl: s.streamUrl,
+        audioFormat: s.audioFormat || 'opus',
+        bitrateKbps: s.bitrateKbps || 320,
+        isLiked: Boolean(s.isLiked),
+        isDownloaded: false,
+        isCached: false,
+        playCount: s.playCount || 200000
+      }));
+
+      const featuredPlaylists: Playlist[] = (data.featuredPlaylists || []).map((p: any) => ({
+        id: p.id,
+        title: p.title,
+        description: p.description || '',
+        thumbnailUrl: p.thumbnailUrl,
+        isCustom: Boolean(p.isCustom),
+        tracks: [],
+        createdAt: new Date().toISOString(),
+        source: 'youtube'
+      }));
+
+      return {
+        trendingTracks,
+        featuredPlaylists,
+        popularArtists: data.popularArtists || []
+      };
+    }
+
+    return null;
+  }
+
   // --- Tracks & Playback ---
   public async getTrack(id: string): Promise<Track | null> {
     const data = await this.request<any>(`/tracks/${id}`);
@@ -170,13 +220,18 @@ class FlowApiClient {
   }
 
   // --- Lyrics ---
-  public async getLyrics(trackId: string): Promise<{ isSynced: boolean; lines: LyricLine[]; rawLrc?: string } | null> {
+  public async getLyrics(trackId: string, title?: string, artist?: string): Promise<{ isSynced: boolean; lines: LyricLine[]; rawLrc?: string } | null> {
+    const qParams = new URLSearchParams();
+    if (title) qParams.set('title', title);
+    if (artist) qParams.set('artist', artist);
+    const queryString = qParams.toString() ? `?${qParams.toString()}` : '';
+
     const res = await this.request<{
       trackId: string;
       isSynced: boolean;
       lines: LyricLine[];
       rawLrc?: string;
-    }>(`/tracks/${trackId}/lyrics`);
+    }>(`/tracks/${trackId}/lyrics${queryString}`);
 
     if (res && res.lines && res.lines.length > 0) {
       return res;

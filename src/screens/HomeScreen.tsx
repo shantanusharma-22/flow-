@@ -166,7 +166,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
           gridTemplateColumns: 'repeat(auto-fill, minmax(420px, 1fr))',
           gap: '8px'
         }}>
-          {tracks.slice(0, 6).map((track, idx) => (
+          {tracks.slice(0, 8).map((track, idx) => (
             <TrackRow
               key={track.id}
               track={track}
@@ -182,6 +182,41 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
           ))}
         </div>
       </section>
+
+      {/* Trending Hits & New Releases (Apple Music Style Horizontal Cards) */}
+      {tracks.length > 8 && (
+        <section>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <Sparkles size={20} style={{ color: 'var(--color-accent)' }} />
+              <h2 style={{ fontSize: '20px', fontWeight: 700, color: 'var(--color-text)' }}>
+                Trending Hits & New Releases
+              </h2>
+            </div>
+            <span style={{ fontSize: '12px', color: 'var(--color-text-faint)' }}>
+              Live from YouTube Music
+            </span>
+          </div>
+
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))',
+            gap: '16px'
+          }}>
+            {tracks.slice(8, 24).map(track => (
+              <MediaCard
+                key={track.id}
+                title={track.title}
+                subtitle={track.artist}
+                imageUrl={track.thumbnailUrl}
+                type="album"
+                onClick={() => onPlayTrack(track)}
+                onPlayClick={() => onPlayTrack(track)}
+              />
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* Featured Playlists Carousel */}
       <section>

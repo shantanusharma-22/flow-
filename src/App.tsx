@@ -38,6 +38,7 @@ export const App: React.FC = () => {
   const [recentSearches, setRecentSearches] = useState<string[]>(StorageService.getRecentSearches());
   const [playlists, setPlaylists] = useState<Playlist[]>(StorageService.getPlaylists());
   const [tracks, setTracks] = useState<Track[]>(SEED_TRACKS);
+  const [artists, setArtists] = useState<Artist[]>(SEED_ARTISTS);
   const [likedTrackIds, setLikedTrackIds] = useState<Set<string>>(StorageService.getLikedTrackIds());
   const [downloadedTrackIds, setDownloadedTrackIds] = useState<Set<string>>(StorageService.getDownloadedTrackIds());
   const [cachedTracks, setCachedTracks] = useState(StorageService.getCachedTracks());
@@ -150,6 +151,43 @@ export const App: React.FC = () => {
       if (serverSettings && isMounted) {
         setSettings(prev => ({ ...prev, ...serverSettings }));
       }
+
+      // 3. Fetch Live Explore & Trending Feed from YouTube Music
+      const exploreFeed = await api.getExploreFeed();
+      if (exploreFeed && isMounted) {
+        if (exploreFeed.trendingTracks.length > 0) {
+          setTracks(prev => {
+            const map = new Map<string, Track>();
+            exploreFeed.trendingTracks.forEach(t => map.set(t.id, t));
+            prev.forEach(t => {
+              if (!map.has(t.id)) map.set(t.id, t);
+            });
+            return Array.from(map.values());
+          });
+          setCurrentTrack(exploreFeed.trendingTracks[0]);
+          setDurationSec(exploreFeed.trendingTracks[0].durationSec);
+        }
+        if (exploreFeed.featuredPlaylists.length > 0) {
+          setPlaylists(prev => {
+            const map = new Map<string, Playlist>();
+            exploreFeed.featuredPlaylists.forEach(p => map.set(p.id, p));
+            prev.forEach(p => {
+              if (!map.has(p.id)) map.set(p.id, p);
+            });
+            return Array.from(map.values());
+          });
+        }
+        if (exploreFeed.popularArtists && exploreFeed.popularArtists.length > 0) {
+          setArtists(prev => {
+            const map = new Map<string, Artist>();
+            exploreFeed.popularArtists.forEach(a => map.set(a.id, a));
+            prev.forEach(a => {
+              if (!map.has(a.id)) map.set(a.id, a);
+            });
+            return Array.from(map.values());
+          });
+        }
+      }
     })();
 
     // Listen for native Android Kotlin local tracks
@@ -192,7 +230,7 @@ export const App: React.FC = () => {
     // Attempt to enrich track with fresh synced lyrics from backend if not already loaded
     if (!track.lyrics || track.lyrics.lines.length === 0) {
       try {
-        const lyrics = await api.getLyrics(track.id);
+        const lyrics = await api.getLyrics(track.id, track.title, track.artist);
         if (lyrics && lyrics.lines && lyrics.lines.length > 0) {
           resolvedTrack = { ...track, lyrics };
         }
@@ -396,14 +434,14 @@ export const App: React.FC = () => {
         isCustom: false,
         createdAt: '2026-10-19',
         source: 'local' as const,
-        tracks: SEED_TRACKS.filter(t => likedTrackIds.has(t.id))
+        tracks: tracks.filter(t => likedTrackIds.has(t.id))
       }
     : playlists.find(p => p.id === activePlaylistId);
 
-  const currentArtist = SEED_ARTISTS.find(a => a.id === activeArtistId);
+  const currentArtist = artists.find(a => a.id === activeArtistId);
 
-  const likedTracks = SEED_TRACKS.filter(t => likedTrackIds.has(t.id));
-  const downloadedTracks = SEED_TRACKS.filter(t => downloadedTrackIds.has(t.id));
+  const likedTracks = tracks.filter(t => likedTrackIds.has(t.id));
+  const downloadedTracks = tracks.filter(t => downloadedTrackIds.has(t.id));
 
   return (
     <div className="app-container">
@@ -444,9 +482,9 @@ export const App: React.FC = () => {
           {/* S01: Home Screen */}
           {currentScreen === 'home' && (
             <HomeScreen
-              tracks={SEED_TRACKS}
+              tracks={tracks}
               playlists={playlists}
-              artists={SEED_ARTISTS}
+              artists={artists}
               currentTrack={currentTrack}
               isPlaying={isPlaying}
               likedTrackIds={likedTrackIds}
@@ -469,9 +507,9 @@ export const App: React.FC = () => {
                 StorageService.clearRecentSearches();
                 setRecentSearches([]);
               }}
-              tracks={SEED_TRACKS}
+              tracks={tracks}
               playlists={playlists}
-              artists={SEED_ARTISTS}
+              artists={artists}
               currentTrack={currentTrack}
               isPlaying={isPlaying}
               likedTrackIds={likedTrackIds}

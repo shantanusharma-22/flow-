@@ -10,6 +10,7 @@ import { cacheRouter } from './routes/cache';
 import { settingsRouter } from './routes/settings';
 import { integrationsRouter } from './routes/integrations';
 import { libraryRouter } from './routes/library';
+import { exploreRouter } from './routes/explore';
 import { authMiddleware } from './middleware/auth';
 
 export const app = express();
@@ -69,6 +70,7 @@ app.use('/api/cache', cacheRouter);
 app.use('/api/settings', settingsRouter);
 app.use('/api/integrations', integrationsRouter);
 app.use('/api/library', libraryRouter);
+app.use('/api/explore', exploreRouter);
 
 // 404 Route Handler
 app.use((req: Request, res: Response) => {

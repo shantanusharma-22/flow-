@@ -20796,11 +20796,11 @@ var require_router = __commonJS({
     var slice = Array.prototype.slice;
     var flatten = Array.prototype.flat;
     var methods = METHODS.map((method) => method.toLowerCase());
-    module.exports = Router11;
+    module.exports = Router12;
     module.exports.Route = Route;
-    function Router11(options) {
-      if (!(this instanceof Router11)) {
-        return new Router11(options);
+    function Router12(options) {
+      if (!(this instanceof Router12)) {
+        return new Router12(options);
       }
       const opts = options || {};
       function router(req, res, next) {
@@ -20814,9 +20814,9 @@ var require_router = __commonJS({
       router.stack = [];
       return router;
     }
-    Router11.prototype = function() {
+    Router12.prototype = function() {
     };
-    Router11.prototype.param = function param(name, fn) {
+    Router12.prototype.param = function param(name, fn) {
       if (!name) {
         throw new TypeError("argument name is required");
       }
@@ -20836,7 +20836,7 @@ var require_router = __commonJS({
       params.push(fn);
       return this;
     };
-    Router11.prototype.handle = function handle(req, res, callback) {
+    Router12.prototype.handle = function handle(req, res, callback) {
       if (!callback) {
         throw new TypeError("argument callback is required");
       }
@@ -20963,7 +20963,7 @@ var require_router = __commonJS({
         }
       }
     };
-    Router11.prototype.use = function use(handler2) {
+    Router12.prototype.use = function use(handler2) {
       let offset = 0;
       let path4 = "/";
       if (typeof handler2 !== "function") {
@@ -20996,7 +20996,7 @@ var require_router = __commonJS({
       }
       return this;
     };
-    Router11.prototype.route = function route(path4) {
+    Router12.prototype.route = function route(path4) {
       const route2 = new Route(path4);
       const layer = new Layer(path4, {
         sensitive: this.caseSensitive,
@@ -21011,7 +21011,7 @@ var require_router = __commonJS({
       return route2;
     };
     methods.concat("all").forEach(function(method) {
-      Router11.prototype[method] = function(path4) {
+      Router12.prototype[method] = function(path4) {
         const route = this.route(path4);
         route[method].apply(route, slice.call(arguments, 1));
         return this;
@@ -21194,7 +21194,7 @@ var require_application = __commonJS({
     var compileTrust = require_utils3().compileTrust;
     var resolve = __require("node:path").resolve;
     var once = require_once();
-    var Router11 = require_router();
+    var Router12 = require_router();
     var slice = Array.prototype.slice;
     var flatten = Array.prototype.flat;
     var app2 = exports = module.exports = {};
@@ -21210,7 +21210,7 @@ var require_application = __commonJS({
         enumerable: true,
         get: function getrouter() {
           if (router === null) {
-            router = new Router11({
+            router = new Router12({
               caseSensitive: this.enabled("case sensitive routing"),
               strict: this.enabled("strict routing")
             });
@@ -23883,7 +23883,7 @@ var require_express = __commonJS({
     var EventEmitter = __require("node:events").EventEmitter;
     var mixin = require_merge_descriptors();
     var proto = require_application();
-    var Router11 = require_router();
+    var Router12 = require_router();
     var req = require_request();
     var res = require_response();
     exports = module.exports = createApplication;
@@ -23905,8 +23905,8 @@ var require_express = __commonJS({
     exports.application = proto;
     exports.request = req;
     exports.response = res;
-    exports.Route = Router11.Route;
-    exports.Router = Router11;
+    exports.Route = Router12.Route;
+    exports.Router = Router12;
     exports.json = bodyParser.json;
     exports.raw = bodyParser.raw;
     exports.static = require_serve_static();
@@ -24202,7 +24202,7 @@ var require_lib3 = __commonJS({
 });
 
 // server/app.ts
-var import_express11 = __toESM(require_express2(), 1);
+var import_express12 = __toESM(require_express2(), 1);
 var import_cors = __toESM(require_lib3(), 1);
 
 // server/routes/auth.ts
@@ -44126,6 +44126,314 @@ function rateLimiter(options) {
   };
 }
 
+// server/services/youtube.ts
+function parseDuration(str) {
+  if (!str) return 180;
+  const parts = str.split(":").map(Number);
+  if (parts.length === 2 && !isNaN(parts[0]) && !isNaN(parts[1])) {
+    return parts[0] * 60 + parts[1];
+  }
+  if (parts.length === 3 && !isNaN(parts[0]) && !isNaN(parts[1]) && !isNaN(parts[2])) {
+    return parts[0] * 3600 + parts[1] * 60 + parts[2];
+  }
+  return 180;
+}
+function findRenderers(obj, type, out = []) {
+  if (!obj || typeof obj !== "object") return out;
+  if (obj[type]) out.push(obj[type]);
+  for (const k of Object.keys(obj)) {
+    findRenderers(obj[k], type, out);
+  }
+  return out;
+}
+var YouTubeMusicService = class {
+  static INNERTUBE_BASE = "https://music.youtube.com/youtubei/v1";
+  static getHeaders() {
+    return {
+      "Content-Type": "application/json",
+      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "X-Origin": "https://music.youtube.com",
+      "Origin": "https://music.youtube.com",
+      "Referer": "https://music.youtube.com/"
+    };
+  }
+  static async search(query, category = "all", limit = 25) {
+    const trimmed = query.trim();
+    if (!trimmed) {
+      return { songs: [], artists: [], albums: [], playlists: [] };
+    }
+    const payload = {
+      context: {
+        client: {
+          clientName: "WEB_REMIX",
+          clientVersion: "1.20250101.01.00",
+          hl: "en",
+          gl: "US"
+        }
+      },
+      query: trimmed
+    };
+    try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 6e3);
+      const res = await fetch(`${this.INNERTUBE_BASE}/search?prettyPrint=false`, {
+        method: "POST",
+        headers: this.getHeaders(),
+        body: JSON.stringify(payload),
+        signal: controller.signal
+      });
+      clearTimeout(timeoutId);
+      if (!res.ok) {
+        console.warn(`[YouTubeMusicService] Search returned status ${res.status}`);
+        return { songs: [], artists: [], albums: [], playlists: [] };
+      }
+      const data = await res.json();
+      const items = findRenderers(data, "musicResponsiveListItemRenderer");
+      const songs = [];
+      const artists = [];
+      const albums = [];
+      const playlists = [];
+      for (const item of items) {
+        const cols = item.flexColumns || [];
+        const col0Runs = cols[0]?.musicResponsiveListItemFlexColumnRenderer?.text?.runs || cols[0]?.musicResponsiveListItemFlexColumnRenderer?.title?.runs || [];
+        const title = col0Runs.map((r) => r.text).join("").trim();
+        if (!title) continue;
+        const nav = col0Runs[0]?.navigationEndpoint || item.navigationEndpoint;
+        const videoId = nav?.watchEndpoint?.videoId || item.playlistItemData?.videoId;
+        const col1Runs = cols[1]?.musicResponsiveListItemFlexColumnRenderer?.text?.runs || cols[1]?.musicResponsiveListItemFlexColumnRenderer?.title?.runs || [];
+        const col1Text = col1Runs.map((r) => r.text).join("");
+        const thumbs = item.thumbnail?.musicThumbnailRenderer?.thumbnail?.thumbnails || [];
+        let thumb = thumbs.length ? thumbs[thumbs.length - 1].url : "";
+        if (thumb.startsWith("//")) thumb = "https:" + thumb;
+        if (videoId) {
+          let artistName = "Various Artists";
+          let durationStr = "3:20";
+          const parts = col1Text.split("\u2022").map((p) => p.trim());
+          if (parts.length >= 2) {
+            if (parts[parts.length - 1].includes(":")) {
+              durationStr = parts[parts.length - 1];
+            }
+            if (!parts[0].toLowerCase().includes("song")) {
+              artistName = parts[0];
+            }
+          } else if (parts.length === 1 && !parts[0].toLowerCase().includes("song")) {
+            artistName = parts[0];
+          }
+          songs.push({
+            id: videoId,
+            title,
+            artist: artistName,
+            artistId: `yt-art-${videoId}`,
+            album: "YouTube Music Track",
+            durationSec: parseDuration(durationStr),
+            thumbnailUrl: thumb || "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=500&auto=format&fit=crop&q=80",
+            streamUrl: `https://www.youtube.com/watch?v=${videoId}`,
+            audioFormat: "opus",
+            bitrateKbps: 320,
+            isLiked: false,
+            playCount: 145e3 + Math.floor(Math.random() * 5e4)
+          });
+        } else if (col1Text.toLowerCase().includes("artist") || item.menu?.menuRenderer?.items?.some((m) => m.menuNavigationItemRenderer?.icon?.iconType === "SUBSCRIBE")) {
+          artists.push({
+            id: `yt-artist-${Buffer.from(title).toString("hex").slice(0, 10)}`,
+            name: title,
+            thumbnailUrl: thumb || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&auto=format&fit=crop&q=80",
+            subscribersCount: col1Text.replace(/Artist/i, "").replace(/•/g, "").trim() || "Verified Artist",
+            monthlyListeners: "2.4M"
+          });
+        } else if (col1Text.toLowerCase().includes("album") || col1Text.toLowerCase().includes("ep") || col1Text.toLowerCase().includes("single")) {
+          albums.push({
+            id: `yt-album-${Buffer.from(title).toString("hex").slice(0, 10)}`,
+            title,
+            artistName: trimmed,
+            releaseYear: 2026,
+            thumbnailUrl: thumb || "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=500&auto=format&fit=crop&q=80"
+          });
+        } else if (col1Text.toLowerCase().includes("playlist")) {
+          playlists.push({
+            id: `yt-pl-${Buffer.from(title).toString("hex").slice(0, 10)}`,
+            title,
+            description: col1Text,
+            thumbnailUrl: thumb || "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=500&auto=format&fit=crop&q=80",
+            isCustom: false,
+            tracks: []
+          });
+        }
+      }
+      return {
+        songs: songs.slice(0, limit),
+        artists: artists.slice(0, limit),
+        albums: albums.slice(0, limit),
+        playlists: playlists.slice(0, limit)
+      };
+    } catch (err) {
+      console.error("[YouTubeMusicService] Search exception:", err);
+      return { songs: [], artists: [], albums: [], playlists: [] };
+    }
+  }
+  static async getExploreFeed() {
+    const payload = {
+      context: {
+        client: {
+          clientName: "WEB_REMIX",
+          clientVersion: "1.20250101.01.00",
+          hl: "en",
+          gl: "US"
+        }
+      },
+      browseId: "FEmusic_home"
+    };
+    try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 6e3);
+      const res = await fetch(`${this.INNERTUBE_BASE}/browse?prettyPrint=false`, {
+        method: "POST",
+        headers: this.getHeaders(),
+        body: JSON.stringify(payload),
+        signal: controller.signal
+      });
+      clearTimeout(timeoutId);
+      if (!res.ok) {
+        return { trendingTracks: [], featuredPlaylists: [], popularArtists: [] };
+      }
+      const data = await res.json();
+      const twoRowItems = findRenderers(data, "musicTwoRowItemRenderer");
+      const responsiveItems = findRenderers(data, "musicResponsiveListItemRenderer");
+      const trendingTracks = [];
+      const featuredPlaylists = [];
+      const popularArtists = [];
+      for (const item of twoRowItems) {
+        const title = item.title?.runs?.[0]?.text;
+        if (!title) continue;
+        const sub = item.subtitle?.runs?.map((r) => r.text).join("") || "";
+        const nav = item.navigationEndpoint;
+        const videoId = nav?.watchEndpoint?.videoId;
+        const thumbs = item.thumbnailRenderer?.musicThumbnailRenderer?.thumbnail?.thumbnails || [];
+        let thumb = thumbs.length ? thumbs[thumbs.length - 1].url : "";
+        if (thumb.startsWith("//")) thumb = "https:" + thumb;
+        if (videoId) {
+          trendingTracks.push({
+            id: videoId,
+            title,
+            artist: sub || "Trending Artist",
+            album: "Trending Release",
+            durationSec: 210,
+            thumbnailUrl: thumb,
+            streamUrl: `https://www.youtube.com/watch?v=${videoId}`,
+            audioFormat: "opus",
+            bitrateKbps: 320,
+            isLiked: false,
+            playCount: 25e4
+          });
+        } else {
+          featuredPlaylists.push({
+            id: `explore-pl-${Buffer.from(title).toString("hex").slice(0, 10)}`,
+            title,
+            description: sub,
+            thumbnailUrl: thumb || "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=500&auto=format&fit=crop&q=80",
+            isCustom: false,
+            tracks: []
+          });
+        }
+      }
+      if (trendingTracks.length === 0) {
+        try {
+          const topHits = await this.search("Top Global Hits", "songs", 10);
+          trendingTracks.push(...topHits.songs);
+        } catch {
+        }
+      }
+      return {
+        trendingTracks: trendingTracks.slice(0, 12),
+        featuredPlaylists: featuredPlaylists.slice(0, 10),
+        popularArtists: popularArtists.slice(0, 6)
+      };
+    } catch (err) {
+      console.error("[YouTubeMusicService] Explore exception:", err);
+      return { trendingTracks: [], featuredPlaylists: [], popularArtists: [] };
+    }
+  }
+  static async getSynchronizedLyrics(title, artist) {
+    try {
+      const cleanTitle = title.replace(/\([^)]*\)/g, "").replace(/\[[^\]]*\]/g, "").trim();
+      const cleanArtist = artist.split(",")[0].split("&")[0].trim();
+      const url2 = `https://lrclib.net/api/get?track_name=${encodeURIComponent(cleanTitle)}&artist_name=${encodeURIComponent(cleanArtist)}`;
+      const res = await fetch(url2, {
+        headers: { "User-Agent": "FlowMusic/1.0 (https://flowplayer.app)" },
+        signal: AbortSignal.timeout(4e3)
+      });
+      let syncedLyrics = null;
+      let plainLyrics = null;
+      if (res.ok) {
+        const data = await res.json();
+        syncedLyrics = data.syncedLyrics || null;
+        plainLyrics = data.plainLyrics || null;
+      }
+      if (!syncedLyrics) {
+        try {
+          const searchClean = `${cleanTitle} ${cleanArtist}`.replace(/[|•-]/g, " ").replace(/\s+/g, " ").trim();
+          const searchRes = await fetch(`https://lrclib.net/api/search?q=${encodeURIComponent(searchClean)}`, {
+            headers: { "User-Agent": "FlowMusic/1.0 (https://flowplayer.app)" },
+            signal: AbortSignal.timeout(4e3)
+          });
+          if (searchRes.ok) {
+            const list = await searchRes.json();
+            if (Array.isArray(list) && list.length > 0) {
+              const matched = list.find((item) => item.syncedLyrics) || list[0];
+              if (matched) {
+                syncedLyrics = matched.syncedLyrics || null;
+                plainLyrics = plainLyrics || matched.plainLyrics || null;
+              }
+            }
+          }
+        } catch {
+        }
+      }
+      if (syncedLyrics) {
+        const rawLines = syncedLyrics.split("\n");
+        const parsedLines = [];
+        for (let i = 0; i < rawLines.length; i++) {
+          const line = rawLines[i].trim();
+          const match = line.match(/^\[(\d{2}):(\d{2})\.(\d{2,3})\](.*)$/);
+          if (match) {
+            const min = parseInt(match[1], 10);
+            const sec = parseInt(match[2], 10);
+            const ms = parseInt(match[3].padEnd(3, "0").slice(0, 3), 10);
+            const startTimeMs = min * 6e4 + sec * 1e3 + ms;
+            const text = match[4].trim();
+            if (parsedLines.length > 0) {
+              parsedLines[parsedLines.length - 1].endTimeMs = startTimeMs;
+            }
+            parsedLines.push({
+              startTimeMs,
+              endTimeMs: startTimeMs + 4500,
+              text: text || "\u266A",
+              romanized: text
+            });
+          }
+        }
+        if (parsedLines.length > 0) {
+          return {
+            isSynced: true,
+            lines: parsedLines,
+            rawLrc: syncedLyrics
+          };
+        }
+      }
+      if (plainLyrics) {
+        return {
+          isSynced: false,
+          lines: [{ startTimeMs: 0, endTimeMs: 18e4, text: plainLyrics }],
+          rawLrc: plainLyrics
+        };
+      }
+      return null;
+    } catch {
+      return null;
+    }
+  }
+};
+
 // server/routes/search.ts
 var searchRouter = (0, import_express2.Router)();
 searchRouter.get(
@@ -44138,20 +44446,18 @@ searchRouter.get(
       limit: external_exports.coerce.number().min(1).max(50).optional().default(20)
     })
   }),
-  (req, res) => {
+  async (req, res) => {
     const q = req.query.q || "";
     const category = req.query.category || "all";
     const parsedLimit = Number(req.query.limit);
     const limit = Number.isInteger(parsedLimit) && parsedLimit > 0 ? parsedLimit : 20;
     const queryPattern = `%${q.toLowerCase()}%`;
-    const results = {
-      songs: [],
-      artists: [],
-      albums: [],
-      playlists: []
-    };
+    let localSongs = [];
+    let localArtists = [];
+    let localAlbums = [];
+    let localPlaylists = [];
     if (category === "all" || category === "songs") {
-      results.songs = FlowDatabase.query(
+      localSongs = FlowDatabase.query(
         `SELECT id, title, artist_name as artist, artist_id as artistId, album_title as album,
                 duration_sec as durationSec, thumbnail_url as thumbnailUrl, stream_url as streamUrl,
                 audio_format as audioFormat, bitrate_kbps as bitrateKbps, is_liked as isLiked
@@ -44162,7 +44468,7 @@ searchRouter.get(
       );
     }
     if (category === "all" || category === "artists") {
-      results.artists = FlowDatabase.query(
+      localArtists = FlowDatabase.query(
         `SELECT id, name, thumbnail_url as thumbnailUrl, description, subscribers_count as subscribersCount
          FROM artists
          WHERE lower(name) LIKE ? OR lower(description) LIKE ?
@@ -44171,7 +44477,7 @@ searchRouter.get(
       );
     }
     if (category === "all" || category === "albums") {
-      results.albums = FlowDatabase.query(
+      localAlbums = FlowDatabase.query(
         `SELECT id, title, artist_name as artistName, release_year as releaseYear,
                 track_count as trackCount, thumbnail_url as thumbnailUrl
          FROM albums
@@ -44181,7 +44487,7 @@ searchRouter.get(
       );
     }
     if (category === "all" || category === "playlists") {
-      results.playlists = FlowDatabase.query(
+      localPlaylists = FlowDatabase.query(
         `SELECT id, title, description, thumbnail_url as thumbnailUrl,
                 is_custom as isCustom, source, created_at as createdAt
          FROM playlists
@@ -44190,10 +44496,94 @@ searchRouter.get(
         [queryPattern, queryPattern, limit]
       );
     }
+    let ytResults = {
+      songs: [],
+      artists: [],
+      albums: [],
+      playlists: []
+    };
+    try {
+      ytResults = await YouTubeMusicService.search(q, category, limit);
+      for (const song of ytResults.songs) {
+        if (song.artistId) {
+          try {
+            FlowDatabase.run(
+              `INSERT OR IGNORE INTO artists (id, name, thumbnail_url) VALUES (?, ?, ?);`,
+              [song.artistId, song.artist, song.thumbnailUrl]
+            );
+          } catch {
+          }
+        }
+        try {
+          FlowDatabase.run(
+            `INSERT OR IGNORE INTO tracks (
+              id, title, artist_name, artist_id, album_title, duration_sec,
+              thumbnail_url, stream_url, audio_format, bitrate_kbps, is_liked, play_count
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, ?);`,
+            [
+              song.id,
+              song.title,
+              song.artist,
+              song.artistId || null,
+              song.album || "YouTube Music Track",
+              song.durationSec,
+              song.thumbnailUrl,
+              song.streamUrl,
+              song.audioFormat || "opus",
+              song.bitrateKbps || 320,
+              song.playCount || 1e5
+            ]
+          );
+        } catch {
+        }
+      }
+    } catch (err) {
+      console.warn("[Search] YouTube Music live query failed, falling back to local database:", err);
+    }
+    const seenSongIds = /* @__PURE__ */ new Set();
+    const mergedSongs = [];
+    for (const song of [...localSongs, ...ytResults.songs]) {
+      if (!seenSongIds.has(song.id)) {
+        seenSongIds.add(song.id);
+        mergedSongs.push(song);
+      }
+    }
+    const seenArtistNames = /* @__PURE__ */ new Set();
+    const mergedArtists = [];
+    for (const artist of [...localArtists, ...ytResults.artists]) {
+      const key = (artist.name || "").toLowerCase();
+      if (!seenArtistNames.has(key)) {
+        seenArtistNames.add(key);
+        mergedArtists.push(artist);
+      }
+    }
+    const seenAlbums = /* @__PURE__ */ new Set();
+    const mergedAlbums = [];
+    for (const alb of [...localAlbums, ...ytResults.albums]) {
+      const key = (alb.title || "").toLowerCase();
+      if (!seenAlbums.has(key)) {
+        seenAlbums.add(key);
+        mergedAlbums.push(alb);
+      }
+    }
+    const seenPlaylists = /* @__PURE__ */ new Set();
+    const mergedPlaylists = [];
+    for (const pl of [...localPlaylists, ...ytResults.playlists]) {
+      const key = (pl.title || "").toLowerCase();
+      if (!seenPlaylists.has(key)) {
+        seenPlaylists.add(key);
+        mergedPlaylists.push(pl);
+      }
+    }
     res.json({
       query: q,
       category,
-      results
+      results: {
+        songs: mergedSongs.slice(0, limit),
+        artists: mergedArtists.slice(0, limit),
+        albums: mergedAlbums.slice(0, limit),
+        playlists: mergedPlaylists.slice(0, limit)
+      }
     });
   }
 );
@@ -44307,33 +44697,65 @@ tracksRouter.post(
 tracksRouter.get(
   "/:id/lyrics",
   validate2({
-    params: external_exports.object({ id: external_exports.string().min(1) })
+    params: external_exports.object({ id: external_exports.string().min(1) }),
+    query: external_exports.object({
+      title: external_exports.string().optional(),
+      artist: external_exports.string().optional()
+    }).optional()
   }),
-  (req, res) => {
+  async (req, res) => {
     const { id } = req.params;
+    const qTitle = req.query?.title;
+    const qArtist = req.query?.artist;
     const lyricsRecord = FlowDatabase.get("SELECT * FROM lyrics WHERE track_id = ?;", [id]);
-    if (!lyricsRecord) {
-      res.json({
-        trackId: id,
-        isSynced: false,
-        lines: [],
-        rawLrc: null,
-        provider: "none"
-      });
-      return;
+    if (lyricsRecord) {
+      try {
+        const lines = JSON.parse(lyricsRecord.synced_json || "[]");
+        res.json({
+          trackId: id,
+          isSynced: lyricsRecord.is_synced === 1,
+          lines,
+          rawLrc: lyricsRecord.raw_lrc,
+          provider: lyricsRecord.provider
+        });
+        return;
+      } catch {
+      }
     }
-    try {
-      const lines = JSON.parse(lyricsRecord.synced_json || "[]");
-      res.json({
-        trackId: id,
-        isSynced: lyricsRecord.is_synced === 1,
-        lines,
-        rawLrc: lyricsRecord.raw_lrc,
-        provider: lyricsRecord.provider
-      });
-    } catch {
-      res.status(500).json({ error: "Failed to decode lyrics payload" });
+    const track = FlowDatabase.get(
+      "SELECT title, artist_name FROM tracks WHERE id = ?;",
+      [id]
+    );
+    const titleToSearch = qTitle || track?.title;
+    const artistToSearch = qArtist || track?.artist_name || "";
+    if (titleToSearch) {
+      const live = await YouTubeMusicService.getSynchronizedLyrics(titleToSearch, artistToSearch);
+      if (live && live.lines.length > 0) {
+        try {
+          FlowDatabase.run(
+            `INSERT OR REPLACE INTO lyrics (track_id, is_synced, synced_json, raw_lrc, provider)
+             VALUES (?, ?, ?, ?, 'lrclib');`,
+            [id, live.isSynced ? 1 : 0, JSON.stringify(live.lines), live.rawLrc || ""]
+          );
+        } catch {
+        }
+        res.json({
+          trackId: id,
+          isSynced: live.isSynced,
+          lines: live.lines,
+          rawLrc: live.rawLrc,
+          provider: "lrclib"
+        });
+        return;
+      }
     }
+    res.json({
+      trackId: id,
+      isSynced: false,
+      lines: [],
+      rawLrc: null,
+      provider: "none"
+    });
   }
 );
 
@@ -44975,6 +45397,50 @@ libraryRouter.get(
   }
 );
 
+// server/routes/explore.ts
+var import_express11 = __toESM(require_express2(), 1);
+var exploreRouter = (0, import_express11.Router)();
+exploreRouter.get("/", async (_req, res) => {
+  try {
+    const feed = await YouTubeMusicService.getExploreFeed();
+    if (feed.trendingTracks.length > 0) {
+      for (const track of feed.trendingTracks) {
+        FlowDatabase.run(
+          `INSERT OR IGNORE INTO tracks (
+            id, title, artist_name, album_title, duration_sec,
+            thumbnail_url, stream_url, audio_format, bitrate_kbps, is_liked, play_count
+          ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 0, ?);`,
+          [
+            track.id,
+            track.title,
+            track.artist,
+            track.album,
+            track.durationSec,
+            track.thumbnailUrl,
+            track.streamUrl,
+            track.audioFormat,
+            track.bitrateKbps,
+            track.playCount
+          ]
+        );
+      }
+    }
+    const localPlaylists = FlowDatabase.query(
+      `SELECT id, title, description, thumbnail_url as thumbnailUrl, is_custom as isCustom, source
+       FROM playlists ORDER BY created_at DESC LIMIT 6;`
+    );
+    const allPlaylists = [...localPlaylists, ...feed.featuredPlaylists];
+    res.json({
+      trendingTracks: feed.trendingTracks,
+      featuredPlaylists: allPlaylists,
+      popularArtists: feed.popularArtists
+    });
+  } catch (err) {
+    console.error("[Explore Router Error]:", err);
+    res.status(500).json({ error: "Failed to retrieve explore feed" });
+  }
+});
+
 // server/middleware/auth.ts
 function authMiddleware(req, res, next) {
   const authHeader = req.headers.authorization;
@@ -45005,7 +45471,7 @@ function authMiddleware(req, res, next) {
 }
 
 // server/app.ts
-var app = (0, import_express11.default)();
+var app = (0, import_express12.default)();
 var allowedOrigins = (process.env.CORS_ORIGIN || "http://localhost:5173,http://localhost:4173,http://localhost:3000").split(",");
 app.use((0, import_cors.default)({
   origin: (origin, callback) => {
@@ -45023,8 +45489,8 @@ app.use((req, res, next) => {
   res.setHeader("X-XSS-Protection", "1; mode=block");
   next();
 });
-app.use(import_express11.default.json({ limit: "5mb" }));
-app.use(import_express11.default.urlencoded({ extended: true }));
+app.use(import_express12.default.json({ limit: "5mb" }));
+app.use(import_express12.default.urlencoded({ extended: true }));
 app.use(authMiddleware);
 app.get("/api/health", (req, res) => {
   res.json({
@@ -45044,6 +45510,7 @@ app.use("/api/cache", cacheRouter);
 app.use("/api/settings", settingsRouter);
 app.use("/api/integrations", integrationsRouter);
 app.use("/api/library", libraryRouter);
+app.use("/api/explore", exploreRouter);
 app.use((req, res) => {
   res.status(404).json({ error: `Route not found: ${req.method} ${req.path}` });
 });

@@ -5,6 +5,9 @@ public struct ContentView: View {
     @State private var showFullPlayer = false
     @State private var searchText = ""
     @State private var localTracks: [Track] = []
+    @State private var trendingTracks: [Track] = []
+    @State private var searchResults: [Track] = []
+    @State private var isSearching = false
 
     let sampleCatalog: [Track] = [
         Track(
@@ -16,12 +19,7 @@ public struct ContentView: View {
             thumbnailUrl: "https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?w=500&auto=format&fit=crop&q=80",
             streamUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
             audioFormat: "flac",
-            bitrateKbps: 1411,
-            lyrics: [
-                LyricsLine(timeMs: 2000, text: "Neon headlights piercing through the mist", romanized: "Neon heddoraito kirisaku", translation: "Neon headlights piercing through the mist"),
-                LyricsLine(timeMs: 6500, text: "Electric pulses in an obsidian night", romanized: "Kokutan no yoru ni denki no kodou", translation: "Electric pulse in an obsidian night"),
-                LyricsLine(timeMs: 12000, text: "We drive beyond the digital skyline", romanized: "Dejitaru no chiheisen wo koete", translation: "Driving past the digital horizon")
-            ]
+            bitrateKbps: 1411
         ),
         Track(
             id: "trk-2",
@@ -33,17 +31,6 @@ public struct ContentView: View {
             streamUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
             audioFormat: "flac",
             bitrateKbps: 1411
-        ),
-        Track(
-            id: "trk-3",
-            title: "Starlight Horizon",
-            artist: "Solar Fields",
-            album: "Cosmic Reverie",
-            durationSec: 312,
-            thumbnailUrl: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=500&auto=format&fit=crop&q=80",
-            streamUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3",
-            audioFormat: "opus",
-            bitrateKbps: 320
         )
     ]
 
@@ -56,12 +43,13 @@ public struct ContentView: View {
                 NavigationView {
                     ScrollView {
                         VStack(alignment: .leading, spacing: 20) {
-                            Text("Featured Lossless")
+                            Text("Trending on Flow")
                                 .font(.system(size: 20, weight: .bold))
                                 .foregroundColor(.white)
                                 .padding(.horizontal)
 
-                            ForEach(sampleCatalog) { track in
+                            let displayedTracks = trendingTracks.isEmpty ? sampleCatalog : trendingTracks
+                            ForEach(displayedTracks) { track in
                                 HStack(spacing: 14) {
                                     AsyncImage(url: URL(string: track.thumbnailUrl)) { phase in
                                         if let img = phase.image {
@@ -127,9 +115,11 @@ public struct ContentView: View {
                             .padding(.horizontal)
                         }
 
-                        List(sampleCatalog.filter {
+                        let searchList = !searchResults.isEmpty ? searchResults : sampleCatalog.filter {
                             searchText.isEmpty || $0.title.localizedCaseInsensitiveContains(searchText) || $0.artist.localizedCaseInsensitiveContains(searchText)
-                        }) { track in
+                        }
+
+                        List(searchList) { track in
                             HStack {
                                 VStack(alignment: .leading) {
                                     Text(track.title).foregroundColor(.white)
@@ -144,7 +134,23 @@ public struct ContentView: View {
                             }
                             .listRowBackground(Color(hex: "#0d131f"))
                         }
-                        .searchable(text: $searchText, prompt: "Search songs or paste Spotify link...")
+                        .searchable(text: $searchText, prompt: "Search YouTube Music songs...")
+                        .onChange(of: searchText) { newQuery in
+                            guard !newQuery.trimmingCharacters(in: .whitespaces).isEmpty else {
+                                searchResults = []
+                                return
+                            }
+                            Task {
+                                do {
+                                    let results = try await FlowApiService.shared.searchTracks(query: newQuery)
+                                    await MainActor.run {
+                                        self.searchResults = results
+                                    }
+                                } catch {
+                                    // Keep local filter fallback
+                                }
+                            }
+                        }
                         .scrollContentBackground(.hidden)
                     }
                     .background(Color(hex: "#080b12").edgesIgnoringSafeArea(.all))
@@ -205,6 +211,18 @@ public struct ContentView: View {
                 .onTapGesture {
                     showFullPlayer = true
                 }
+            }
+        }
+        .task {
+            do {
+                let feed = try await FlowApiService.shared.fetchExploreFeed()
+                if !feed.isEmpty {
+                    await MainActor.run {
+                        self.trendingTracks = feed
+                    }
+                }
+            } catch {
+                // Keep sample fallback
             }
         }
         .sheet(isPresented: $showFullPlayer) {
