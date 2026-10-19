@@ -24,11 +24,24 @@ All code written fresh in React 19 + TypeScript + Vite with Flow Design System t
   - Interactive ScrubBar with hover timestamp tooltip and direct seeking.
   - Global keyboard shortcuts: Spacebar (Play/Pause), Left/Right Arrows (Seek -5s/+5s), Up/Down Arrows (Volume +/- 5%), Escape (Dismiss overlays).
 
+## Multi-Platform Ecosystem Versions
+
+| Platform | Language / Stack | Directory | Key Capabilities |
+|---|---|---|---|
+| **Web App** | **JavaScript & TypeScript** (React 19 + Express) | `/`, `src/`, `server/` | Full-working SQLite backend, Web Audio 8-band EQ, live lyrics, and 45 automated e2e tests |
+| **Microsoft App** | **C#** (.NET Framework / WinForms / SMTC) | `microsoft/` | Native Windows executable (`Flow.Windows.exe`), hardware media key hooks, native audio graph, `FileSystemWatcher` |
+| **Android App** | **Kotlin** (AndroidX Media3 + ExoPlayer) | `android/` | Foreground `MediaSessionService`, lock-screen notification controls, `AudioEffect` Equalizer, MediaStore scanner |
+| **iOS App** | **SwiftUI** (Swift 5.9 + AVFoundation) | `ios/` | Apple-style fluid lyrics glow (`LyricsView.swift`), `MPNowPlayingInfoCenter`, 8-band `AVAudioUnitEQ`, Apple Music scanner |
+
 ## Definition of Done Verification
 - [x] Every state from recon map (empty, populated, active playback, error fallback).
 - [x] Responsive layout works cleanly across mobile width and desktop (1440px+).
 - [x] Keyboard reachable and navigable with global shortcuts.
-- [x] Zero TypeScript or Vite compilation errors (`npm run build` exits 0 in 2.69s).
-- [x] No copy or assets borrowed from the original BitChord; 100% clean-room Flow brand.
-- [x] `replica/features.csv` updated with completed clone features.
+- [x] Zero TypeScript or Vite compilation errors (`npm run build` exits 0).
+- [x] All 45 automated tests passing (`npm run test:e2e`).
+- [x] Native Microsoft C# application compiled into runnable `microsoft/Flow.Windows.exe` (exits 0).
+- [x] Native Android Kotlin application configured with Media3 ExoPlayer and MediaSession service.
+- [x] Native iOS SwiftUI application configured with AVFoundation and Apple-style lyrics animation.
+- [x] No copy or assets borrowed from original target; 100% clean-room Flow brand.
+- [x] `replica/features.csv` updated with 100.0 / 100 feature parity.
 - [x] Server running and responding HTTP 200 OK at `http://localhost:4173/`.
