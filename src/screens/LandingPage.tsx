@@ -27,8 +27,12 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, onLaunchPl
       a: 'Yes! Flow is a full Progressive Web App (PWA). You can launch the Web Player immediately on Chrome, Safari, Edge, or Firefox. All features—including synchronized lyrics, Romaji transliteration, and local playlists—work directly in your browser without requiring an install or sign-in.'
     },
     {
-      q: 'Is Flow really 100% free on the Website, Microsoft Store, and Mac App Store?',
-      a: 'Yes! Flow is 100% free ($0.00) across all platforms: the official website, the Microsoft Store, and the Mac App Store. There are no subscriptions, no in-app purchases, and no advertisements.'
+      q: 'Is Flow really 100% free on Google Play, the Website, Microsoft Store, and Mac App Store?',
+      a: 'Yes! Flow is 100% free ($0.00) across all platforms: Google Play, the official website, the Microsoft Store, and the Mac App Store. There are no subscriptions, no in-app purchases, and no advertisements.'
+    },
+    {
+      q: 'Does Flow on Android support background playback and DAPs?',
+      a: 'Yes! Unlike commercial streaming apps, Flow on Android includes free background playback with screen turned off. It also uses external browser authentication to ensure seamless compatibility with dedicated Android DAPs (HiBy, FiiO, Sony Walkman).'
     },
     {
       q: 'Does the web version support media keys and keyboard shortcuts?',
@@ -151,7 +155,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, onLaunchPl
             textTransform: 'uppercase',
             marginBottom: 20
           }}>
-            <span>🌐</span> 100% FREE ON WEB • MICROSOFT STORE • MAC APP STORE
+            <span>🌐</span> 100% FREE ON GOOGLE PLAY • WEB • MICROSOFT STORE • MAC APP STORE
           </div>
 
           <h1 style={{
@@ -277,6 +281,40 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, onLaunchPl
               <div style={{ textAlign: 'left' }}>
                 <div style={{ fontSize: 10, textTransform: 'uppercase', color: 'var(--color-text-muted, #94a3b8)' }}>Download on the</div>
                 <div style={{ fontWeight: 700, fontSize: 13 }}>Mac App Store</div>
+              </div>
+            </button>
+
+            {/* Google Play Button */}
+            <button
+              onClick={handleLaunchWebPlayer}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 12,
+                background: 'linear-gradient(135deg, #1e293b 0%, #0f172a 100%)',
+                color: 'var(--color-text, #f8fafc)',
+                border: '1px solid var(--color-border-input, #64748b)',
+                borderRadius: 10,
+                padding: '12px 20px',
+                fontSize: 14,
+                fontWeight: 600,
+                cursor: 'pointer',
+                boxShadow: '0 4px 20px rgba(0, 0, 0, 0.4)',
+                transition: 'all 0.15s'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = 'var(--color-accent, #00e5ff)';
+                e.currentTarget.style.transform = 'translateY(-2px)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = 'var(--color-border-input, #64748b)';
+                e.currentTarget.style.transform = 'translateY(0)';
+              }}
+            >
+              <span style={{ fontSize: 20 }}>🤖</span>
+              <div style={{ textAlign: 'left' }}>
+                <div style={{ fontSize: 10, textTransform: 'uppercase', color: 'var(--color-text-muted, #94a3b8)' }}>Get it on</div>
+                <div style={{ fontWeight: 700, fontSize: 13 }}>Google Play</div>
               </div>
             </button>
           </div>
@@ -621,6 +659,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, onLaunchPl
               </div>
               <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
                 <span style={{ fontSize: 12, padding: '5px 12px', borderRadius: 20, background: 'rgba(255, 255, 255, 0.06)', border: '1px solid var(--color-border, #1f293d)' }}>
+                  🤖 Google Play
+                </span>
+                <span style={{ fontSize: 12, padding: '5px 12px', borderRadius: 20, background: 'rgba(255, 255, 255, 0.06)', border: '1px solid var(--color-border, #1f293d)' }}>
                   🌐 Web App (PWA)
                 </span>
                 <span style={{ fontSize: 12, padding: '5px 12px', borderRadius: 20, background: 'rgba(255, 255, 255, 0.06)', border: '1px solid var(--color-border, #1f293d)' }}>
@@ -679,32 +720,49 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, onLaunchPl
                 onClick={handleLaunchWebPlayer}
                 style={{
                   flex: 1,
-                  minWidth: 200,
-                  padding: '14px 20px',
+                  minWidth: 150,
+                  padding: '12px 16px',
                   borderRadius: 10,
                   background: 'linear-gradient(135deg, var(--color-accent, #00e5ff) 0%, var(--color-glow, #38bdf8) 100%)',
                   color: '#080b12',
                   border: 'none',
                   fontWeight: 700,
-                  fontSize: 15,
+                  fontSize: 14,
                   cursor: 'pointer',
                   boxShadow: '0 0 20px rgba(0, 229, 255, 0.3)'
                 }}
               >
-                Launch Web Player
+                Web Player
               </button>
               <button
                 onClick={handleLaunchWebPlayer}
                 style={{
                   flex: 1,
-                  minWidth: 200,
-                  padding: '14px 20px',
+                  minWidth: 150,
+                  padding: '12px 16px',
                   borderRadius: 10,
                   background: 'rgba(255, 255, 255, 0.08)',
                   color: '#f8fafc',
                   border: '1px solid var(--color-border, #1f293d)',
                   fontWeight: 700,
-                  fontSize: 15,
+                  fontSize: 14,
+                  cursor: 'pointer'
+                }}
+              >
+                Google Play
+              </button>
+              <button
+                onClick={handleLaunchWebPlayer}
+                style={{
+                  flex: 1,
+                  minWidth: 150,
+                  padding: '12px 16px',
+                  borderRadius: 10,
+                  background: 'rgba(255, 255, 255, 0.08)',
+                  color: '#f8fafc',
+                  border: '1px solid var(--color-border, #1f293d)',
+                  fontWeight: 700,
+                  fontSize: 14,
                   cursor: 'pointer'
                 }}
               >
@@ -714,14 +772,14 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, onLaunchPl
                 onClick={handleLaunchWebPlayer}
                 style={{
                   flex: 1,
-                  minWidth: 200,
-                  padding: '14px 20px',
+                  minWidth: 150,
+                  padding: '12px 16px',
                   borderRadius: 10,
                   background: 'rgba(255, 255, 255, 0.08)',
                   color: '#f8fafc',
                   border: '1px solid var(--color-border, #1f293d)',
                   fontWeight: 700,
-                  fontSize: 15,
+                  fontSize: 14,
                   cursor: 'pointer'
                 }}
               >

@@ -1,37 +1,41 @@
-# Flow — Landing Page Specification (Web, Mac App Store & Microsoft Store)
+# Flow — Landing Page Specification (Web, Google Play, Microsoft Store & Mac App Store)
 
-Copy, section layout, and messaging for the official **Flow** web presence at `https://getflow.audio/`, covering instant in-browser playback, the Progressive Web App (PWA), the **Microsoft Store**, and the **Mac App Store**.
+Copy, section layout, and messaging for the official **Flow** web presence at `https://getflow.audio/`, covering **Google Play**, **Microsoft Store**, **Mac App Store**, and instant in-browser playback.
 
 ---
 
 ## 1. Hero Section
 
-- **Badge / Eyebrow:** `🌐 100% FREE ON WEB • MICROSOFT STORE • MAC APP STORE`
+- **Badge / Eyebrow:** `🌐 100% FREE ON GOOGLE PLAY • WEB • MICROSOFT STORE • MAC APP STORE`
 - **Headline:** Stream effortlessly. Sing along in any language.
-- **Subheadline:** The fluid desktop and web music player with zero-login local playlists, real-time Romanized lyrics, and granular offline control that respects your local disk. 100% free everywhere.
+- **Subheadline:** The fluid music player with zero-login local playlists, real-time Romanized lyrics, and granular offline control that respects your device. 100% free everywhere.
 - **Action CTAs:**
-  1. `Launch Web Player (Instant)` → Opens the web streaming engine in browser with zero install or login.
-  2. `Get it on Microsoft Store` → Direct link to Windows 10/11 native package.
-  3. `Download on the Mac App Store` → Direct link to macOS universal binary.
-  4. `Direct Downloads` → Portable Windows `.exe`, macOS `.dmg`, Linux `.AppImage`.
-- **Sub-CTA Reassurance:** *Zero install required • Zero audio ads • Zero subscriptions • Zero telemetry.*
+  1. `Get it on Google Play` → Direct link to Android phone, tablet, and DAP build.
+  2. `Launch Web Player (Instant)` → Instant in-browser streaming with zero install.
+  3. `Get it on Microsoft Store` → Direct link to Windows 10/11 native package.
+  4. `Download on the Mac App Store` → Direct link to macOS universal binary.
+- **Sub-CTA Reassurance:** *Zero audio ads • Zero subscriptions • Zero account walls • Zero telemetry.*
 - **Hero Mockup Visual:** Dark obsidian glass stage showing live bilingual lyrics with phonetic Romaji toggle, lossless FLAC stream indicator, and persistent player dock.
 
 ---
 
-## 2. Web & Desktop Platform Capabilities
+## 2. Platform Capabilities: Android, Desktop & Web
 
-### ⚡ Instant Browser Playback (Zero Install)
-Open Flow directly in Google Chrome, Microsoft Edge, Apple Safari, or Mozilla Firefox. Search millions of songs and listen immediately with zero software installations, zero plugin downloads, and zero mandatory cloud logins.
+### 🤖 Google Play & Android Power Features
+- **Background Playback Included:** Listen with your screen turned off without paying a subscription fee.
+- **Audio Focus Auto-Resume:** Automatically pauses during incoming calls or GPS driving instructions, and smoothly fades back in once the interruption ends.
+- **Android DAP Compatibility:** External browser authentication eliminates embedded WebView crashes on specialized DAPs (HiBy, FiiO, Sony Walkman).
+- **Local .lrc Export to Storage:** Save timestamped lyric files straight into your Android `Music/` folder with 1 tap.
+- **Lockscreen & Android Auto:** Full MediaSession integration with rich album art, track scrub bar, and steering wheel media control support.
 
-### 📱 Installable Progressive Web App (PWA)
-Click the install button in the browser address bar to install Flow as a native desktop or mobile app. Runs in an isolated, borderless window with independent app switching and dock pin capability.
+### 🪟 Windows & Mac Native Store Editions
+- Clean integration with Windows 10/11 taskbars and macOS menus.
+- Responsive HiDPI scaling eliminating window overflow on laptops.
+- Dedicated 3-state loop button (Repeat-One) and pitch-preserving tempo sliders.
 
-### 🎧 Web Media Session API
-Full integration with operating system media controls: hardware keyboard media keys (Play, Pause, Skip, Prev), Bluetooth headphone controls, and lockscreen now-playing widgets with synchronized track metadata and album artwork.
-
-### 📁 Client-Side IndexedDB Storage
-Local playlists and cached audio segments are stored directly in your browser's persistent client-side storage. Your listening library never gets uploaded to third-party ad networks or tracking servers.
+### ⚡ Instant Web Player (PWA)
+- Zero install required. Jump straight into music on Chrome, Safari, Edge, or Firefox.
+- Installable to home screen or desktop with 1-click.
 
 ---
 
@@ -55,13 +59,13 @@ across songs and albums.        synced bilingual lyrics.        export .lrc & ke
 Sing along to Japanese, Korean, and non-Latin tracks effortlessly. Toggle instant Romaji/Hangul romanization and side-by-side English translations with synchronized syllable highlights.
 
 ### 💾 1-Click `.lrc` Timestamped Lyrics Export (Fix #909)
-Export perfectly timed `.lrc` lyric files directly to your local drive with a single click. Take your favorite lyrics to your car stereo, offline MP3 DAP, or media center.
+Export perfectly timed `.lrc` lyric files directly to your local storage with a single click. Take your favorite lyrics to your car stereo, offline MP3 DAP, or media center.
 
 ### 📁 Zero-Login Local Playlists & `.m3u8` Export (Fix #904)
 Create, reorder, and curate as many custom playlists as you want without signing in. Export your entire library to standard `.m3u8` format anytime.
 
-### ⚡ Resilient Dual-Buffer Audio Engine (Fix #903)
-Zero stutter during bitrate transitions. External browser authentication ensures you never suffer from crashed internal webviews or frozen OAuth screens.
+### ⚡ Resilient Dual-Buffer Audio Engine & Focus Resume (Fix #903)
+Zero stutter during bitrate transitions. External browser authentication ensures you never suffer from crashed internal webviews, while audio focus restores playback after GPS navigation.
 
 ### 🧹 Granular Cache Manager (Fix #899)
 See exactly how much disk space each track occupies. Prune individual tracks with one click or set hard storage caps—never be forced to wipe your entire library again.
@@ -73,49 +77,48 @@ Loop your current favorite track with a dedicated 3-state repeat button (Off / A
 
 ## 5. Universal 100% Free Comparison
 
-*100% free across all web and desktop platforms. No paywalls, no tiers.*
+*100% free across all web, Android, and desktop platforms. No paywalls, no tiers.*
 
-| Capability | Official Web App (`getflow.audio`) | Microsoft Store (Windows 10/11) | Mac App Store (macOS 12+) |
-| :--- | :---: | :---: | :---: |
-| Price | **Free ($0.00)** | **Free ($0.00)** | **Free ($0.00)** |
-| Installation Required | 🚫 None (Instant) | ✅ 1-Click MSIX | ✅ 1-Click Mac App |
-| Unlimited Streaming | ✅ | ✅ | ✅ |
-| Synchronized Lyrics & Romaji | ✅ | ✅ | ✅ |
-| Zero-Login Local Playlists | ✅ (IndexedDB) | ✅ (SQLite) | ✅ (SQLite) |
-| 1-Click .lrc Lyrics Export | ✅ (Browser Download) | ✅ (Local File) | ✅ (Local File) |
-| 1-Click .m3u8 Playlist Export | ✅ (Browser Download) | ✅ (Local File) | ✅ (Local File) |
-| Granular Cache Pruner | ✅ (Browser Storage) | ✅ (Local Disk) | ✅ (Local Disk) |
-| OS Media Keys Integration | ✅ (Media Session API) | ✅ (Windows SMTC) | ✅ (macOS Now Playing) |
-| Offline Listening Mode | ✅ (PWA Cache) | ✅ (Local Cache) | ✅ (Local Cache) |
-| Audio Ads or Tracking | 🚫 None | 🚫 None | 🚫 None |
+| Capability | Google Play (Android) | Microsoft Store (Windows) | Mac App Store (macOS) | Web App (`getflow.audio`) |
+| :--- | :---: | :---: | :---: | :---: |
+| Price | **Free ($0.00)** | **Free ($0.00)** | **Free ($0.00)** | **Free ($0.00)** |
+| Background Playback | ✅ Included Free | ✅ | ✅ | ✅ |
+| Synchronized Lyrics & Romaji | ✅ | ✅ | ✅ | ✅ |
+| Zero-Login Local Playlists | ✅ | ✅ | ✅ | ✅ |
+| 1-Click .lrc Lyrics Export | ✅ (Device Storage) | ✅ (Local File) | ✅ (Local File) | ✅ (Browser Download) |
+| Audio Focus (GPS / Calls) | ✅ Auto-Resume | N/A | N/A | ✅ |
+| Lockscreen / Car Controls | ✅ MediaSession / Auto | ✅ Windows SMTC | ✅ macOS Now Playing | ✅ Media Session API |
+| Granular Cache Pruner | ✅ Single-Track MB | ✅ Single-Track MB | ✅ Single-Track MB | ✅ Browser Storage |
+| Audio Ads or Tracking | 🚫 None | 🚫 None | 🚫 None | 🚫 None |
 
 ---
 
 ## 6. Frequently Asked Questions
 
-### Can I use Flow directly in my web browser without installing anything?
-Yes! Flow is a full Progressive Web App (PWA). You can launch the Web Player immediately on Chrome, Safari, Edge, or Firefox. All features—including synchronized lyrics, Romaji transliteration, and local playlists—work directly in your browser without requiring an install or sign-in.
+### Is Flow completely free on Google Play?
+Yes! Flow is 100% free ($0.00) on Google Play. Unlike other streaming apps, background playback, lyrics sync, and playlist creation are completely free with zero ads and zero in-app purchases.
 
-### Is Flow really 100% free on the Website, Microsoft Store, and Mac App Store?
-Yes! Flow is 100% free ($0.00) across all platforms: the official website, the Microsoft Store, and the Mac App Store. There are no subscriptions, no in-app purchases, and no advertisements.
+### Does Flow support Android DAPs (HiBy, FiiO, Sony Walkman)?
+Yes. Flow uses external browser authentication for Spotify/Google links, eliminating the crashes caused by outdated embedded WebViews on Android-powered DAPs.
 
-### Does the web version support media keys and keyboard shortcuts?
-Yes. Flow integrates natively with the browser Media Session API. You can play, pause, seek, and skip using your physical keyboard media keys, headphone controls, and OS notification popups.
-
-### Can I import my existing Spotify or YouTube Music playlists on the web?
-Yes. The web app includes our 1-click importer that accepts public playlist links or standard .m3u8 files, saving them into your browser’s secure local storage without needing your account credentials.
-
-### Does the web version support offline listening?
-Yes! When installed as a PWA, Flow leverages client-side storage to cache downloaded audio files and timestamped lyrics so you can keep listening even during network drops.
-
-### How does the Romanized lyrics transliteration work?
+### How does the Romanized lyrics toggle work?
 When playing tracks in Japanese, Korean, or Mandarin, Flow automatically computes phonetic Latin transcriptions (Romaji, Hangul, Pinyin) so you can sing along in real time even if you cannot read the native characters.
+
+### Can I export lyrics to my car stereo?
+Yes! Tap the `.lrc` button on any track with synced lyrics to save a timestamped `.lrc` file to your storage. Perfect for car stereos and offline players.
+
+### What Android versions are supported?
+Flow supports Android 8.0 (Oreo) and later, fully optimized for Android 14 and Android 15.
 
 ---
 
 ## 7. Final Call to Action
 
 - **Headline:** Ready to get into the flow?
-- **Subheadline:** Launch in your browser right now or install from the Microsoft Store or Mac App Store.
-- **Button:** `Launch Flow Web Player Now`
-- **Footer:** © 2026 Flow Audio • 100% Free & Open Web & Desktop Music Player • GitHub • Release Notes • Privacy Promise
+- **Subheadline:** Download Flow free from Google Play, Microsoft Store, Mac App Store, or stream in browser.
+- **Buttons:**
+  - `Get it on Google Play`
+  - `Get it on Microsoft Store`
+  - `Download on Mac App Store`
+  - `Launch Web Player`
+- **Footer:** © 2026 Flow Audio • 100% Free & Open Music Player • GitHub • Release Notes • Privacy Promise
