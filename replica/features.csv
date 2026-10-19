@@ -20,7 +20,7 @@ Hi-Res FLAC module source resolution,audio,could,yes,yes,24-bit FLAC audio strea
 Automix DJ-style beat matching transitions,playback,could,yes,yes,Autoplay infinite radio similar music generator
 Original BitChord brand name logo and marks,branding,skip,yes,skip,Rebranded cleanly as Flow with custom logo
 Widevine DRM protected YouTube streams,security,skip,yes,skip,DRM video streams cannot be cloned
-Author proprietary backend server endpoints,backend,skip,yes,skip,Clean-room local-first architecture
+Author proprietary backend server endpoints,backend,must,no,yes,Flow clean-room REST API and native SQLite backend service (port 8901)
 Local-first custom playlist creation without cloud login,library,must,no,yes,Fixes #904: zero-login local playlist management
 M3U and M3U8 local playlist file export and import,library,should,no,yes,Export and import standard .m3u8 files
 Phonetic Romanization and dual-line lyric translation,lyrics,must,no,yes,Fixes #364 and #439: Romaji/Hangul transliteration and translation
