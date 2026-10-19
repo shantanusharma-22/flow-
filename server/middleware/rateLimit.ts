@@ -9,7 +9,7 @@ export function rateLimiter(options: { maxRequests: number; windowMs: number; me
   const store = new Map<string, RateLimitRecord>();
 
   // Cleanup expired entries periodically
-  setInterval(() => {
+  const timer = setInterval(() => {
     const now = Date.now();
     for (const [key, value] of store.entries()) {
       if (now > value.resetAt) {
@@ -17,9 +17,14 @@ export function rateLimiter(options: { maxRequests: number; windowMs: number; me
       }
     }
   }, 60000);
+  if (timer.unref) timer.unref();
 
   return (req: Request, res: Response, next: NextFunction): void => {
-    const ip = req.ip || req.socket.remoteAddress || '127.0.0.1';
+    const forwarded = req.headers['x-forwarded-for'];
+    const ip = (typeof forwarded === 'string' ? forwarded.split(',')[0].trim() : null) ||
+               (typeof req.headers['x-real-ip'] === 'string' ? req.headers['x-real-ip'] : null) ||
+               req.socket?.remoteAddress ||
+               '127.0.0.1';
     const now = Date.now();
 
     const record = store.get(ip);

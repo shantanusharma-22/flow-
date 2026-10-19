@@ -8,7 +8,8 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "tsc && vite build && esbuild server/api-handler.ts --bundle --platform=node --format=esm --target=node22 --outfile=api/index.js --external:node:sqlite \"--banner:js=import { createRequire } from 'module'; const require = createRequire(import.meta.url);\"",
+    "build:api": "esbuild server/api-handler.ts --bundle --platform=node --format=esm --target=node22 --outfile=api/index.js --external:node:sqlite \"--banner:js=import { createRequire } from 'module'; const require = createRequire(import.meta.url);\"",
     "preview": "vite preview",
     "server": "tsx server/index.ts",
     "server:migrate": "tsx server/db/migrate.ts",
@@ -31,6 +32,7 @@
     "@types/react-dom": "^19.0.0",
     "@vercel/node": "^24.0.3",
     "@vitejs/plugin-react": "^4.3.4",
+    "esbuild": "^0.25.0",
     "tsx": "^4.23.15",
     "typescript": "^5.7.2",
     "vite": "^6.0.7"

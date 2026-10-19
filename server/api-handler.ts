@@ -1,7 +1,7 @@
-import { app } from '../server/app';
-import { runMigrations } from '../server/db/migrate';
-import { runSeeds } from '../server/db/seed';
-import { FlowDatabase } from '../server/db';
+import { app } from './app';
+import { runMigrations } from './db/migrate';
+import { runSeeds } from './db/seed';
+import { FlowDatabase } from './db';
 
 let initialized = false;
 
