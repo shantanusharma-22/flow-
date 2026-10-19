@@ -7,7 +7,6 @@ interface LandingPageProps {
 }
 
 export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, onLaunchPlayer }) => {
-  const [billingCycle, setBillingCycle] = useState<'monthly' | 'annual'>('annual');
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
 
   const handleCta = () => {
@@ -23,6 +22,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, onLaunchPl
   };
 
   const faqs = [
+    {
+      q: 'Is Flow really 100% free on the Microsoft Store and Mac App Store?',
+      a: 'Yes! Flow is completely free ($0.00) to download and use on both the Microsoft Store and Mac App Store. There are no subscriptions, no in-app purchases, and no advertisements.'
+    },
     {
       q: 'Can I import my existing Spotify or YouTube Music playlists?',
       a: 'Yes. Flow includes a built-in 1-click importer that accepts public playlist links or standard .m3u8 playlist files, instantly populating your local collection without requiring cloud credentials.'
@@ -40,8 +43,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, onLaunchPl
       a: 'When playing tracks in Japanese, Korean, or Mandarin, Flow automatically computes phonetic Latin transcriptions (Romaji, Hangul, Pinyin) so you can sing along in real time even if you cannot read the native script.'
     },
     {
-      q: 'What platforms are supported?',
-      a: 'Flow runs natively with responsive HiDPI windowing on Windows 10/11 (x64/ARM64), macOS 12+ (Apple Silicon and Intel), and Linux (AppImage, deb, rpm).'
+      q: 'What are the system requirements for Windows and Mac?',
+      a: 'Flow runs smoothly on Windows 10/11 (x64 and ARM64) and macOS 12+ (Apple Silicon M-series and Intel), as well as modern Linux distributions.'
     }
   ];
 
@@ -83,12 +86,12 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, onLaunchPl
               fontSize: 11,
               padding: '2px 8px',
               borderRadius: 12,
-              background: 'rgba(0, 229, 255, 0.1)',
-              color: 'var(--color-accent, #00e5ff)',
-              fontWeight: 600,
-              border: '1px solid rgba(0, 229, 255, 0.2)'
+              background: 'rgba(52, 211, 153, 0.12)',
+              color: 'var(--color-success, #34d399)',
+              fontWeight: 700,
+              border: '1px solid rgba(52, 211, 153, 0.3)'
             }}>
-              Desktop Audio
+              100% Free
             </span>
           </div>
 
@@ -132,7 +135,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, onLaunchPl
                 e.currentTarget.style.boxShadow = '0 0 20px rgba(0, 229, 255, 0.25)';
               }}
             >
-              Launch Flow
+              Launch Player
             </button>
           </div>
         </header>
@@ -143,18 +146,18 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, onLaunchPl
             display: 'inline-flex',
             alignItems: 'center',
             gap: 8,
-            padding: '6px 14px',
+            padding: '6px 16px',
             borderRadius: 20,
-            background: 'rgba(0, 229, 255, 0.08)',
-            border: '1px solid rgba(0, 229, 255, 0.25)',
-            color: 'var(--color-accent, #00e5ff)',
+            background: 'rgba(52, 211, 153, 0.1)',
+            border: '1px solid rgba(52, 211, 153, 0.3)',
+            color: 'var(--color-success, #34d399)',
             fontSize: 12,
             fontWeight: 700,
             letterSpacing: '0.8px',
             textTransform: 'uppercase',
             marginBottom: 20
           }}>
-            <span>✨</span> DESKTOP-FIRST AUDIO STREAMING
+            <span>✓</span> 100% FREE ON MAC APP STORE & MICROSOFT STORE
           </div>
 
           <h1 style={{
@@ -179,68 +182,106 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, onLaunchPl
             margin: '0 auto 36px auto'
           }}>
             The fluid desktop player with zero-login local playlists, real-time Romanized lyrics,
-            and granular offline control that respects your local disk.
+            and granular offline control that respects your local disk. 100% free forever.
           </p>
 
+          {/* Store Buttons */}
           <div style={{ display: 'flex', justifyContent: 'center', gap: 16, flexWrap: 'wrap' }}>
             <button
               onClick={handleCta}
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
-                gap: 10,
-                background: 'linear-gradient(135deg, var(--color-accent, #00e5ff) 0%, var(--color-glow, #38bdf8) 100%)',
-                color: '#080b12',
-                border: 'none',
+                gap: 12,
+                background: 'linear-gradient(135deg, #1e293b 0%, #0f172a 100%)',
+                color: 'var(--color-text, #f8fafc)',
+                border: '1px solid var(--color-border-input, #64748b)',
                 borderRadius: 10,
-                padding: '14px 28px',
-                fontSize: 16,
-                fontWeight: 700,
+                padding: '12px 22px',
+                fontSize: 14,
+                fontWeight: 600,
                 cursor: 'pointer',
-                boxShadow: '0 0 30px rgba(0, 229, 255, 0.35)',
-                transition: 'transform 0.15s, box-shadow 0.15s'
+                boxShadow: '0 4px 20px rgba(0, 0, 0, 0.4)',
+                transition: 'all 0.15s'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = 'var(--color-accent, #00e5ff)';
+                e.currentTarget.style.transform = 'translateY(-2px)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = 'var(--color-border-input, #64748b)';
+                e.currentTarget.style.transform = 'translateY(0)';
               }}
             >
-              <span>Download Flow Free</span>
-              <span style={{ fontSize: 18 }}>↓</span>
+              <span style={{ fontSize: 20 }}>🪟</span>
+              <div style={{ textAlign: 'left' }}>
+                <div style={{ fontSize: 10, textTransform: 'uppercase', color: 'var(--color-text-muted, #94a3b8)' }}>Get it on</div>
+                <div style={{ fontWeight: 700, fontSize: 14 }}>Microsoft Store</div>
+              </div>
             </button>
 
             <button
-              onClick={() => onNavigate('home')}
+              onClick={handleCta}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 12,
+                background: 'linear-gradient(135deg, #1e293b 0%, #0f172a 100%)',
+                color: 'var(--color-text, #f8fafc)',
+                border: '1px solid var(--color-border-input, #64748b)',
+                borderRadius: 10,
+                padding: '12px 22px',
+                fontSize: 14,
+                fontWeight: 600,
+                cursor: 'pointer',
+                boxShadow: '0 4px 20px rgba(0, 0, 0, 0.4)',
+                transition: 'all 0.15s'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = 'var(--color-accent, #00e5ff)';
+                e.currentTarget.style.transform = 'translateY(-2px)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = 'var(--color-border-input, #64748b)';
+                e.currentTarget.style.transform = 'translateY(0)';
+              }}
+            >
+              <span style={{ fontSize: 20 }}>🍎</span>
+              <div style={{ textAlign: 'left' }}>
+                <div style={{ fontSize: 10, textTransform: 'uppercase', color: 'var(--color-text-muted, #94a3b8)' }}>Download on the</div>
+                <div style={{ fontWeight: 700, fontSize: 14 }}>Mac App Store</div>
+              </div>
+            </button>
+
+            <button
+              onClick={handleCta}
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: 8,
-                background: 'rgba(255, 255, 255, 0.05)',
-                color: 'var(--color-text, #f8fafc)',
-                border: '1px solid var(--color-border, #1f293d)',
+                background: 'linear-gradient(135deg, var(--color-accent, #00e5ff) 0%, var(--color-glow, #38bdf8) 100%)',
+                color: '#080b12',
+                border: 'none',
                 borderRadius: 10,
                 padding: '14px 24px',
                 fontSize: 15,
-                fontWeight: 600,
+                fontWeight: 700,
                 cursor: 'pointer',
-                transition: 'background 0.15s, border-color 0.15s'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.09)';
-                e.currentTarget.style.borderColor = 'var(--color-border-input, #64748b)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
-                e.currentTarget.style.borderColor = 'var(--color-border, #1f293d)';
+                boxShadow: '0 0 25px rgba(0, 229, 255, 0.3)',
+                transition: 'transform 0.15s, box-shadow 0.15s'
               }}
             >
-              <span>Explore Web Player</span>
-              <span>→</span>
+              <span>Direct Free Download</span>
+              <span style={{ fontSize: 16 }}>↓</span>
             </button>
           </div>
 
           <p style={{
             fontSize: 13,
             color: 'var(--color-text-muted, #94a3b8)',
-            marginTop: 16
+            marginTop: 18
           }}>
-            Available for Windows 10/11, macOS & Linux • Zero ads • Zero telemetry
+            Zero ads • Zero subscriptions • Zero in-app purchases • Zero telemetry
           </p>
 
           {/* Product Showcase Window Mockup */}
@@ -266,7 +307,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, onLaunchPl
               <span style={{ width: 12, height: 12, borderRadius: '50%', background: '#fbbf24', display: 'inline-block' }} />
               <span style={{ width: 12, height: 12, borderRadius: '50%', background: '#34d399', display: 'inline-block' }} />
               <span style={{ marginLeft: 12, fontSize: 13, color: 'var(--color-text-muted, #94a3b8)', fontWeight: 500 }}>
-                Flow — Midnight City • Synced Bilingual Lyrics
+                Flow — Free Desktop Player • Windows & Mac App Store Edition
               </span>
             </div>
 
@@ -329,11 +370,11 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, onLaunchPl
                     fontSize: 11,
                     padding: '3px 8px',
                     borderRadius: 6,
-                    background: 'rgba(168, 85, 247, 0.12)',
-                    color: '#a855f7',
+                    background: 'rgba(0, 229, 255, 0.12)',
+                    color: '#00e5ff',
                     fontWeight: 600
                   }}>
-                    Dual-Buffer Handover
+                    100% Free / Unlocked
                   </span>
                 </div>
               </div>
@@ -417,7 +458,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, onLaunchPl
               </h3>
               <p style={{ fontSize: 14, lineHeight: 1.6, color: 'var(--color-text-muted, #94a3b8)', margin: 0 }}>
                 Want to make a playlist without surrendering personal cloud account credentials? Impossible.
-                Want to save timestamped lyrics for your car stereo or offline DAP? Blocked.
+                Want to save timestamped lyrics for your car stereo or offline DAP? Blocked behind paywalls.
                 And when your drive runs low on storage, you're forced to nuke your entire cache rather than
                 removing the tracks you no longer want.
               </p>
@@ -614,219 +655,132 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, onLaunchPl
           </div>
         </section>
 
-        {/* SECTION 5: PRICING */}
+        {/* SECTION 5: 100% FREE SHOWCASE */}
         <section style={{ paddingTop: 40, paddingBottom: 64 }}>
           <div style={{ textAlign: 'center', marginBottom: 32 }}>
-            <h2 style={{ fontSize: 32, fontWeight: 800, margin: '0 0 12px 0' }}>Transparent, Respectful Pricing</h2>
-            <p style={{ color: 'var(--color-text-muted, #94a3b8)', fontSize: 16, margin: '0 0 24px 0' }}>
-              Free forever for desktop playback. Upgrade only if you want multi-device cloud sync and collaborative listening.
+            <h2 style={{ fontSize: 32, fontWeight: 800, margin: '0 0 12px 0' }}>100% Free Everywhere. Zero Compromises.</h2>
+            <p style={{ color: 'var(--color-text-muted, #94a3b8)', fontSize: 16, margin: '0 auto 24px auto', maxWidth: 640 }}>
+              No subscriptions, no paid upgrades, and no locked features. Get Flow directly from the Microsoft Store or Mac App Store.
             </p>
-
-            {/* Billing Toggle */}
-            <div style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              background: 'var(--color-surface, #111827)',
-              padding: 4,
-              borderRadius: 10,
-              border: '1px solid var(--color-border, #1f293d)',
-              gap: 4
-            }}>
-              <button
-                onClick={() => setBillingCycle('monthly')}
-                style={{
-                  background: billingCycle === 'monthly' ? 'rgba(255, 255, 255, 0.1)' : 'transparent',
-                  color: billingCycle === 'monthly' ? '#f8fafc' : '#94a3b8',
-                  border: 'none',
-                  borderRadius: 6,
-                  padding: '6px 14px',
-                  fontSize: 13,
-                  fontWeight: 600,
-                  cursor: 'pointer'
-                }}
-              >
-                Monthly
-              </button>
-              <button
-                onClick={() => setBillingCycle('annual')}
-                style={{
-                  background: billingCycle === 'annual' ? 'var(--color-accent, #00e5ff)' : 'transparent',
-                  color: billingCycle === 'annual' ? '#080b12' : '#94a3b8',
-                  border: 'none',
-                  borderRadius: 6,
-                  padding: '6px 14px',
-                  fontSize: 13,
-                  fontWeight: 700,
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 6
-                }}
-              >
-                <span>Annual</span>
-                <span style={{
-                  fontSize: 10,
-                  padding: '1px 5px',
-                  borderRadius: 4,
-                  background: billingCycle === 'annual' ? '#080b12' : 'var(--color-accent, #00e5ff)',
-                  color: billingCycle === 'annual' ? '#00e5ff' : '#080b12',
-                  fontWeight: 800
-                }}>
-                  2 MO FREE
-                </span>
-              </button>
-            </div>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 24 }}>
-            {/* Tier 1: Free */}
-            <div style={{
-              background: 'var(--color-surface, #111827)',
-              borderRadius: 16,
-              padding: '32px',
-              border: '1px solid var(--color-border, #1f293d)',
-              display: 'flex',
-              flexDirection: 'column'
-            }}>
-              <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--color-text-muted, #94a3b8)', textTransform: 'uppercase', marginBottom: 8 }}>
-                Free Listener
+          <div style={{
+            background: 'linear-gradient(180deg, rgba(52, 211, 153, 0.08) 0%, rgba(17, 24, 39, 0.95) 100%)',
+            borderRadius: 20,
+            padding: '40px 32px',
+            border: '2px solid rgba(52, 211, 153, 0.4)',
+            boxShadow: '0 0 40px rgba(52, 211, 153, 0.12)',
+            maxWidth: 780,
+            margin: '0 auto'
+          }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 16, marginBottom: 28, borderBottom: '1px solid rgba(255, 255, 255, 0.08)', paddingBottom: 24 }}>
+              <div>
+                <span style={{
+                  fontSize: 12,
+                  fontWeight: 800,
+                  textTransform: 'uppercase',
+                  color: 'var(--color-success, #34d399)',
+                  letterSpacing: '0.8px'
+                }}>
+                  Full Desktop Edition
+                </span>
+                <h3 style={{ fontSize: 36, fontWeight: 800, margin: '4px 0 0 0' }}>
+                  $0.00 <span style={{ fontSize: 16, fontWeight: 500, color: 'var(--color-text-muted, #94a3b8)' }}>forever</span>
+                </h3>
               </div>
-              <div style={{ fontSize: 36, fontWeight: 800, margin: '0 0 6px 0' }}>$0</div>
-              <p style={{ fontSize: 13, color: 'var(--color-text-muted, #94a3b8)', margin: '0 0 24px 0' }}>
-                For everyday music fans who want a fast, clutter-free desktop player.
-              </p>
-              <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 32px 0', display: 'flex', flexDirection: 'column', gap: 12, fontSize: 14 }}>
-                <li style={{ display: 'flex', gap: 8 }}><span>✓</span> Unlimited desktop streaming</li>
-                <li style={{ display: 'flex', gap: 8 }}><span>✓</span> Syllable-synced lyrics with Romaji</li>
-                <li style={{ display: 'flex', gap: 8 }}><span>✓</span> Zero-login local playlists & M3U8</li>
-                <li style={{ display: 'flex', gap: 8 }}><span>✓</span> 1-click .lrc timestamped export</li>
-                <li style={{ display: 'flex', gap: 8 }}><span>✓</span> Granular cache pruner in MB</li>
-              </ul>
-              <button
-                onClick={handleCta}
-                style={{
-                  marginTop: 'auto',
-                  width: '100%',
-                  padding: '12px',
-                  borderRadius: 8,
-                  background: 'rgba(255, 255, 255, 0.08)',
-                  color: '#f8fafc',
-                  border: '1px solid var(--color-border, #1f293d)',
-                  fontWeight: 600,
-                  cursor: 'pointer'
-                }}
-              >
-                Download Free Forever
-              </button>
-            </div>
-
-            {/* Tier 2: Pro */}
-            <div style={{
-              background: 'linear-gradient(180deg, rgba(0, 229, 255, 0.08) 0%, rgba(17, 24, 39, 0.95) 100%)',
-              borderRadius: 16,
-              padding: '32px',
-              border: '2px solid var(--color-accent, #00e5ff)',
-              display: 'flex',
-              flexDirection: 'column',
-              position: 'relative',
-              boxShadow: '0 0 35px rgba(0, 229, 255, 0.15)'
-            }}>
-              <div style={{
-                position: 'absolute',
-                top: -12,
-                right: 24,
-                background: 'var(--color-accent, #00e5ff)',
-                color: '#080b12',
-                fontSize: 11,
-                fontWeight: 800,
-                padding: '2px 10px',
-                borderRadius: 10,
-                letterSpacing: '0.5px'
-              }}>
-                MOST POPULAR
-              </div>
-              <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--color-accent, #00e5ff)', textTransform: 'uppercase', marginBottom: 8 }}>
-                Pro Explorer
-              </div>
-              <div style={{ fontSize: 36, fontWeight: 800, margin: '0 0 6px 0' }}>
-                {billingCycle === 'annual' ? '$29' : '$3.99'}
-                <span style={{ fontSize: 16, fontWeight: 500, color: 'var(--color-text-muted, #94a3b8)' }}>
-                  {billingCycle === 'annual' ? ' / year' : ' / month'}
+              <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+                <span style={{ fontSize: 13, padding: '6px 14px', borderRadius: 20, background: 'rgba(255, 255, 255, 0.06)', border: '1px solid var(--color-border, #1f293d)' }}>
+                  🪟 Microsoft Store
+                </span>
+                <span style={{ fontSize: 13, padding: '6px 14px', borderRadius: 20, background: 'rgba(255, 255, 255, 0.06)', border: '1px solid var(--color-border, #1f293d)' }}>
+                  🍎 Mac App Store
                 </span>
               </div>
-              <p style={{ fontSize: 13, color: 'var(--color-text-muted, #94a3b8)', margin: '0 0 24px 0' }}>
-                For multi-device listeners who stream across workstations and share music.
-              </p>
-              <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 32px 0', display: 'flex', flexDirection: 'column', gap: 12, fontSize: 14 }}>
-                <li style={{ display: 'flex', gap: 8 }}><span>✓</span> <strong>Everything in Free</strong></li>
-                <li style={{ display: 'flex', gap: 8 }}><span>✓</span> Encrypted cloud playlist sync</li>
-                <li style={{ display: 'flex', gap: 8 }}><span>✓</span> Shared Listen-Together rooms</li>
-                <li style={{ display: 'flex', gap: 8 }}><span>✓</span> Multi-workstation queue handoff</li>
-                <li style={{ display: 'flex', gap: 8 }}><span>✓</span> Priority lyrics provider API</li>
-              </ul>
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 16, marginBottom: 32 }}>
+              <div style={{ display: 'flex', gap: 10, fontSize: 14 }}>
+                <span style={{ color: 'var(--color-success, #34d399)' }}>✓</span>
+                <span>Unlimited desktop music streaming</span>
+              </div>
+              <div style={{ display: 'flex', gap: 10, fontSize: 14 }}>
+                <span style={{ color: 'var(--color-success, #34d399)' }}>✓</span>
+                <span>Real-time lyrics with Romaji toggle</span>
+              </div>
+              <div style={{ display: 'flex', gap: 10, fontSize: 14 }}>
+                <span style={{ color: 'var(--color-success, #34d399)' }}>✓</span>
+                <span>Zero-login local playlist creation</span>
+              </div>
+              <div style={{ display: 'flex', gap: 10, fontSize: 14 }}>
+                <span style={{ color: 'var(--color-success, #34d399)' }}>✓</span>
+                <span>1-click .lrc timestamped lyric export</span>
+              </div>
+              <div style={{ display: 'flex', gap: 10, fontSize: 14 }}>
+                <span style={{ color: 'var(--color-success, #34d399)' }}>✓</span>
+                <span>Granular cache inspection by megabyte</span>
+              </div>
+              <div style={{ display: 'flex', gap: 10, fontSize: 14 }}>
+                <span style={{ color: 'var(--color-success, #34d399)' }}>✓</span>
+                <span>Standard .m3u8 playlist export</span>
+              </div>
+              <div style={{ display: 'flex', gap: 10, fontSize: 14 }}>
+                <span style={{ color: 'var(--color-success, #34d399)' }}>✓</span>
+                <span>Dedicated 3-state loop & speed slider</span>
+              </div>
+              <div style={{ display: 'flex', gap: 10, fontSize: 14 }}>
+                <span style={{ color: 'var(--color-success, #34d399)' }}>✓</span>
+                <span>Automatic sandbox store updates</span>
+              </div>
+            </div>
+
+            <div style={{
+              display: 'flex',
+              justifyContent: 'center',
+              gap: 16,
+              flexWrap: 'wrap',
+              paddingTop: 16,
+              borderTop: '1px solid rgba(255, 255, 255, 0.08)'
+            }}>
               <button
                 onClick={handleCta}
                 style={{
-                  marginTop: 'auto',
-                  width: '100%',
-                  padding: '12px',
-                  borderRadius: 8,
-                  background: 'var(--color-accent, #00e5ff)',
+                  flex: 1,
+                  minWidth: 220,
+                  padding: '14px 20px',
+                  borderRadius: 10,
+                  background: 'linear-gradient(135deg, var(--color-accent, #00e5ff) 0%, var(--color-glow, #38bdf8) 100%)',
                   color: '#080b12',
                   border: 'none',
                   fontWeight: 700,
+                  fontSize: 15,
                   cursor: 'pointer',
                   boxShadow: '0 0 20px rgba(0, 229, 255, 0.3)'
                 }}
               >
-                Upgrade to Pro
+                Install Free on Windows
               </button>
-            </div>
-
-            {/* Tier 3: Lifetime */}
-            <div style={{
-              background: 'var(--color-surface, #111827)',
-              borderRadius: 16,
-              padding: '32px',
-              border: '1px solid var(--color-border, #1f293d)',
-              display: 'flex',
-              flexDirection: 'column'
-            }}>
-              <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--color-violet, #a855f7)', textTransform: 'uppercase', marginBottom: 8 }}>
-                Lifetime Patron
-              </div>
-              <div style={{ fontSize: 36, fontWeight: 800, margin: '0 0 6px 0' }}>$39</div>
-              <p style={{ fontSize: 13, color: 'var(--color-text-muted, #94a3b8)', margin: '0 0 24px 0' }}>
-                For loyal supporters who want perpetual access with zero recurring subscriptions.
-              </p>
-              <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 32px 0', display: 'flex', flexDirection: 'column', gap: 12, fontSize: 14 }}>
-                <li style={{ display: 'flex', gap: 8 }}><span>✓</span> <strong>Everything in Pro forever</strong></li>
-                <li style={{ display: 'flex', gap: 8 }}><span>✓</span> Perpetual updates (all future versions)</li>
-                <li style={{ display: 'flex', gap: 8 }}><span>✓</span> Early access alpha channel</li>
-                <li style={{ display: 'flex', gap: 8 }}><span>✓</span> Founder Discord role & badge</li>
-                <li style={{ display: 'flex', gap: 8 }}><span>✓</span> 100% DRM-free personal license</li>
-              </ul>
               <button
                 onClick={handleCta}
                 style={{
-                  marginTop: 'auto',
-                  width: '100%',
-                  padding: '12px',
-                  borderRadius: 8,
-                  background: 'rgba(168, 85, 247, 0.15)',
-                  color: 'var(--color-violet, #a855f7)',
-                  border: '1px solid rgba(168, 85, 247, 0.4)',
+                  flex: 1,
+                  minWidth: 220,
+                  padding: '14px 20px',
+                  borderRadius: 10,
+                  background: 'rgba(255, 255, 255, 0.08)',
+                  color: '#f8fafc',
+                  border: '1px solid var(--color-border, #1f293d)',
                   fontWeight: 700,
+                  fontSize: 15,
                   cursor: 'pointer'
                 }}
               >
-                Get Lifetime License
+                Install Free on Mac
               </button>
             </div>
           </div>
 
           <div style={{
-            marginTop: 32,
+            marginTop: 28,
             textAlign: 'center',
             fontSize: 13,
             color: 'var(--color-text-muted, #94a3b8)',
@@ -835,9 +789,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, onLaunchPl
             gap: 24,
             flexWrap: 'wrap'
           }}>
-            <span>🔒 1-click cancel anytime</span>
-            <span>📩 7-day advance annual renewal notice</span>
-            <span>🚫 Zero telemetry & no hidden fees</span>
+            <span>🚫 Zero audio or banner ads</span>
+            <span>🔒 Zero mandatory cloud sign-ins</span>
+            <span>🛡️ Zero analytics or user tracking</span>
           </div>
         </section>
 
@@ -926,7 +880,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, onLaunchPl
             maxWidth: 540,
             margin: '0 auto 32px auto'
           }}>
-            Download the player in seconds. No credit card required, zero telemetry, and zero mandatory cloud accounts.
+            Install free in seconds from the Microsoft Store or Mac App Store. No credit card, no ads, no sign-up wall.
           </p>
 
           <button
@@ -962,7 +916,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, onLaunchPl
           color: 'var(--color-text-muted, #94a3b8)'
         }}>
           <div>
-            © 2026 Flow Audio. Built for listeners.
+            © 2026 Flow Audio. Free & open desktop streaming player.
           </div>
           <div style={{ display: 'flex', gap: 20 }}>
             <span>Privacy Promise</span>

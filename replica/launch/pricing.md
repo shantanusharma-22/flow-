@@ -1,6 +1,6 @@
-# Pricing Strategy: Flow
+# Pricing Strategy: Flow (100% Free & Open)
 
-The pricing model, competitive landscape, tier definitions, and Stripe billing structure for **Flow**.
+The distribution model, competitive landscape, and store pricing policy for **Flow** on the **Mac App Store**, **Microsoft Store**, and direct releases.
 
 ---
 
@@ -8,84 +8,71 @@ The pricing model, competitive landscape, tier definitions, and Stripe billing s
 
 Surveyed against the original project and commercial desktop/streaming alternatives (retrieved October 19, 2026):
 
-| Player / Service | Model | Free Tier | Monthly | Annual / Lifetime | Public Reference & Date Checked |
+| Player / Store Listing | Model | Store Price | Monthly Fee | In-App Purchases | Source & Date Checked |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Original Player** | Donation / FOSS | 100% Free | $0 (Donations via Ko-fi) | $0 | [GitHub Repository](https://github.com/kushagrasinghx/BitChord) (Checked Oct 19, 2026) |
-| **Spotify Premium** | Subscription | Ad-supported (mobile shuffle, audio ads) | $11.99 / mo | $119.88 / yr | [Spotify Plans](https://www.spotify.com/us/premium/) (Checked Oct 19, 2026) |
-| **YouTube Music Premium** | Subscription | Ad-supported (no background play on mobile) | $10.99 / mo | $109.99 / yr | [YouTube Music Plans](https://music.youtube.com/premium) (Checked Oct 19, 2026) |
-| **Cider Audio** | Paid Client | 14-day trial | N/A | $4.99 one-time (MS Store / itch.io) | [Cider Collective](https://cider.sh/) (Checked Oct 19, 2026) |
+| **Flow (Our Player)** | 100% Free | **$0.00 (Free)** | **$0 / mo** | **None (100% Unlocked)** | App Store & Microsoft Store (Oct 19, 2026) |
+| **Original Player** | FOSS / Donation | $0 (GitHub only) | $0 | None | [GitHub Repository](https://github.com/kushagrasinghx/BitChord) (Checked Oct 19, 2026) |
+| **Spotify** | Commercial | $0 (Ad-supported) | $11.99 / mo | Required for ad-free & offline | [Spotify Plans](https://www.spotify.com/us/premium/) (Checked Oct 19, 2026) |
+| **Apple Music** | Commercial | No free tier | $10.99 / mo | Subscription required | [Apple Music](https://www.apple.com/apple-music/) (Checked Oct 19, 2026) |
+| **Cider Audio** | Paid Client | $4.99 on MS Store | $0 | One-time store purchase | [Microsoft Store Cider](https://apps.microsoft.com/) (Checked Oct 19, 2026) |
 
 ---
 
-## 2. Reviewer Sentiment & Market Gap
+## 2. Why Flow is 100% Free Everywhere
 
 From the 32 real reviews and issue reports analyzed in `replica/feedback.md`:
-1. **Zero-Account Local Freedom (7 reviews / 22%):**
-   Users strongly resent forced cloud logins just to curate a playlist or listen to local files. Many desktop listeners refuse to link personal Google/Spotify credentials due to privacy or corporate device restrictions.
-2. **Export Independence (7 reviews / 22%):**
-   Users want portable ownership of their listening data: 1-click `.lrc` timestamped lyrics export for car stereos and MP3 DAPs, and standard `.m3u8` playlist exports.
-3. **Friction-Free Desktop Experience (6 reviews / 19%):**
-   Users reject bloated web clients that chew up 1.5 GB of RAM or lock basic features behind recurring $12/month fees when all they need is a fast, beautiful audio player.
+1. **Zero-Account Local Freedom (22% of feedback):**
+   Desktop music listeners despise paywalls and forced cloud subscriptions just to organize their music. Flow eliminates subscription friction completely.
+2. **Export Independence (22% of feedback):**
+   Users should own their listening data. 1-click `.lrc` timestamped lyrics export for car stereos and `.m3u8` playlist export are standard, unmetered features.
+3. **No Commercial Dark Patterns:**
+   No audio advertisements interrupting playback, no banners cluttering the interface, and no paywalls gating lossless audio bitrates or lyrics transliteration.
 
 ---
 
-## 3. The Flow Tier Model
+## 3. The 100% Free Tier Breakdown
 
-Flow adopts a **generous, local-first hybrid model**: the desktop player is free forever for offline listening and core streaming, while optional cloud sync, listen-together rooms, and early access are powered by a lightweight Pro subscription or lifetime license.
-
-### The 3 Tiers (Named by Audience)
+Every feature is unlocked for every user out of the box:
 
 ```
-+---------------------------+---------------------------+---------------------------+
-|      FREE LISTENER        |       PRO EXPLORER        |     LIFETIME PATRON       |
-|       $0 / forever        |    $3.99/mo or $29/yr     |      $39 / one-time       |
-+---------------------------+---------------------------+---------------------------+
-| For everyday music lovers | For multi-device listeners| For loyal supporters who  |
-| who want a lightning-fast | & audiophiles who want    | want perpetual access and |
-| desktop client.           | sync and shared rooms.    | zero subscriptions.       |
-|                           |                           |                           |
-| * Unlimited streaming     | * Everything in Free      | * Everything in Pro       |
-| * Synchronized lyrics     | * Encrypted cloud sync    | * Perpetual updates       |
-| * Phonetic Romaji toggle  | * Listen-together rooms   | * Early access builds     |
-| * Zero-login playlists    | * Priority lyrics fetch   | * Founder Discord role    |
-| * 1-click .lrc export     | * Multi-workstation queue | * Name in About screen    |
-| * Granular cache manager  | * 2 months free on annual | * 100% DRM-free license   |
-+---------------------------+---------------------------+---------------------------+
++-------------------------------------------------------------------------------+
+|                            FLOW — 100% FREE CLIENT                             |
+|                           $0.00 Forever / All Stores                          |
++-------------------------------------------------------------------------------+
+| * Mac App Store & Microsoft Store 1-Click Install                             |
+| * Unlimited desktop streaming across millions of songs                        |
+| * Real-time syllable-synchronized lyrics with bilingual translations          |
+| * Phonetic Romanization toggle (Romaji, Hangul, Pinyin)                       |
+| * Zero-login local playlist creation & .m3u8 library export                   |
+| * 1-click .lrc timestamped file export to local disk                          |
+| * Granular cache manager with single-track eviction and MB inspection         |
+| * Dedicated 3-state loop button (Repeat-One) & 0.5x–2.0x pitch-preserved tempo|
+| * Zero audio ads, zero banners, zero telemetry, zero forced account sign-ins   |
++-------------------------------------------------------------------------------+
 ```
 
 ---
 
-## 4. Anti-Hostile Billing Guarantees
+## 4. App Store & Microsoft Store Pricing Settings
 
-In response to community complaints regarding predatory recurring billing models in modern software:
-- **1-Click Cancellation:** Immediate self-serve cancellation inside Settings with no retention surveys or phone calls.
-- **Renewal Transparency:** Automated email notice sent 7 days before annual subscription renewal.
-- **No Per-Seat or Tier Jumps:** Single personal license covers all your desktop machines (Windows, macOS, Linux).
-- **Graceful Downgrade:** If Pro expires, your local playlists, cached songs, and exported `.lrc` files remain 100% accessible on your disk.
+### Mac App Store (App Store Connect)
+- **Price Schedule:** `Free (Tier 0)`
+- **In-App Purchases:** None.
+- **Availability:** Free in all 175 App Store territories.
+- **App Privacy:** "Data Not Collected" (zero telemetry, zero user tracking).
+
+### Microsoft Store (Partner Center)
+- **Base Price:** `Free ($0.00 USD)`
+- **Trial:** None (Full product free).
+- **In-App Products (IAP):** None.
+- **Markets:** Worldwide distribution across all Windows 10 & Windows 11 markets.
+- **Category:** `Multimedia & Media Players > Audio & Music`.
 
 ---
 
-## 5. Stripe Catalog Configuration
+## 5. Voluntary Community Sponsorship (Optional)
 
-Ready for deployment in Stripe Dashboard (Live and Test modes):
-
-### 1. Flow Pro (Monthly)
-- **Product Name:** `Flow Pro Monthly`
-- **Product ID:** `prod_flow_pro_monthly`
-- **Price:** `$3.99 USD`
-- **Billing Interval:** `Monthly (recurring)`
-- **Statement Descriptor:** `FLOW MUSIC PRO`
-
-### 2. Flow Pro (Annual — 2 Months Free)
-- **Product Name:** `Flow Pro Annual`
-- **Product ID:** `prod_flow_pro_annual`
-- **Price:** `$29.00 USD`
-- **Billing Interval:** `Yearly (recurring, $2.42/mo effective)`
-- **Statement Descriptor:** `FLOW MUSIC PRO YR`
-
-### 3. Flow Lifetime License
-- **Product Name:** `Flow Lifetime License`
-- **Product ID:** `prod_flow_lifetime`
-- **Price:** `$39.00 USD`
-- **Billing Interval:** `One-time purchase`
-- **Statement Descriptor:** `FLOW MUSIC LIFE`
+For users who wish to support ongoing maintenance, server bandwidth for lyric resolvers, and packaging builds, Flow accepts non-coercive voluntary sponsorships:
+- **GitHub Sponsors:** `github.com/sponsors/flow-audio` ($2 / $5 / $10 voluntary monthly tier).
+- **Open Collective:** Transparent community fund for domain renewals and store developer accounts.
+- **Guarantee:** 100% of application features, updates, and releases remain completely free and open. No feature is ever held behind a sponsor paywall.

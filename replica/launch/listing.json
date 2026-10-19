@@ -10,9 +10,36 @@
     "name": "Flow: Desktop Music Player",
     "subtitle": "Stream Songs with Lyrics",
     "promotional_text": "Experience fluid desktop audio with synchronized Romanized lyrics, local playlists, and granular cache controls.",
-    "description": "Flow is a fluid, modern music player crafted for seamless desktop listening.\n\nEnjoy synchronized lyrics with instant phonetic Romanization, build custom playlists locally without mandatory cloud accounts, and keep full control of your storage with per-track cache management.\n\nKey Highlights:\n- Real-Time Synced Lyrics: Sing along with syllable-accurate lyric timing and bilingual translations.\n- Phonetic Romanization: Toggle instant Romaji, Hangul, and Latin transliteration for international tracks.\n- Offline Lyrics Export: Save timestamped .lrc files directly to your device with a single click.\n- Zero-Login Local Playlists: Create, curate, and export custom playlists without an account.\n- Resilient Playback: Smooth stream buffering prevents mid-track pauses and stuttering.\n- Granular Storage Control: Inspect exact disk space per track and prune cached files individually.\n- Dedicated Repeat Controls: Easily toggle between repeat off, repeat all, and repeat one.\n- Playback Speed Slider: Adjust tempo smoothly from 0.5x to 2.0x while preserving pitch.\n\nClean design, fast performance, and complete respect for your listening privacy.",
+    "description": "Flow is a fluid, modern music player crafted for seamless desktop listening.\n\nEnjoy synchronized lyrics with instant phonetic Romanization, build custom playlists locally without mandatory cloud accounts, and keep full control of your storage with per-track cache management.\n\nKey Highlights:\n- Real-Time Synced Lyrics: Sing along with syllable-accurate lyric timing and bilingual translations.\n- Phonetic Romanization: Toggle instant Romaji, Hangul, and Latin transliteration for international tracks.\n- Offline Lyrics Export: Save timestamped .lrc files directly to your device with a single click.\n- Zero-Login Local Playlists: Create, curate, and export custom playlists without an account.\n- Resilient Playback: Smooth stream buffering prevents mid-track pauses and stuttering.\n- Granular Storage Control: Inspect exact disk space per track and prune cached files individually.\n- Dedicated Repeat Controls: Easily toggle between repeat off, repeat all, and repeat one.\n- Playback Speed Slider: Adjust tempo smoothly from 0.5x to 2.0x while preserving pitch.\n\nClean design, fast performance, completely free, and built with total respect for your listening privacy.",
     "keywords": "audio,sound,playlist,tuner,karaoke,offline,album,track,tunes,artist,equalizer,listen",
     "whats_new": "Initial release of Flow featuring synchronized bilingual lyrics, local playlist creation, granular cache management, and offline lyrics export."
+  },
+  "microsoft_store": {
+    "title": "Flow: Desktop Music Player",
+    "short_description": "Fluid desktop music player with synchronized lyrics and local playlist creation.",
+    "description": "Flow is a modern, responsive audio player designed specifically for Windows 10 and Windows 11.\n\nExperience seamless desktop listening with syllable-accurate synchronized lyrics, instant phonetic Romanization for Asian languages, and unmetered local playlist creation without ever being forced to sign in or link a third-party account.\n\nFeatures:\n- Syllable-Synchronized Lyrics: Real-time scrolling lyrics with bilingual translation support.\n- Phonetic Romanization: 1-click toggle for Romaji, Hangul, and Latin transcriptions.\n- Local-First Playlists: Create and curate custom playlists saved directly to your PC, with full .m3u8 export.\n- 1-Click .lrc File Export: Save timestamped lyric files to your drive for offline car stereos and portable DAPs.\n- Granular Cache Manager: Inspect disk usage in megabytes and remove individual cached tracks without wiping your storage.\n- Resilient Dual-Buffer Audio: Zero-gap playback transitions without micro-pauses or freezes.\n- HiDPI Window Adaptation: Beautiful dark-glass interface with adaptive responsive scaling across any monitor resolution.\n- Completely Free: Zero ads, zero subscriptions, zero in-app purchases, and zero user telemetry.",
+    "features": [
+      "Real-time synchronized lyrics with millisecond precision",
+      "Automatic phonetic Romanization for Japanese and Korean songs",
+      "1-click .lrc timestamped lyric file export to local disk",
+      "Zero-login custom playlist creation and .m3u8 export",
+      "Per-track cache inspection and single-track disk pruning",
+      "Dedicated 3-state loop button (Off, All, One)",
+      "0.5x to 2.0x playback speed slider with pitch preservation",
+      "Native Windows 10 and 11 HiDPI responsive scaling",
+      "100% free with zero ads, zero subscriptions, and zero tracking"
+    ],
+    "keywords": [
+      "music player",
+      "synchronized lyrics",
+      "audio player",
+      "romaji lyrics",
+      "lrc export",
+      "desktop player",
+      "local playlist"
+    ],
+    "pricing": "Free ($0.00)",
+    "category": "Multimedia & Media Players > Audio & Music"
   },
   "google_play": {
     "title": "Flow: Music and Lyrics Player",
